@@ -2,9 +2,9 @@
 Note: The following document here uses guidelines from:
 - https://socket.io/how-to/use-with-react
 */
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
-const URL = import.meta.env.MODE === 'production' ? 'http://example.com' : 'http://localhost:3000';
+const URL = import.meta.env.MODE === "production" ? "http://example.com" : "http://localhost:3000";
 
 export const socket = io(URL);
 
