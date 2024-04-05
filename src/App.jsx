@@ -35,7 +35,7 @@ function App() {
       <h1>Vite + React</h1>
       <img src={reactLogo} className="logo" alt="React logo" />
       <p>Socket is {isConnected ? "connected" : "disconnected"}</p>
-      <button onClick={counterClick}>
+      <button className="btn btn-danger" onClick={counterClick}>
         count is {count}
       </button>
     </>
