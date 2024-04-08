@@ -1,44 +1,20 @@
-import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { socket } from "./socket";
+import FrontPage from "./FrontPage.jsx";
+import CreateDeckPage from "./CreateDeckPage.jsx";
+import HostGamePage from "./HostGamePage.jsx"
+import LobbyPage from "./LobbyPage.jsx"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [isConnected, setIsConnected] = useState(socket.connected);
-
-  useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-    }
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
-  }, []);
-
-  function counterClick() {
-    socket.emit("buttonClick", count + 1);
-    setCount((count) => count + 1);
-  }
-
+function App(){
   return (
-    <>
-      <h1>Vite + React</h1>
-      <img src={reactLogo} className="logo" alt="React logo" />
-      <p>Socket is {isConnected ? "connected" : "disconnected"}</p>
-      <button className="btn btn-danger" onClick={counterClick}>
-        count is {count}
-      </button>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<FrontPage />}></Route>
+        <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
+        <Route path="HostGamePage" element={<HostGamePage />}></Route>        
+        <Route path="LobbyPage" element={<LobbyPage/>}></Route>      
+      </Routes>
+    </BrowserRouter>
   );
 }
 
