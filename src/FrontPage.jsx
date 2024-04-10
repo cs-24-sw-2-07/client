@@ -8,33 +8,31 @@ export default function FrontPage() {
   }
 
   return (
-    <>
-      <div className="container">
-        <h1 className="p-5 text-center">Flashcard Versus Game</h1>
-        <div className="p-5"></div>
-        <div className="row">
-          <div className="d-grid gap-2 col">
-            <JoinGameModalButton navigateTo={() => navigateTo("/LobbyPage")}/>
-          </div>
-          <div className="d-grid gap-2 col">
-            <HostGameModalButton navigateTo={() => navigateTo("/HostGamePage")}/>
-          </div>
-          <div className="row p-5">
-            <div className="d-grid gap-2 col-8 mx-auto">
-              <button
-                type="button"
-                className="btn btn-primary btn-lg"
-                onClick={() => {
-                  navigateTo("/CreateDeckPage");
-                }}
-              >
-                Create or Edit Decks
-              </button>
-            </div>
+    <div className="container">
+      <h1 className="p-5 text-center">Flashcard Versus Game</h1>
+      <div className="p-5"></div>
+      <div className="row">
+        <div className="d-grid gap-2 col">
+          <JoinGameModalButton navigateTo={() => navigateTo("/LobbyPage")} />
+        </div>
+        <div className="d-grid gap-2 col">
+          <HostGameModalButton navigateTo={() => navigateTo("/HostGamePage")} />
+        </div>
+        <div className="row p-5">
+          <div className="d-grid gap-2 col-8 mx-auto">
+            <button
+              type="button"
+              className="btn btn-primary btn-lg"
+              onClick={() => {
+                navigateTo("/CreateDeckPage");
+              }}
+            >
+              Create or Edit Decks
+            </button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
