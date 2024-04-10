@@ -14,18 +14,10 @@ export default function FrontPage() {
         <div className="p-5"></div>
         <div className="row">
           <div className="d-grid gap-2 col">
-            <button
-              type="button"
-              className="btn btn-primary btn-lg"
-              onClick={() => {
-                navigateTo("/LobbyPage");
-              }}
-            >
-              Join Game
-            </button>
+            <JoinGameModalButton/>
           </div>
           <div className="d-grid gap-2 col">
-            <HostGameModalButton />
+            <HostGameModalButton/>
           </div>
           <div className="row p-5">
             <div className="d-grid gap-2 col-8 mx-auto">
@@ -56,7 +48,7 @@ function HostGameModalButton() {
 
   function hostGame() {
     alert(`Host Game!\nInputted Name: ${displayName}`);
-    navigateTo("/HostGamePage")
+    navigateTo("/HostGamePage");
   }
 
   return (
@@ -93,7 +85,7 @@ function HostGameModalButton() {
               <form action="javascript:void(0);">
                 <div className="mb-3">
                   <label
-                    htmlFor="recipient-name"
+                    htmlFor="display-name"
                     className="col-form-label text-start"
                   >
                     Enter a name:
@@ -101,7 +93,7 @@ function HostGameModalButton() {
                   <input
                     type="text"
                     className="form-control"
-                    id="recipient-name"
+                    id="display-name"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                   />
@@ -123,6 +115,106 @@ function HostGameModalButton() {
                 onClick={hostGame}
               >
                 Create Lobby
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function JoinGameModalButton() {
+  const [displayName, setDisplayName] = useState("");
+  const [gameCode, setGameCode] = useState("");
+
+  const navigate = useNavigate();
+  function navigateTo(path) {
+    navigate(path);
+  }
+
+  function joinGame() {
+    alert(`Join Game!\nInputted Name: ${displayName}\nGame Code: ${gameCode}`);
+    navigateTo("/LobbyPage");
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        className="btn btn-primary btn-lg"
+        data-bs-toggle="modal"
+        data-bs-target="#joinGameModal"
+      >
+        Join Game
+      </button>
+      <div
+        className="modal fade"
+        id="joinGameModal"
+        tabIndex="-1"
+        aria-labelledby="joinGameModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="joinGameModalLabel">
+                Join Game
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <form action="javascript:void(0);">
+                <div className="mb-3">
+                  <label
+                    htmlFor="game-code"
+                    className="col-form-label text-start"
+                  >
+                    Enter Game Code:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="game-code"
+                    value={gameCode}
+                    onChange={(e) => setGameCode(e.target.value)}
+                  />
+                  <label
+                    htmlFor="display-name"
+                    className="col-form-label text-start"
+                  >
+                    Enter a name:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="display-name"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+                onClick={joinGame}
+              >
+                Join Lobby
               </button>
             </div>
           </div>
