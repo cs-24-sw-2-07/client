@@ -27,5 +27,18 @@ module.exports = {
     indent: ["error", 2],
     "linebreak-style": 1,
     quotes: ["error", "double"],
+    "react/button-has-type": 2,
+    "react/no-unused-prop-types": 2,
+    "react/jsx-pascal-case": 2,
+    "react/jsx-fragments": 2,
+    "react/jsx-key": [
+      "error",
+      {
+        checkFragmentShorthand: true,
+        checkKeyMustBeforeSpread: true,
+        warnOnDuplicates: true,
+      },
+    ],
+    "react/jsx-no-useless-fragment": 2
   }
 };

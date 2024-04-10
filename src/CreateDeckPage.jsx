@@ -76,7 +76,7 @@ function CreateDeckPage(){
 
   //delete deck
   const deleteDeck = (deleteIndex) => {
-    const updatedDecks = decks.filter((deck, index) => deck.id !== deleteIndex);
+    const updatedDecks = decks.filter((deck) => deck.id !== deleteIndex);
     setDecks(updatedDecks);
   };
 
@@ -118,26 +118,22 @@ function CreateDeckPage(){
   
   //Renders list of decks on page
   function DeckList(props){
-    return <>
-      <div className="list-group" id="list-tab" key="list">
-        {props.decks.map((deck) =>
-          <>
-            <div className="row">
-              <div className="col-10">
-                <button className="list-group-item list-group-item-action" id={"Deck:"+deck.id} onClick={()=>{showCardEditor(deck.id)}}>
-                  {deck.name+deck.id}
-                </button>
-              </div>
-              <div className="col-2">
-                <button className="list-group-item list-group-item-action" id={"DelDeck:"+deck.id} onClick={()=>{deleteDeck(deck.id)}}>
+    return <div className="list-group" id="list-tab" key="list">
+      {props.decks.map((deck, index) =>
+        <div className="row" key={index}>
+          <div className="col-10">
+            <button type="button" className="list-group-item list-group-item-action" id={"Deck:"+deck.id} onClick={()=>{showCardEditor(deck.id)}}>
+              {deck.name+deck.id}
+            </button>
+          </div>
+          <div className="col-2">
+            <button type="button" className="list-group-item list-group-item-action" id={"DelDeck:"+deck.id} onClick={()=>{deleteDeck(deck.id)}}>
                   Delete
-                </button>
-              </div>
-            </div>
-          </>)
-        }
-      </div>
-    </>
+            </button>
+          </div>
+        </div>)
+      }
+    </div>
   }
 
   function showCardEditor(deckID){
@@ -158,9 +154,7 @@ function CreateDeckPage(){
       <label htmlFor="cards">Pick A Card</label>
       <select className="form-select" id="cards" size="18" >
         {decks[deckIndex].cards.map((card,index)=>
-          <>
-            <option selected={(index===cardIndex)?true:false} value={"card"+index} onClick={() => {setcardIndex(index);console.log(cardIndex)}}>{"Card "+index}</option>
-          </>)
+          <option key={index} selected={(index===cardIndex)?true:false} value={"card"+index} onClick={() => {setcardIndex(index);console.log(cardIndex)}}>{"Card "+index}</option>)
         }
       </select>
     </>
