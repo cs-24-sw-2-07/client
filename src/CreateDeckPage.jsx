@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
 
 const deckArray = [
   {
     name: "hej1",
-    id: 0,
     cards: [
       { Q: "hej1 question1", A: "hej1 answer1" },
       { Q: "hej1 question2", A: "hej1 answer2" },
@@ -14,7 +13,6 @@ const deckArray = [
   },
   {
     name: "hej2",
-    id: 1,
     cards: [
       { Q: "hej2 question1", A: "hej2 answer1" },
       { Q: "hej2 question2", A: "hej2 answer2" },
@@ -24,7 +22,6 @@ const deckArray = [
   },
   {
     name: "hej3",
-    id: 2,
     cards: [
       { Q: "hej3 question1", A: "hej3 answer1" },
       { Q: "hej3 question2", A: "hej3 answer2" },
@@ -34,7 +31,6 @@ const deckArray = [
   },
   {
     name: "hej4",
-    id: 3,
     cards: [
       { Q: "hej4 question1", A: "hej4 answer1" },
       { Q: "hej4 question2", A: "hej4 answer2" },
@@ -44,7 +40,6 @@ const deckArray = [
   },
   {
     name: "hej5",
-    id: 4,
     cards: [
       { Q: "hej5 question1", A: "hej5 answer1" },
       { Q: "hej5 question2", A: "hej5 answer2" },
@@ -53,6 +48,7 @@ const deckArray = [
     ]
   }
 ];
+
 
 function CreateDeckPage(){ 
   const navigate = useNavigate();
@@ -63,23 +59,70 @@ function CreateDeckPage(){
   //Makes hooks in use
   let [hiddenDeck, setHiddenDeck]=useState(false);
   let [decks, setDecks]=useState(deckArray);
-  let [deckName, setDeckName]=useState("DeckName");
-  let [deckIndex, setDeckIndex]=useState();
-  let [cardIndex, setcardIndex]=useState("1"); 
+  let [deckName, setDeckName]=useState(decks[0].name);
+  let [deckIndex, setDeckIndex]=useState(0);
+  let [cardIndex, setCardIndex]=useState(0); 
+  let [questionHook, setQuestionHook]=useState(decks[0].cards[0].Q); 
+  let [answerHook, setAnswerHook]=useState(decks[0].cards[0].A); 
+  
+  //save changes on edit. 
+  useEffect(() => {
+    setAnswerHook(decks[deckIndex].cards[cardIndex].A);
+    setQuestionHook(decks[deckIndex].cards[cardIndex].Q);
+  }, [cardIndex]);
+
+  useEffect(() => {
+    let updatedDeck = decks;
+    updatedDeck[deckIndex].cards[cardIndex].Q=questionHook;
+    setDecks(updatedDeck);
+  }, [questionHook]);
+  
+  useEffect(() => {
+    let updatedDeck = decks;
+    updatedDeck[deckIndex].cards[cardIndex].A=answerHook;
+    setDecks(updatedDeck);
+  }, [answerHook]);
+
+  useEffect(()=>{
+    let updatedDeck = decks;
+    updatedDeck[deckIndex].name=deckName;
+    setDecks(updatedDeck)
+  }, [deckName])
 
   //add new deck
   const addDeck = () => {
-    const newDeck = { name: "New Deck", id: decks.length + 1 };
+    const newDeck = { name: "New Deck", cards: [{Q:"",A:""}]};
     const updatedDecks = [...decks, newDeck];
     setDecks(updatedDecks);
   };
 
   //delete deck
-  const deleteDeck = (deleteIndex) => {
-    const updatedDecks = decks.filter((deck) => deck.id !== deleteIndex);
-    setDecks(updatedDecks);
+  const deleteDeck = (deckIndex) => {
+    if(decks.length === 1){
+      const updatedDecks = [{ name: "New Deck", cards: [{Q:"",A:""}]}];
+      setDecks(updatedDecks);
+    }else{
+      const updatedDecks = decks.filter((deck,index) => index !== deckIndex);
+      setDecks(updatedDecks);
+    }
   };
 
+  //add new card
+  const addNewCard=()=>{
+    const newCard = {Q:"",A:""};
+    const updatedDeck = [...decks];
+    updatedDeck[deckIndex].cards.push(newCard);
+    setDecks(updatedDeck);
+  }
+
+  //delete card
+  const deleteCard = () => {
+    const updatedDecks = [...decks];
+    updatedDecks[deckIndex].cards.splice(cardIndex,1);
+    setDecks(updatedDecks);
+    setAnswerHook(decks[deckIndex].cards[cardIndex].A);
+    setQuestionHook(decks[deckIndex].cards[cardIndex].Q);
+  }
   
   //sort deck
   const sortDeck = (sortType) => {
@@ -122,12 +165,12 @@ function CreateDeckPage(){
       {props.decks.map((deck, index) =>
         <div className="row" key={index}>
           <div className="col-10">
-            <button type="button" className="list-group-item list-group-item-action" id={"Deck:"+deck.id} onClick={()=>{showCardEditor(deck.id)}}>
-              {deck.name+deck.id}
+            <button type="button" className="list-group-item list-group-item-action" onClick={()=>{showCardEditor(index)}}>
+              {deck.name}
             </button>
           </div>
           <div className="col-2">
-            <button type="button" className="list-group-item list-group-item-action" id={"DelDeck:"+deck.id} onClick={()=>{deleteDeck(deck.id)}}>
+            <button type="button" className="list-group-item list-group-item-action text-center" onClick={()=>{deleteDeck(index)}}>
                   Delete
             </button>
           </div>
@@ -136,25 +179,27 @@ function CreateDeckPage(){
     </div>
   }
 
-  function showCardEditor(deckID){
+  function showCardEditor(deckIndex){
     setHiddenDeck(true);
-    let indexOfDeck = decks.findIndex(deck => deck.id === deckID);
-    setDeckName(decks[indexOfDeck].name)
-    setDeckIndex(indexOfDeck)    
+    setDeckName(decks[deckIndex].name)
+    setDeckIndex(deckIndex)   
+    setCardIndex(0); 
+    setAnswerHook(decks[deckIndex].cards[cardIndex].A);
+    setQuestionHook(decks[deckIndex].cards[cardIndex].Q);
   }
 
   function showDecks(){
     setHiddenDeck(false);
   }
-  
+    
   //renders list of cards and shows the individual card when clicked
   function ListCards(){
-    // decks[deckIndex].cards.length
     return <>
-      <label htmlFor="cards">Pick A Card</label>
-      <select className="form-select" id="cards" size="18" >
-        {decks[deckIndex].cards.map((card,index)=>
-          <option key={index} selected={(index===cardIndex)?true:false} value={"card"+index} onClick={() => {setcardIndex(index);console.log(cardIndex)}}>{"Card "+index}</option>)
+      <label htmlFor="cards">Pick A Card:</label>
+      <select className="form-select" id="cards" size="18">
+        {// ? is if there are no cards, else it would chare
+          decks[deckIndex]?.cards.map((_,index)=>
+            <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} selected={(index===cardIndex)?true:false} value={"card"+index} onClick={() => {setCardIndex(index);}}>{"Card "+index}</option>)
         }
       </select>
     </>
@@ -173,7 +218,6 @@ function CreateDeckPage(){
         </div>
         <div className="row p-4"></div>
         <div className="row">
-          {/*<button type="button" className="btn btn-primary" onClick={()=>{setDecks(()=>{[decks,{name:"New Deck", key: 6}]}); console.log(decks)}}>Create New Deck</button>*/}
           <button type="button" className="btn btn-primary" onClick={()=>{addDeck()}}>Create New Deck</button>
         </div>
         <div className="row p-3">
@@ -211,12 +255,24 @@ function CreateDeckPage(){
           <div className="col-3">
             <ListCards/>
           </div>
+          <div className="col-9">
+            <div className="row">
+              <label htmlFor="question">Question:</label>
+              <textarea type="text" placeholder="Place Your Question Here" id="question" rows="9" value={questionHook} onChange={(e) => {setQuestionHook(e.target.value);}}></textarea>
+            </div>
+            <div className="row">
+              <label htmlFor="answer">Answer:</label>
+              <textarea type="text" placeholder="Place Your Answer Here" id="answer" rows="9" value={answerHook} onChange={(e) => {setAnswerHook(e.target.value);}}></textarea>
+            </div>
+          </div>
         </div>
-          
         <div className="row p-3"></div>
         <div className="row">
-          <div className="col-4 d-grid ">
-            <button type="button" className="btn btn-primary" onClick={()=>{console.log("du har lavet et kort")}}>Add Now Card</button>
+          <div className="col-2 d-grid ">
+            <button type="button" className="btn btn-primary" onClick={()=>{addNewCard()}}>Add New Card</button>
+          </div>
+          <div className="col-2 d-grid ">
+            <button type="button" className="btn btn-primary" onClick={()=>{deleteCard()}}>Delete Card</button>
           </div>
           <div className="col-5"></div>
           <div className="col-3 d-grid">
@@ -228,5 +284,6 @@ function CreateDeckPage(){
     </>
   );
 }
+
 
 export default CreateDeckPage;
