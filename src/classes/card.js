@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 export class Card {
-  constructor(question, answer, id) {
+  constructor({question, answer, id}) {
     this.question = question;
     this.answer = answer;
     if(id == null) {
@@ -9,10 +9,5 @@ export class Card {
     } else {
       this.id = id;
     }
-  }
-
-  updateCard(question, answer) {
-    this.question = question;
-    this.answer = answer;
   }
 }

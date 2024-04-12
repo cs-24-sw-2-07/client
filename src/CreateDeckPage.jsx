@@ -1,6 +1,9 @@
 import { useState, useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
+import { Deck } from "./classes/deck"
+import { Card } from "./classes/card"
 
+// eslint-disable-next-line no-unused-vars
 const deckArray = [
   {
     name: "hej1",
@@ -58,60 +61,58 @@ function CreateDeckPage(){
   
   //Makes hooks in use
   let [hiddenDeck, setHiddenDeck]=useState(false);
-  let [decks, setDecks]=useState(deckArray);
+  let [decks, setDecks]=useState([new Deck({name:"New Deck"})]);
   let [deckName, setDeckName]=useState(decks[0].name);
   let [deckIndex, setDeckIndex]=useState(0);
   let [cardIndex, setCardIndex]=useState(0); 
-  let [questionHook, setQuestionHook]=useState(decks[0].cards[0].Q); 
-  let [answerHook, setAnswerHook]=useState(decks[0].cards[0].A); 
+  let [questionHook, setQuestionHook]=useState(decks[0].cards[0].question); 
+  let [answerHook, setAnswerHook]=useState(decks[0].cards[0].answer); 
   
   //save changes on edit. 
   useEffect(() => {
-    setAnswerHook(decks[deckIndex].cards[cardIndex].A);
-    setQuestionHook(decks[deckIndex].cards[cardIndex].Q);
-  }, [cardIndex]);
+    setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
+    setQuestionHook(decks[deckIndex].cards[cardIndex].question);
+  }, [cardIndex, deckIndex, decks]);
 
   useEffect(() => {
     let updatedDeck = decks;
-    updatedDeck[deckIndex].cards[cardIndex].Q=questionHook;
+    updatedDeck[deckIndex].cards[cardIndex].question=questionHook;
     setDecks(updatedDeck);
-  }, [questionHook]);
+  }, [cardIndex, deckIndex, decks, questionHook]);
   
   useEffect(() => {
     let updatedDeck = decks;
-    updatedDeck[deckIndex].cards[cardIndex].A=answerHook;
+    updatedDeck[deckIndex].cards[cardIndex].answer=answerHook;
     setDecks(updatedDeck);
-  }, [answerHook]);
+  }, [answerHook, cardIndex, deckIndex, decks]);
 
   useEffect(()=>{
     let updatedDeck = decks;
     updatedDeck[deckIndex].name=deckName;
     setDecks(updatedDeck)
-  }, [deckName])
+  }, [deckIndex, deckName, decks])
 
   //add new deck
   const addDeck = () => {
-    const newDeck = { name: "New Deck", cards: [{Q:"",A:""}]};
-    const updatedDecks = [...decks, newDeck];
+    const updatedDecks = [...decks, new Deck({name:"New Deck"})];
     setDecks(updatedDecks);
   };
 
   //delete deck
   const deleteDeck = (deckIndex) => {
     if(decks.length === 1){
-      const updatedDecks = [{ name: "New Deck", cards: [{Q:"",A:""}]}];
+      const updatedDecks = [new Deck({name:"New Deck"})];
       setDecks(updatedDecks);
     }else{
-      const updatedDecks = decks.filter((deck,index) => index !== deckIndex);
+      const updatedDecks = decks.filter((_,index) => index !== deckIndex);
       setDecks(updatedDecks);
     }
   };
 
   //add new card
   const addNewCard=()=>{
-    const newCard = {Q:"",A:""};
     const updatedDeck = [...decks];
-    updatedDeck[deckIndex].cards.push(newCard);
+    updatedDeck[deckIndex].cards.push(new Card({question:"", answer:""}));
     setDecks(updatedDeck);
   }
 
@@ -120,8 +121,8 @@ function CreateDeckPage(){
     const updatedDecks = [...decks];
     updatedDecks[deckIndex].cards.splice(cardIndex,1);
     setDecks(updatedDecks);
-    setAnswerHook(decks[deckIndex].cards[cardIndex].A);
-    setQuestionHook(decks[deckIndex].cards[cardIndex].Q);
+    setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
+    setQuestionHook(decks[deckIndex].cards[cardIndex].question);
   }
   
   //sort deck
@@ -184,8 +185,8 @@ function CreateDeckPage(){
     setDeckName(decks[deckIndex].name)
     setDeckIndex(deckIndex)   
     setCardIndex(0); 
-    setAnswerHook(decks[deckIndex].cards[cardIndex].A);
-    setQuestionHook(decks[deckIndex].cards[cardIndex].Q);
+    setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
+    setQuestionHook(decks[deckIndex].cards[cardIndex].question);
   }
 
   function showDecks(){
@@ -198,8 +199,8 @@ function CreateDeckPage(){
       <label htmlFor="cards">Pick A Card:</label>
       <select className="form-select" id="cards" size="18">
         {// ? is if there are no cards, else it would chare
-          decks[deckIndex]?.cards.map((_,index)=>
-            <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} selected={(index===cardIndex)?true:false} value={"card"+index} onClick={() => {setCardIndex(index);}}>{"Card "+index}</option>)
+          decks[deckIndex]?.cards.map((card,index)=>
+            <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} selected={(index===cardIndex)?true:false} onClick={() => {setCardIndex(index);}}>{"Card "+index+1}</option>)
         }
       </select>
     </>
