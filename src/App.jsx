@@ -5,7 +5,7 @@ import HostGamePage from "./HostGamePage.jsx"
 import LobbyPage from "./LobbyPage.jsx"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-function App(){
+function App() {
   return (
     <BrowserRouter>
       <Routes>
