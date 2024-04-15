@@ -75,17 +75,15 @@ function CreateDeckPage(){
     setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
     setQuestionHook(decks[deckIndex].cards[cardIndex].question);
     setCardName(decks[deckIndex].cards[cardIndex].name);
-    console.log("here")
   }, [cardIndex]);
 
-  //updates deck everytime a question, answer or deckname is edited
+  //updates page everytime a question, answer, cardname or deckname is edited
   useEffect(() => {
     let updatedDeck = decks;
     updatedDeck[deckIndex].cards[cardIndex].question=questionHook;
     updatedDeck[deckIndex].cards[cardIndex].answer=answerHook;
     updatedDeck[deckIndex].name=deckName;
-    updatedDeck[deckIndex].cards[cardIndex].name=cardName
-    console.log(updatedDeck);
+    updatedDeck[deckIndex].cards[cardIndex].name=cardName;
     setDecks(updatedDeck);
   }, [questionHook, answerHook, deckName, cardName]);
 
@@ -115,14 +113,7 @@ function CreateDeckPage(){
 
   //delete card
   const deleteCard = () => {
-    //const updatedDecks = [...decks];
-    if (decks[deckIndex].cards.length===1){
-      /*let updatedDecks = [...decks];
-      updatedDecks = decks[deckIndex].cards.pop;
-      updatedDecks[deckIndex].cards.push(new Card({name:""}));
-      setDecks(updatedDecks);*/
-    }
-    else {  
+    if (decks[deckIndex].cards.length!==1){  
       let updatedDecks = [...decks];
       updatedDecks[deckIndex].cards.splice(cardIndex,1);
       setCardIndex(0)
@@ -134,9 +125,9 @@ function CreateDeckPage(){
   }
   
   //sort deck
-  const sortDeck = (sortType) => {
+  /*const sortDeck = (sortType) => {
     // Works, but do not 100% know why
-    let updatedDecks = decks.filter(() => true);
+    let updatedDecks = [...decks];
     if(sortType === "A-Z"){
       updatedDecks.sort((a, b) => {
         // Convert names to lowercase for case-insensitive sorting
@@ -165,6 +156,15 @@ function CreateDeckPage(){
         return 0; // Names are equal
       });
     }
+    setDecks(updatedDecks);
+  };*/
+  const sortDeck = (sortType) => {
+    const updatedDecks = [...decks];
+    updatedDecks.sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      return sortType === "A-Z" ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+    });
     setDecks(updatedDecks);
   };
   
@@ -207,8 +207,8 @@ function CreateDeckPage(){
     return <>
       <label htmlFor="cards">Pick A Card:</label>
       <select className="form-select" id="cards" size="18">
-        {// ? is if there are no cards, else it would chare
-          decks[deckIndex]?.cards.map((card,index)=>
+        {// ? is if there are no cards
+          decks[deckIndex]?.cards.map((_,index)=>
             <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} selected={(index===cardIndex)?true:false} onClick={() => {setCardIndex(index);}}>{"Card "+[index+1]+": "+decks[deckIndex].cards[index].name}</option>)
         }
       </select>
@@ -254,7 +254,6 @@ function CreateDeckPage(){
           </div>
         </div>
         <div className="row">
-          {/*<div className="col-4"><h2 htmlFor="deckName">Deck Name:</h2></div>*/}
           <div className="col-12">
             <label htmlFor="deckName" className="p-3 form-control-lg">Deck Name: </label>
             <input type="text" id="deckName" className="form-control form-control-lg" placeholder="Set Deck Name" value={deckName} onChange={(e) => {setDeckName(e.target.value);}}></input>
@@ -267,12 +266,12 @@ function CreateDeckPage(){
           </div>
           <div className="col-9">
             <div className="row">
-              <label htmlFor="cardName" className="p-3 form-control-lg">Card Name: </label>
-              <input type="text" id="cardName" className="form-control form-control-lg" placeholder="Set Card Name" value={cardName} onChange={(e) => {setCardName(e.target.value);}}></input>
+              <label htmlFor="cardName">Card Name: </label>
+              <input type="text" id="cardName" className="form-control form-control" placeholder="Set Card Name" value={cardName} onChange={(e) => {setCardName(e.target.value);console.log(decks)}}></input>
             </div>
             <div className="row">
               <label htmlFor="question">Question:</label>
-              <textarea type="text" placeholder="Place Your Question Here" id="question" rows="9" value={questionHook} onChange={(e) => {setQuestionHook(e.target.value);}}></textarea>
+              <textarea type="text" placeholder="Place Your Question Here" id="question" rows="9" value={questionHook} onChange={(e) => {setQuestionHook(e.target.value);console.log(decks[deckIndex].cards[cardIndex].question)}}></textarea>
             </div>
             <div className="row">
               <label htmlFor="answer">Answer:</label>
