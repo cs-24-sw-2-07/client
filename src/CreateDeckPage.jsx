@@ -115,11 +115,22 @@ function CreateDeckPage(){
 
   //delete card
   const deleteCard = () => {
-    const updatedDecks = [...decks];
-    updatedDecks[deckIndex].cards.splice(cardIndex,1);
-    setDecks(updatedDecks);
-    setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
-    setQuestionHook(decks[deckIndex].cards[cardIndex].question);
+    //const updatedDecks = [...decks];
+    if (decks[deckIndex].cards.length===1){
+      /*let updatedDecks = [...decks];
+      updatedDecks = decks[deckIndex].cards.pop;
+      updatedDecks[deckIndex].cards.push(new Card({name:""}));
+      setDecks(updatedDecks);*/
+    }
+    else {  
+      let updatedDecks = [...decks];
+      updatedDecks[deckIndex].cards.splice(cardIndex,1);
+      setCardIndex(0)
+      setDecks(updatedDecks);
+      setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
+      setQuestionHook(decks[deckIndex].cards[cardIndex].question);  
+      setCardName(decks[deckIndex].cards[cardIndex].name);  
+    }
   }
   
   //sort deck
@@ -198,7 +209,7 @@ function CreateDeckPage(){
       <select className="form-select" id="cards" size="18">
         {// ? is if there are no cards, else it would chare
           decks[deckIndex]?.cards.map((card,index)=>
-            <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} selected={(index===cardIndex)?true:false} onClick={() => {setCardIndex(index);}}>{"Card "+[index+1]}</option>)
+            <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} selected={(index===cardIndex)?true:false} onClick={() => {setCardIndex(index);}}>{"Card "+[index+1]+": "+decks[deckIndex].cards[index].name}</option>)
         }
       </select>
     </>
