@@ -11,7 +11,7 @@ export class Deck {
     }
     if (cards == null) {
       this.cards = [];
-      this.cards.push(new Card("", ""));
+      this.cards.push(new Card({question:"", answer:"", name:""}));
     } else {
       this.cards = cards;
     }
