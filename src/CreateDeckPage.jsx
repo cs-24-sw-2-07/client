@@ -3,57 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { Deck } from "./classes/deck"
 import { Card } from "./classes/card"
 
-// eslint-disable-next-line no-unused-vars
-const deckArray = [
-  {
-    name: "hej1",
-    cards: [
-      { Q: "hej1 question1", A: "hej1 answer1" },
-      { Q: "hej1 question2", A: "hej1 answer2" },
-      { Q: "hej1 question3", A: "hej1 answer3" },
-      { Q: "hej1 question4", A: "hej1 answer4" }
-    ]
-  },
-  {
-    name: "hej2",
-    cards: [
-      { Q: "hej2 question1", A: "hej2 answer1" },
-      { Q: "hej2 question2", A: "hej2 answer2" },
-      { Q: "hej2 question3", A: "hej2 answer3" },
-      { Q: "hej2 question4", A: "hej2 answer4" }
-    ]
-  },
-  {
-    name: "hej3",
-    cards: [
-      { Q: "hej3 question1", A: "hej3 answer1" },
-      { Q: "hej3 question2", A: "hej3 answer2" },
-      { Q: "hej3 question3", A: "hej3 answer3" },
-      { Q: "hej3 question4", A: "hej3 answer4" }
-    ]
-  },
-  {
-    name: "hej4",
-    cards: [
-      { Q: "hej4 question1", A: "hej4 answer1" },
-      { Q: "hej4 question2", A: "hej4 answer2" },
-      { Q: "hej4 question3", A: "hej4 answer3" },
-      { Q: "hej4 question4", A: "hej4 answer4" }
-    ]
-  },
-  {
-    name: "hej5",
-    cards: [
-      { Q: "hej5 question1", A: "hej5 answer1" },
-      { Q: "hej5 question2", A: "hej5 answer2" },
-      { Q: "hej5 question3", A: "hej5 answer3" },
-      { Q: "hej5 question4", A: "hej5 answer4" }
-    ]
-  }
-];
-
+//check for decks in localstorge
+let startDeck;
+if(localStorage.getItem("userDeck") !== null){
+  console.log("Der er noget")
+  startDeck = JSON.parse(localStorage.getItem("userDeck"));
+} else{
+  console.log("Der er ikke noget")
+  startDeck=[new Deck({name:"New Deck"})]
+}
 
 function CreateDeckPage(){ 
+
+  
+  
   const navigate = useNavigate();
   function navigateTo(path){
     navigate(path);
@@ -61,7 +24,7 @@ function CreateDeckPage(){
   
   //Makes hooks in use
   let [hiddenDeck, setHiddenDeck]=useState(false);
-  let [decks, setDecks]=useState([new Deck({name:"New Deck"})]);
+  let [decks, setDecks]=useState(startDeck);
   let [deckName, setDeckName]=useState(decks[0].name);
   let [cardName, setCardName]=useState(decks[0].cards[0].name);
   let [deckIndex, setDeckIndex]=useState(0);
@@ -124,40 +87,6 @@ function CreateDeckPage(){
     }
   }
   
-  //sort deck
-  /*const sortDeck = (sortType) => {
-    // Works, but do not 100% know why
-    let updatedDecks = [...decks];
-    if(sortType === "A-Z"){
-      updatedDecks.sort((a, b) => {
-        // Convert names to lowercase for case-insensitive sorting
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        if (nameA < nameB) {
-          return -1; // Name A comes before Name B
-        }
-        if (nameA > nameB) {
-          return 1; // Name A comes after Name B
-        }
-        return 0; // Names are equal
-      });
-    }
-    else if (sortType === "Z-A"){
-      updatedDecks.sort((a, b) => {
-        // Convert names to lowercase for case-insensitive sorting
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        if (nameA > nameB) {
-          return -1; // Name B comes before Name A
-        }
-        if (nameA < nameB) {
-          return 1; // Name B comes after Name A
-        }
-        return 0; // Names are equal
-      });
-    }
-    setDecks(updatedDecks);
-  };*/
   const sortDeck = (sortType) => {
     const updatedDecks = [...decks];
     updatedDecks.sort((a, b) => {
@@ -213,6 +142,12 @@ function CreateDeckPage(){
         }
       </select>
     </>
+  }
+  
+  //save to local storage
+  function saveDecks(){
+    const deckString = JSON.stringify(decks);
+    localStorage.setItem("userDeck",deckString);
   }
 
   return (
@@ -289,11 +224,10 @@ function CreateDeckPage(){
           </div>
           <div className="col-5"></div>
           <div className="col-3 d-grid">
-            <button type="button" className="btn btn-primary " style={{ fontSize: "50px" }} onClick={()=>{showDecks()}}>💾</button>
+            <button type="button" className="btn btn-primary " style={{ fontSize: "50px" }} onClick={()=>{saveDecks()}}>💾</button>
           </div>
         </div>
       </div>
-
     </>
   );
 }
