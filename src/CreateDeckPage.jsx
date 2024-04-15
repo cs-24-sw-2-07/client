@@ -3,20 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { Deck } from "./classes/deck"
 import { Card } from "./classes/card"
 
-//check for decks in localstorge
+//check for decks in localstorge and retrive if yes
 let startDeck;
 if(localStorage.getItem("userDeck") !== null){
-  console.log("Der er noget")
   startDeck = JSON.parse(localStorage.getItem("userDeck"));
 } else{
-  console.log("Der er ikke noget")
   startDeck=[new Deck({name:"New Deck"})]
 }
 
 function CreateDeckPage(){ 
-
-  
-  
   const navigate = useNavigate();
   function navigateTo(path){
     navigate(path);
@@ -48,12 +43,14 @@ function CreateDeckPage(){
     updatedDeck[deckIndex].name=deckName;
     updatedDeck[deckIndex].cards[cardIndex].name=cardName;
     setDecks(updatedDeck);
+    saveDecks();
   }, [questionHook, answerHook, deckName, cardName]);
 
   //add new deck
   const addDeck = () => {
     const updatedDecks = [...decks, new Deck({name:"New Deck"})];
     setDecks(updatedDecks);
+    saveDecks();
   };
 
   //delete deck
@@ -202,11 +199,11 @@ function CreateDeckPage(){
           <div className="col-9">
             <div className="row">
               <label htmlFor="cardName">Card Name: </label>
-              <input type="text" id="cardName" className="form-control form-control" placeholder="Set Card Name" value={cardName} onChange={(e) => {setCardName(e.target.value);console.log(decks)}}></input>
+              <input type="text" id="cardName" className="form-control form-control" placeholder="Set Card Name" value={cardName} onChange={(e) => {setCardName(e.target.value)}}></input>
             </div>
             <div className="row">
               <label htmlFor="question">Question:</label>
-              <textarea type="text" placeholder="Place Your Question Here" id="question" rows="9" value={questionHook} onChange={(e) => {setQuestionHook(e.target.value);console.log(decks[deckIndex].cards[cardIndex].question)}}></textarea>
+              <textarea type="text" placeholder="Place Your Question Here" id="question" rows="9" value={questionHook} onChange={(e) => {setQuestionHook(e.target.value)}}></textarea>
             </div>
             <div className="row">
               <label htmlFor="answer">Answer:</label>
@@ -221,10 +218,6 @@ function CreateDeckPage(){
           </div>
           <div className="col-2 d-grid ">
             <button type="button" className="btn btn-primary" onClick={()=>{deleteCard()}}>Delete Card</button>
-          </div>
-          <div className="col-5"></div>
-          <div className="col-3 d-grid">
-            <button type="button" className="btn btn-primary " style={{ fontSize: "50px" }} onClick={()=>{saveDecks()}}>💾</button>
           </div>
         </div>
       </div>
