@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { socket } from "./socket"
 
 export default function FrontPage() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ function HostGameModalButton({ navigateTo }) {
 
   function hostGame() {
     alert(`Host Game!\nInputted Name: ${displayName}`);
+    socket.emit("CreateLobby", JSON.stringify({ name: displayName }));
     navigateTo("/HostGamePage");
   }
 
@@ -123,6 +125,7 @@ function JoinGameModalButton({ navigateTo }) {
 
   function joinGame() {
     alert(`Join Game!\nInputted Name: ${displayName}\nGame Code: ${gameCode}`);
+    
     navigateTo("/LobbyPage");
   }
 
@@ -211,3 +214,5 @@ function JoinGameModalButton({ navigateTo }) {
     </>
   );
 }
+
+
