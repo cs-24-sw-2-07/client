@@ -14,15 +14,21 @@ function HostGamePage(){
 
       {/*Settings og Players*/}
       <div className="row">
-        <div className="col"><h2>Settings</h2>
+        <div className="col">
+          <div className="text-left p-5"> 
+            <h2>Settings</h2>
+            <div className="input-group">
+              <span className="input-group-text">Deck size</span>
+              <textarea className="form-control" aria-label="Enter deck size limit"></textarea>
+            </div>
+          </div>
         </div>
-          
       </div>
 
       {/*Select deck og start game*/}
       <div className="row">
         <div className="col">
-          <Dropdown onLoad={GetDeckDropDown}></Dropdown>
+          <Dropdown />
         </div>
         <div className="col ml-auto">
           <button type="button" className="btn btn-primary" id="Start_game button" onClick={StartGame}>
@@ -34,28 +40,34 @@ function HostGamePage(){
   );
 }
 
-function GetDeckDropDown() {
+function Dropdown() {
   //TODO: Call function here that gets the decks and add dropdown items
-  //! Dropdown skal hentes fra et third party library 
-  return (
-    <Dropdown>
-      <Dropdown.Toggle variant="success" id="deckDropDown">
-        Choose Your Deck
-      </Dropdown.Toggle>
+  const deckArray = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
 
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+  return (
+    <div className="btn-group">
+      <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Choose Deck
+      </button>
+      <div className="dropdown-menu"> 
+        {deckArray.map((deck) => (
+          <button key={deck.id} type="button" onClick={addDeck(deck)} >{deck.name}</button>
+        ))}
+      </div>
+        
+    </div>
   );
+}
+
+function addDeck(deck) {
+	
 }
 
 //TODO: make event listener to start game
 function StartGame() {
 
 }
+
 
 
 
