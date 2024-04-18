@@ -1,21 +1,25 @@
 import { useState, useEffect  } from "react";
-import { useNavigate } from "react-router-dom";
 import { Deck } from "./classes/deck"
 import { Card } from "./classes/card"
 
-//check for decks in localstorge and retrive if yes
-let startDeck;
-if(localStorage.getItem("userDeck") !== null){
-  startDeck = JSON.parse(localStorage.getItem("userDeck"));
-} else{
-  startDeck=[new Deck({name:"New Deck"})]
-}
+// Components in use
+import { ListCards } from "./components/deckbuilderComponets/ListCards.jsx"
+import { DeckPicker } from "./components/deckbuilderComponets/DeckPicker2.jsx"
+
 
 function CreateDeckPage(){ 
-  const navigate = useNavigate();
-  function navigateTo(path){
-    navigate(path);
-  }
+
+  let startDeck;
+  
+  useEffect(() => {
+    //check for decks in localstorge and retrive if yes
+    if(localStorage.getItem("userDeck") !== null){
+      startDeck = JSON.parse(localStorage.getItem("userDeck"));
+    } else{
+      startDeck=[new Deck({name:"New Deck"})]
+    }
+  }, []);
+  
   
   //Makes hooks in use
   let [hiddenDeck, setHiddenDeck]=useState(false);
@@ -26,7 +30,7 @@ function CreateDeckPage(){
   let [cardIndex, setCardIndex]=useState(0); 
   let [questionHook, setQuestionHook]=useState(decks[0].cards[0].question); 
   let [answerHook, setAnswerHook]=useState(decks[0].cards[0].answer); 
-  
+  console.log(decks)
   //save changes on edit. 
   //updates everytime cardIndex or deckIndex changes
   useEffect(() => {
@@ -46,23 +50,6 @@ function CreateDeckPage(){
     saveDecks();
   }, [questionHook, answerHook, deckName, cardName]);
 
-  //add new deck
-  const addDeck = () => {
-    const updatedDecks = [...decks, new Deck({name:"New Deck"})];
-    setDecks(updatedDecks);
-    saveDecks();
-  };
-
-  //delete deck
-  const deleteDeck = (deckIndex) => {
-    if(decks.length === 1){
-      const updatedDecks = [new Deck({name:"New Deck"})];
-      setDecks(updatedDecks);
-    }else{
-      const updatedDecks = decks.filter((_,index) => index !== deckIndex);
-      setDecks(updatedDecks);
-    }
-  };
 
   //add new card
   const addNewCard=()=>{
@@ -83,65 +70,24 @@ function CreateDeckPage(){
       setCardName(decks[deckIndex].cards[cardIndex].name);  
     }
   }
-  
-  const sortDeck = (sortType) => {
-    const updatedDecks = [...decks];
-    updatedDecks.sort((a, b) => {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      return sortType === "A-Z" ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-    });
-    setDecks(updatedDecks);
-  };
-  
-  //Renders list of decks on page
-  function DeckList(props){
-    return <div className="list-group" id="list-tab" key="list">
-      {props.decks.map((deck, index) =>
-        <div className="row" key={index}>
-          <div className="col-10">
-            <button type="button" className="list-group-item list-group-item-action" onClick={()=>{showCardEditor(index)}}>
-              {deck.name}
-            </button>
-          </div>
-          <div className="col-2">
-            <button type="button" className="list-group-item list-group-item-action text-center" onClick={()=>{deleteDeck(index)}}>
-                  Delete
-            </button>
-          </div>
-        </div>)
-      }
-    </div>
-  }
-
-  function showCardEditor(deckIndex){
-    setHiddenDeck(true);
-    setDeckName(decks[deckIndex].name)
-    setDeckIndex(deckIndex)   
-    setCardIndex(0);
-    setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
-    setQuestionHook(decks[deckIndex].cards[cardIndex].question);
-    setCardName(decks[deckIndex].cards[cardIndex].name);
-  }
 
   function showDecks(){
     setHiddenDeck(false);
   }
     
-  //renders list of cards and shows the individual card when clicked
-  function ListCards(){
-    return <>
-      <label htmlFor="cards">Pick A Card:</label>
-      <select className="form-select" id="cards" size="18">
-        {// ? is if there are no cards
-          decks[deckIndex]?.cards.map((_,index)=>
-            <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} selected={(index===cardIndex)?true:false} onClick={() => {setCardIndex(index);}}>{"Card "+[index+1]+": "+decks[deckIndex].cards[index].name}</option>)
-        }
-      </select>
-    </>
+  //save to local storage
+
+
+  function showCardEditor(deckIndex, cardIndex){
+    setHiddenDeck(true);
+    setDeckName(decks[2].name)
+    setDeckIndex(2)   
+    setCardIndex(0);
+    setAnswerHook(decks[2].cards[0].answer);
+    setQuestionHook(decks[2].cards[0].question);
+    setCardName(decks[2].cards[0].name);
   }
   
-  //save to local storage
   function saveDecks(){
     const deckString = JSON.stringify(decks);
     localStorage.setItem("userDeck",deckString);
@@ -150,31 +96,15 @@ function CreateDeckPage(){
   return (
     <>
       {/* DeckPicker */}
-      <div className="container" hidden={hiddenDeck}>
-        <div className="row">
-          <div className="col-2 p-3"><h1>Decks</h1></div>
-          <div className="col-7"></div>
-          <div className="col-3 d-grid gap-2 p-3">
-            <button type="button" className="btn btn-primary" onClick={()=>{navigateTo("/");}}>Back</button>
-          </div>
-        </div>
-        <div className="row p-4"></div>
-        <div className="row">
-          <button type="button" className="btn btn-primary" onClick={()=>{addDeck()}}>Create New Deck</button>
-        </div>
-        <div className="row p-3">
-          <div className="col-6 d-grid">
-            <button type="button" className="btn btn-secondary" onClick={()=>{sortDeck("A-Z")}}>Sort A-Z</button>
-          </div>
-          <div className="col-6 d-grid">
-            <button type="button" className="btn btn-secondary" onClick={()=>{sortDeck("Z-A")}}>Sort Z-A</button>
-          </div>
-        </div>
-        <div className="row p-3"></div>
-        <div className="row">
-          <DeckList decks={decks} />
-        </div>        
-      </div>
+      <DeckPicker 
+        decks={decks} 
+        cardIndex={cardIndex} 
+        deckIndex={deckIndex} 
+        setCardIndex={setCardIndex} 
+        setDecks={setDecks} 
+        saveDecks={saveDecks}
+        hiddenDeck={hiddenDeck}
+        showCardEditor={showCardEditor}/>
       
       {/* DeckEditor */}
       <div className="container" hidden={!hiddenDeck}>
@@ -194,7 +124,7 @@ function CreateDeckPage(){
         <div className="row p-3"></div>
         <div className="row">
           <div className="col-3">
-            <ListCards/>
+            <ListCards decks={decks} cardIndex={cardIndex} deckIndex={deckIndex} setCardIndex={setCardIndex()}/>
           </div>
           <div className="col-9">
             <div className="row">
@@ -224,6 +154,5 @@ function CreateDeckPage(){
     </>
   );
 }
-
 
 export default CreateDeckPage;
