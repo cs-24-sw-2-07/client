@@ -1,25 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { DisplayLives } from "./components/battleComponets/DisplayLives.jsx";
 
+
 function BattlePage(props) {
+  const startingHand = useRef(chooseStartingHand(20,5))
+  
+  console.log(startingHand)
   let myDeck = props.chosenDeck;
 
   // TODO FUNCTION TO GET OPPENTED DECK
   let oppDeck = props.oppDeck
 
-  let [myLife, setMyLife] = useState(5);
-  let [oppLife, setOppLife] = useState(5);
-
+  let [myLife, setMyLife] = useState(props.maxLives);
+  let [oppLife, setOppLife] = useState(props.maxLives);
+  let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
   
   return (
-    <DisplayLives
-      myLives={myLife}
-      oppLives={oppLife}
-      maxLives={props.maxLives}
-    />
+    <>
+      <DisplayLives
+        myLives={myLife}
+        oppLives={oppLife}
+        maxLives={props.maxLives}
+        myTurn={myTurn}
+      />
+      <p></p>
+    </>
   );
 }
 
+function chooseStartingHand(deckSize,cardAmount){
+  let hand = new Set();
+  while(hand.size < cardAmount){
+    let pickedCard = Math.floor(Math.random()*deckSize);
+    hand.add(pickedCard);
+  }
+  return [...hand];
+}
 
 export default BattlePage;
