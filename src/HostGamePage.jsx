@@ -1,5 +1,13 @@
+import { socket } from "./socket.js"; 
 
 function HostGamePage(){ 
+
+  //Todo: Remember a name is sent when creating a lobby
+  /*const data = {
+    name: displayName
+  };
+  socket.emit("CreateLobby", JSON.stringify(data));*/
+
   return (
     <div className="container">
       <div className="row">
@@ -60,7 +68,12 @@ function Dropdown() {
 }
 
 function addDeck(deck) {
-	
+  // Add room id from the server
+  /*const data = {
+    deck: deck, 
+    id: lobbyIgitd, 
+  }*/
+  socket.emit("DeckChose", JSON.stringify(deck));
 }
 
 //TODO: make event listener to start game
