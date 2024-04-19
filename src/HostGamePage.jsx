@@ -9,10 +9,28 @@ function HostGamePage() {
           <p>Lobby</p>
           {/*first column*/}
         </div>
+        <button
+              type="button"
+              className="btn btn-primary"
+              id="Delete_lobby button"
+              onClick={DeleteLobby}
+            >
+            Delete Lobby
+            </button>
+
         <div className="col">{/*second column*/}</div>
       </div>
       {/*Første row Lobby #id og delete lobby knap*/}
+    
 
+      <button
+              type="button"
+              className="btn btn-primary"
+              id="Delete_lobby button"
+              onClick={DeleteLobby}
+            >
+            Delete Lobby
+            </button>
       {/*Settings og Players*/}
       <div className="row">
         <div className="col">
@@ -92,6 +110,8 @@ function addDeck(deck) {
 function StartGame() {
 
 }
+
+function DeleteLobby()
 
 
 
