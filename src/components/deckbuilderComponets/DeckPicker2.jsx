@@ -1,5 +1,5 @@
 //Renders list of decks on page
-import { DeckList } from "./DeckList.jsx"
+import DeckList from "./DeckList.jsx"
 import { useNavigate } from "react-router-dom";
 import { Deck } from "./../../classes/deck.js"
 
@@ -8,7 +8,7 @@ function DeckPicker(props){
   function navigateTo(path){
     navigate(path);
   }
-    
+
   const sortDeck = (sortType) => {
     const updatedDecks = [...props.decks];
     updatedDecks.sort((a, b) => {
@@ -36,7 +36,7 @@ function DeckPicker(props){
       props.setDecks(updatedDecks);
     }
   };
-  
+
   return <>{/* DeckPicker */}
     <div className="container" hidden={props.hiddenDeck}>
       <div className="row">
@@ -60,14 +60,14 @@ function DeckPicker(props){
       </div>
       <div className="row p-3"></div>
       <div className="row">
-        <DeckList 
-          decks={props.decks} 
-          deleteDeck={deleteDeck()} 
+        <DeckList
+          decks={props.decks}
+          deleteDeck={deleteDeck}
           showCardEditor={props.showCardEditor}
           deckIndex={props.deckIndex}/>
-      </div>        
+      </div>
     </div>
   </>
 }
-  
+
 export {DeckPicker};

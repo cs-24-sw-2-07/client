@@ -1,7 +1,7 @@
 //Renders list of decks on page
 function DeckList(props){
   return <div className="list-group" id="list-tab" key="list">
-    {props.decks.map((deck, index) =>
+    {props?.decks?.map((deck, index) =>
       <div className="row" key={index}>
         <div className="col-10">
           <button type="button" className="list-group-item list-group-item-action" onClick={()=>{props.showCardEditor(props.deckIndex,index)}}>
@@ -18,4 +18,4 @@ function DeckList(props){
   </div>
 }
 
-export {DeckList};
+export default DeckList;
