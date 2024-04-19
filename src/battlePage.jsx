@@ -12,19 +12,18 @@ function BattleGameStates(){
 }
 
 function BattlePage(props) {
-  const startingHand = useRef(chooseStartingHand(20,5))
+  const startingHand = useRef(chooseStartingHand(10,8))
   
-  console.log(startingHand)
-  let myDeck = props.chosenDeck;
-
+  let myDeck = JSON.parse(localStorage.getItem("userDeck"))[1];//props.chosenDeck;
   // TODO FUNCTION TO GET OPPENTED DECK
   let oppDeck = props.oppDeck
 
-  let [hand, setHand] = useState(startingHand);
+  let [hand, setHand] = useState(startingHand.current);
+  let [handDeck, setHandDeck] = useState([]);
   let [myLife, setMyLife] = useState(props.maxLives);
   let [oppLife, setOppLife] = useState(props.maxLives);
   let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
-  
+
   return (
     <>
       <DisplayLives
@@ -38,6 +37,9 @@ function BattlePage(props) {
         hand={hand}
         myTurn={myTurn}
         myDeck={myDeck}
+        handDeck={handDeck}
+        setHandDeck={setHandDeck}
+        setMyTurn={setMyTurn}
       />
     </>
   );
