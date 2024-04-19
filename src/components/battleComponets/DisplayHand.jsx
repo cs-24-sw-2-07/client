@@ -5,13 +5,16 @@ function DisplayHand(props) {
  
   return (
     <div className="row">
-      <div className="col-4"><p>1</p></div>
-      <div className="col-4"><p>2</p></div>
-      <div className="col-4"><p>3</p></div>
-      <div className="col-4"><p>4</p></div>
+      <DisplayCardInHand/>
     </div>
   );
 }
 
+function DisplayCardInHand(props) {
+  return (<>
+    {props.hand.map(()=>{<div className="col-4"></div>})}
+  </>
+  );
+}
 
 export {DisplayHand};

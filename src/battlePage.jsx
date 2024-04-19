@@ -20,6 +20,7 @@ function BattlePage(props) {
   // TODO FUNCTION TO GET OPPENTED DECK
   let oppDeck = props.oppDeck
 
+  let [hand, setHand] = useState(startingHand);
   let [myLife, setMyLife] = useState(props.maxLives);
   let [oppLife, setOppLife] = useState(props.maxLives);
   let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
@@ -34,10 +35,9 @@ function BattlePage(props) {
       />
       <p></p>
       <DisplayHand
-        myLives={myLife}
-        oppLives={oppLife}
-        maxLives={props.maxLives}
+        hand={hand}
         myTurn={myTurn}
+        myDeck={myDeck}
       />
     </>
   );
