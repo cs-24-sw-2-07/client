@@ -1,7 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { DisplayLives } from "./components/battleComponets/DisplayLives.jsx";
+import { DisplayHand } from "./components/battleComponets/DisplayHand.jsx";
 
+function BattleGameStates(){
+
+
+  return (
+    <BattlePage/>
+  )
+}
 
 function BattlePage(props) {
   const startingHand = useRef(chooseStartingHand(20,5))
@@ -25,6 +33,12 @@ function BattlePage(props) {
         myTurn={myTurn}
       />
       <p></p>
+      <DisplayHand
+        myLives={myLife}
+        oppLives={oppLife}
+        maxLives={props.maxLives}
+        myTurn={myTurn}
+      />
     </>
   );
 }
