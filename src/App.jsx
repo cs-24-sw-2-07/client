@@ -4,8 +4,19 @@ import CreateDeckPage from "./CreateDeckPage.jsx";
 import HostGamePage from "./HostGamePage.jsx"
 import LobbyPage from "./LobbyPage.jsx"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { socket } from "./socket";
+import { useEffect } from "react";
+
 
 function App() {
+
+  useEffect(() => {
+    console.log("gpt here");
+    socket.on("lobbyCreated", data => {
+      console.log(data); 
+    });
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

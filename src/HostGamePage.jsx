@@ -2,6 +2,8 @@ import { socket } from "./socket.js";
 import {} from "react-router-dom";
 
 function HostGamePage() {
+  
+
   return (
     <div className="container">
       <div className="row">
