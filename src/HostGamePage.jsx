@@ -149,7 +149,7 @@ function StartButton({ players, ready }) {
       <button
         type="button"
         className="btn btn-primary col-4"
-        disabled={players >= 2 && ready == players ? "true" : "false"}
+        disabled={players >= 2 && ready === players ? "true" : "false"}
         onClick={() => StartGame(players, ready)}
       >
         Start game
