@@ -1,17 +1,21 @@
 import { } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function HostGamePage() {
 
-  let [cardCount, setCardCount] = useState(15);
-  let [handSize, setHandSize] = useState(7);
-  let [maxLife, setMaxLife] = useState(5);
-  let [lobbySize, setLobbySize] = useState(2);
+  const [cardCount, setCardCount] = useState(15);
+  const [handSize, setHandSize] = useState(7);
+  const [maxLife, setMaxLife] = useState(5);
+  const [lobbySize, setLobbySize] = useState(2);
+
+  const [players, setPlayers] = useState(1);
+  const [ready, setReady] = useState(0);
 
   return (
     <div className="container">
       <div className="row">
         <div className="col">
-          <p>Lobby</p>
+          <h1 className="p-5 ">Lobby</h1>
           {/*first column*/}
         </div>
         <div className="col">{/*second column*/}</div>
@@ -66,42 +70,71 @@ function HostGamePage() {
       </div>
 
       {/*Select deck og start game*/}
-      <div className="row">
-        <div className="col">
-          <GetDeckDropDown />
+      <div className="row p-5">
+        <div className="col ">
+          
+          <div className="dropdown">
+            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Dropdown button
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button className="dropdown-item" href="#">Action</button>
+              <a className="dropdown-item" href="#">Another action</a>
+              <a className="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+
+        <div className="col-6 invisible"></div>
+
+          {/*<CreateDropDown />*/}
         </div>
-        <div className="col ml-auto">
+        <div className="col-md-4 offset-md-4 text-end">
+          
           <button
             type="button"
             className="btn btn-primary"
             id="Start_game button"
-            onClick={StartGame}
+            onClick={() => StartGame(players, ready)}
           >
             Start game
           </button>
+          <p>Players ready: {ready}/{players}</p>
         </div>
       </div>
     </div>
   );
 }
 
-function GetDeckDropDown() {
+function CreateDropDown() {
   //TODO: Call function here that gets the decks and add dropdown items
   const deckArray = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
+  //const [open, setOpen] = useState(false); 
 
   return (
     <div className="btn-group">
-      <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button type="button" className="btn btn-primary dropdown-toggle" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Choose Deck
       </button>
-      <div className="dropdown-menu">
-        {deckArray.map((deck) => (
-          <button key={deck.id} type="button" onClick={addDeck(deck)} >{deck.name}</button>
-        ))}
+      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <GetDecksDropDown decks={deckArray} />
       </div>
-
     </div>
   );
+}
+
+function GetDecksDropDown({ decks }) {
+  if (decks === null) {
+    return (
+      <a className="dropdown-item" href="#"> No decks to choose from :/</a>
+    );
+  }
+
+  return (
+    decks.forEach(deck => (
+      <button key={deck.id} type="button" onClick={() => addDeck(deck)}>{deck.name}</button>
+    )));
 }
 
 function addDeck(deck) {
@@ -110,11 +143,21 @@ function addDeck(deck) {
     deck: deck, 
     id: lobbyIgitd, 
   }*/
-  socket.emit("DeckChose", JSON.stringify(deck));
+  socket.emit("DeckChose", deck);
 }
 
-//TODO: make event listener to start game
-function StartGame() {
+function StartGame(players, ready) {
+  if(players < 2) {
+    alert("Need at least 2 players to start game");
+    return;
+  }
+
+  if(ready != players) {
+    alert("Everyone needs to ready up");
+    return;
+  }
+
+  //TODO: Start game event here
 
 }
 
