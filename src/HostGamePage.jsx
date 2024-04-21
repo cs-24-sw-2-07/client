@@ -10,6 +10,14 @@ function HostGamePage() {
 
   const [players, setPlayers] = useState(1);
   const [ready, setReady] = useState(0);
+  const [hostDeckCheck, setHostDeckCheck] = useState(false); 
+  
+  const readyUpHost = () => {
+    if(!hostDeckCheck) {
+      setReady(ready + 1);
+    }
+    setHostDeckCheck(true); 
+  }
 
   return (
     <div className="container">
@@ -72,26 +80,17 @@ function HostGamePage() {
       {/*Select deck og start game*/}
       <div className="row p-5">
         <div className="col ">
-          <CreateDropDown />
+          <DeckDropDown hasDeckBeenChosen={readyUpHost} />
         </div>
         <div className="col-md-4 offset-md-4 text-end">
-
-          <button
-            type="button"
-            className="btn btn-primary col-4"
-            id="Start_game button"
-            onClick={() => StartGame(players, ready)}
-          >
-            Start game
-          </button>
-          <p>Players ready: {ready}/{players}</p>
+          <StartButton players={players} ready={ready} />
         </div>
       </div>
     </div >
   );
 }
 
-function CreateDropDown() {
+function DeckDropDown({ handler }) {
   //TODO: Call function here that gets the decks and add dropdown items
   const deckArray = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
   //const [open, setOpen] = useState(false); 
@@ -99,8 +98,8 @@ function CreateDropDown() {
   return (
     <div className="dropdown">
       <div className="btn-group">
-        <button className="btn btn-primary dropdown-toggle" 
-        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button className="btn btn-primary dropdown-toggle"
+          type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Choose Deck
         </button>
         <ul className="dropdown-menu">
@@ -111,7 +110,7 @@ function CreateDropDown() {
   );
 }
 
-function GetDecksDropDown({ decks }) {
+function GetDecksDropDown({ decks, handler }) {
   if (decks === null) {
     return (
       <li><button type="button" className="dropdown-item"> No decks to choose from :/</button></li>
@@ -120,36 +119,41 @@ function GetDecksDropDown({ decks }) {
 
   return (
     decks.forEach(deck => (
-      <li><button key={deck.id} type="button" onClick={() => addDeck(deck)}>{deck.name}</button></li>
+      <li><button key={deck.id} type="button" onClick={() => addDeck(deck, handler)}>{deck.name}</button></li>
     )));
 }
 
-function addDeck(deck) {
+function addDeck(deck, handler) {
   // Add room id from the server
   /*const data = {
     deck: deck, 
     id: lobbyIgitd, 
   }*/
   socket.emit("DeckChose", deck);
+  handler();
+}
+
+
+function StartButton({ players, ready }) {
+  return (
+    <div>
+      <button
+        type="button"
+        className="btn btn-primary col-4"
+        disabled={players >= 2 && ready == players ? "true" : "false"}
+        onClick={() => StartGame(players, ready)}
+      >
+        Start game
+      </button>
+      <p>Players ready: {ready}/{players}</p>
+    </div>
+  );
 }
 
 //TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
 function StartGame(players, ready) {
-  if (players < 2) {
-    alert("Need at least 2 players to start game");
-    return;
-  }
-
-  if (ready != players) {
-    alert("Everyone needs to ready up");
-    return;
-  }
-
   //TODO: Start game event here
-
+  return; 
 }
-
-
-
 
 export default HostGamePage;
