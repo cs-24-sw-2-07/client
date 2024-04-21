@@ -93,7 +93,7 @@ function HostGamePage() {
           
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary col-4"
             id="Start_game button"
             onClick={() => StartGame(players, ready)}
           >
@@ -146,6 +146,7 @@ function addDeck(deck) {
   socket.emit("DeckChose", deck);
 }
 
+//TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
 function StartGame(players, ready) {
   if(players < 2) {
     alert("Need at least 2 players to start game");
