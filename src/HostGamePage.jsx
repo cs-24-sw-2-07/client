@@ -1,17 +1,27 @@
 import { } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { socket } from "./socket";
 
 function HostGamePage() {
+  //TODO: Socket events placed here 
+  useEffect(() => {
+    socket.on("event", data => {
+      console.log(data); 
+    });
+  }, []);
 
+  //Setting states: 
   const [cardCount, setCardCount] = useState(15);
   const [handSize, setHandSize] = useState(7);
   const [maxLife, setMaxLife] = useState(5);
   const [lobbySize, setLobbySize] = useState(2);
 
+  // Readying up states:
   const [players, setPlayers] = useState(1);
   const [ready, setReady] = useState(0);
   const [hostDeckCheck, setHostDeckCheck] = useState(false); 
   
+  //The host readies up when a deck is chosen
   const readyUpHost = () => {
     if(!hostDeckCheck) {
       setReady(ready + 1);
@@ -92,9 +102,6 @@ function HostGamePage() {
 
 function DeckDropDown({ readyUpHandler }) {
   //TODO: Call function here that gets the decks and add dropdown items
-  const deckArray = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
-  //const [open, setOpen] = useState(false); 
-
   return (
     <div className="dropdown">
       <div className="btn-group">
@@ -103,20 +110,22 @@ function DeckDropDown({ readyUpHandler }) {
           Choose Deck
         </button>
         <ul className="dropdown-menu">
-          <GetDecksDropDown decks={deckArray}  readyUpHandler={ readyUpHandler} />
+          <GetDecksDropDown  readyUpHandler={ readyUpHandler } />
         </ul>
       </div>
     </div>
   );
 }
 
-function GetDecksDropDown({ decks, readyUpHandler }) {
+function GetDecksDropDown({ readyUpHandler }) {
+  const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
   if (decks === null) {
     return (
       <li><button type="button" className="dropdown-item"> No decks to choose from :/</button></li>
     );
   }
 
+  //Creates an option for every deck saved in localStorage 
   return (
     decks.forEach(deck => (
       <li><button key={deck.id} type="button" onClick={() => addDeck(deck, readyUpHandler)}>{deck.name}</button></li>
@@ -145,7 +154,7 @@ function StartButton({ players, ready }) {
       >
         Start game
       </button>
-      <p>Players ready: {ready}/{players}</p>
+      <p className={ready === players ? "text-success" : "text-danger"}>Players ready: {ready}/{players}</p>
     </div>
   );
 }
