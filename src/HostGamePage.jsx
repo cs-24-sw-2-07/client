@@ -72,25 +72,10 @@ function HostGamePage() {
       {/*Select deck og start game*/}
       <div className="row p-5">
         <div className="col ">
-          
-          <div className="dropdown">
-            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              Dropdown button
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button className="dropdown-item" href="#">Action</button>
-              <a className="dropdown-item" href="#">Another action</a>
-              <a className="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-
-        <div className="col-6 invisible"></div>
-
-          {/*<CreateDropDown />*/}
+          <CreateDropDown />
         </div>
         <div className="col-md-4 offset-md-4 text-end">
-          
+
           <button
             type="button"
             className="btn btn-primary col-4"
@@ -102,7 +87,7 @@ function HostGamePage() {
           <p>Players ready: {ready}/{players}</p>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
@@ -112,13 +97,15 @@ function CreateDropDown() {
   //const [open, setOpen] = useState(false); 
 
   return (
-    <div className="btn-group">
-      <button type="button" className="btn btn-primary dropdown-toggle" id="dropdownMenuButton"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Choose Deck
-      </button>
-      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <GetDecksDropDown decks={deckArray} />
+    <div className="dropdown">
+      <div className="btn-group">
+        <button className="btn btn-primary dropdown-toggle" 
+        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Choose Deck
+        </button>
+        <ul className="dropdown-menu">
+          <GetDecksDropDown decks={deckArray} />
+        </ul>
       </div>
     </div>
   );
@@ -127,13 +114,13 @@ function CreateDropDown() {
 function GetDecksDropDown({ decks }) {
   if (decks === null) {
     return (
-      <a className="dropdown-item" href="#"> No decks to choose from :/</a>
+      <li><button type="button" className="dropdown-item"> No decks to choose from :/</button></li>
     );
   }
 
   return (
     decks.forEach(deck => (
-      <button key={deck.id} type="button" onClick={() => addDeck(deck)}>{deck.name}</button>
+      <li><button key={deck.id} type="button" onClick={() => addDeck(deck)}>{deck.name}</button></li>
     )));
 }
 
@@ -148,12 +135,12 @@ function addDeck(deck) {
 
 //TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
 function StartGame(players, ready) {
-  if(players < 2) {
+  if (players < 2) {
     alert("Need at least 2 players to start game");
     return;
   }
 
-  if(ready != players) {
+  if (ready != players) {
     alert("Everyone needs to ready up");
     return;
   }
