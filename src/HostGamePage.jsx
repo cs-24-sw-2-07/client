@@ -90,7 +90,7 @@ function HostGamePage() {
   );
 }
 
-function DeckDropDown({ handler }) {
+function DeckDropDown({ readyUpHandler }) {
   //TODO: Call function here that gets the decks and add dropdown items
   const deckArray = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
   //const [open, setOpen] = useState(false); 
@@ -103,14 +103,14 @@ function DeckDropDown({ handler }) {
           Choose Deck
         </button>
         <ul className="dropdown-menu">
-          <GetDecksDropDown decks={deckArray} />
+          <GetDecksDropDown decks={deckArray}  readyUpHandler={ readyUpHandler} />
         </ul>
       </div>
     </div>
   );
 }
 
-function GetDecksDropDown({ decks, handler }) {
+function GetDecksDropDown({ decks, readyUpHandler }) {
   if (decks === null) {
     return (
       <li><button type="button" className="dropdown-item"> No decks to choose from :/</button></li>
@@ -119,7 +119,7 @@ function GetDecksDropDown({ decks, handler }) {
 
   return (
     decks.forEach(deck => (
-      <li><button key={deck.id} type="button" onClick={() => addDeck(deck, handler)}>{deck.name}</button></li>
+      <li><button key={deck.id} type="button" onClick={() => addDeck(deck, readyUpHandler)}>{deck.name}</button></li>
     )));
 }
 
