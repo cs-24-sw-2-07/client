@@ -5,6 +5,9 @@ import { DisplayHand } from "./components/battleComponets/DisplayHand.jsx";
 import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCard.jsx";
 import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 
+// Make websocket listerne for when a OutOfCardnotification comes
+let oppOutOfCards = false;
+
 
 function BattlePage(props) {
   
@@ -24,6 +27,7 @@ function BattlePage(props) {
     let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
     let [displayCard, setDisplayCard] = useState("");
     let [hideElement, setHideElement] = useState(false);
+    let [showWonPopUp, setShowWonPopUp] = useState(false);
 
     function drawNewCard(index){
         let handCopy=[... hand]
@@ -46,19 +50,19 @@ function BattlePage(props) {
 
         //chec  if both players have run out of cards 
         if(cardTraker.current.used == cardTraker.current.size){
-            if(nottificationFromOpp == true){
-              
+            if(oppOutOfCards){
+                setShowWonPopUp(true)
+            }else {
+                console.log("Send OutOfCard notificatin")
             }
-            console.log("Send OutOfCard notificatin")
         }
         setHand(handCopy)
     }
 
-
     return (
         <>
             <WinPopUp
-                foundWinner={false}
+                foundWinner={showWonPopUp}
             />
             {/*<button className="btn" type="button" onClick={()=>drawNewCard(0)}>hej</button>*/}
 
