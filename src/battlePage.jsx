@@ -4,9 +4,9 @@ import { DisplayLives } from "./components/battleComponets/DisplayLives.jsx";
 import { DisplayHand } from "./components/battleComponets/DisplayHand.jsx";
 import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCard.jsx";
 import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
-
+import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
 // Make websocket listerne for when a OutOfCardnotification comes
-let oppOutOfCards = false;
+let oppOutOfCards = true;
 
 
 function BattlePage(props) {
@@ -64,7 +64,7 @@ function BattlePage(props) {
             <WinPopUp
                 foundWinner={showWonPopUp}
             />
-            {/*<button className="btn" type="button" onClick={()=>drawNewCard(0)}>hej</button>*/}
+            <button className="btn" type="button" onClick={()=>drawNewCard(0)}>hej</button>
 
             <DisplayLives
                 myLives={myLife}
@@ -79,8 +79,12 @@ function BattlePage(props) {
                 myTurn={myTurn}
             />
 
-            {hideElement && 
-        <DisplayElement myTurn={myTurn}/>
+            {hideElement && <DisplayButtons 
+                myTurn={myTurn}
+                setOppLife={setOppLife}
+                oppLife={oppLife}   
+                setShowWonPopUp={setShowWonPopUp} 
+            />
             }
 
             <DisplayHand
@@ -108,24 +112,5 @@ function chooseStartingHand(deckSize,cardAmount){
     }
     return [...hand];
 }
-
-function DisplayElement(props){
-    if (props.myTurn == true){
-        return(
-            <div className="row p-2">
-                <label htmlFor="voteBtn">Was the answer correct or wrong?</label>
-                <button type="button" className="btn btn-success"id="voteBtn" onClick={()=>console.log("korrekt")}>correct!</button>
-                <button type="button" className="btn btn-success"id="voteBtn" onClick={()=>console.log("forkert")}>wrong!</button>
-            </div>
-        )
-    }
-    else {
-        return(
-            <div className="row p-2">
-                <button type="button" className="btn btn-success"id="readyBtn" onClick={()=>console.log("hej")}>Done answering? click here</button>
-            </div>
-        )
-    }
-} 
 
 export default BattlePage;
