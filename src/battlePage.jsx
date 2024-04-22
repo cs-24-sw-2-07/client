@@ -20,6 +20,7 @@ function BattlePage(props) {
   let [disableCards, setdisableCards] = useState(false);
   let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
   let [displayCard, setDisplayCard] = useState(myDeck.cards[0]);
+  let [hideElement, setHideElement] = useState(false);
   console.log(displayCard)
 
   return (
@@ -35,6 +36,8 @@ function BattlePage(props) {
         displayCard={displayCard}
         setDisplayCard={setDisplayCard}
         myTurn={myTurn}
+        hideElement={hideElement}
+        setHideElement={setHideElement}
       />
 
       <DisplayHand
