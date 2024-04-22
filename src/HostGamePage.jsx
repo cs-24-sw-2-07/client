@@ -2,6 +2,11 @@ import { } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
+
+
+ // lobby ID number 
+ let lobbyid  = "34567";//lobbyState.id
+
 function HostGamePage() {
   //TODO: Socket events placed here 
   useEffect(() => {
@@ -33,18 +38,18 @@ function HostGamePage() {
     <div className="container">
       <div className="row">
         <div className="col">
-          <h1 className="p-5 ">Lobby </h1>
+          <h1 className="p-5 ">Lobby: {lobbyid}</h1>
           {/*first column*/}
         </div>
         <div className="col">{/*second column*/}
-          <button 
+          {/*<button 
           type="button"
           className="btn btn-primary"
           id="Delete_lobby button"
           onClick={DeleteLobby}
           >
           Delete Lobby
-          </button>
+  </button>*/}
         </div>
       </div>
       {/*Første row Lobby #id og delete lobby knap*/}
@@ -146,7 +151,7 @@ function addDeck(deck, handler) {
   const data = {
     deck: deck, 
     id: lobbyIgitd, 
-  }*/
+  }
   socket.emit("DeckChose", deck);
   handler();
 }
