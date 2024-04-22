@@ -5,16 +5,29 @@ import HostGamePage from "./HostGamePage.jsx"
 import LobbyPage from "./LobbyPage.jsx"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { socket } from "./socket";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 function App() {
+  const [lobbyObj, setLobbyObj] = useState({}); 
 
   useEffect(() => {
-    console.log("gpt here");
     socket.on("lobbyCreated", data => {
       console.log(data); 
+      setLobbyObj(data); 
     });
+    socket.on("joinLobby", data => {
+      console.log(data); 
+      setLobbyObj(data); 
+    });
+    socket.on("RoomNotExist", () => {
+      alert("The room does not exist");
+    });
+    return () => {
+      socket.off("lobbyCreated"); 
+      socket.off("joinLobby");
+      socket.off("RoomNotExist");
+    };
   }, []);
 
   return (
@@ -22,7 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<FrontPage />}></Route>
         <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
-        <Route path="HostGamePage" element={<HostGamePage />}></Route>        
+        <Route path="HostGamePage" element={<HostGamePage  lobbyObj={lobbyObj} />}></Route>        
         <Route path="LobbyPage" element={<LobbyPage/>}></Route>      
       </Routes>
     </BrowserRouter>

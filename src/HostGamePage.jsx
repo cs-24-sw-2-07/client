@@ -2,20 +2,20 @@ import { } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
-function HostGamePage(props) {
-  const [lobbyObj, setObj] = useState(props.lobbyJSON); 
-  console.log(lobbyObj);
+function HostGamePage({ lobbyObj }) {
+  const [lobbyState, setLobbyState] = useState(lobbyObj); 
+  console.log(lobbyState);
   //TODO: Socket events placed here 
   useEffect(() => {
     socket.on("changeSetting", data => {
-      setObj(data);
+      setLobbyState(data);
     });
     socket.on("playerLeft", data => {
-      setObj(data);
+      setLobbyState(data);
       setPlayers(data.playersAmt);
     }); 
     socket.on("playerJoined", data => {
-      setObj(data);
+      setLobbyState(data);
       setPlayers(data.playersAmt);
     }); 
     socket.on("readyUp", data => {
@@ -26,7 +26,7 @@ function HostGamePage(props) {
     });
     socket.on("hostReadyUp", readyPlayers => {
       setReady(Number(readyPlayers));
-    })
+    });
 
     return () => {
       socket.off("changeSetting"); 
@@ -39,14 +39,15 @@ function HostGamePage(props) {
   }, []);
 
   //Setting states: 
-  const [cardCount, setCardCount] = useState(15);
-  const [handSize, setHandSize] = useState(7);
-  const [maxLife, setMaxLife] = useState(5);
-  const [lobbySize, setLobbySize] = useState(2);
+  const [cardCount, setCardCount] = useState(lobbyState.deckSize);
+  const [handSize, setHandSize] = useState(lobbyState.handSize);
+  const [maxLife, setMaxLife] = useState(lobbyState.life);
+  const [lobbySize, setLobbySize] = useState(lobbyState.lobbySize);
 
   // Readying up states:
-  const [players, setPlayers] = useState(1);
-  const [ready, setReady] = useState(0);
+  const [players, setPlayers] = useState(lobbyState.playerAmt);
+  const [ready, setReady] = useState(lobbyState.ready);
+  console.log(players);
 
   return (
     <div className="container">
