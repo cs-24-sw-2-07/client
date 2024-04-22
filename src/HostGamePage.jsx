@@ -2,12 +2,35 @@ import { } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
-function HostGamePage() {
+function HostGamePage(props) {
+  const [Json, setJson] = useState(props.lobbyJSON); 
+
   //TODO: Socket events placed here 
   useEffect(() => {
-    socket.on("event", data => {
-      console.log(data); 
+    socket.on("changeSetting", data => {
+      setJson(data);
     });
+    socket.on("playerLeft", data => {
+      setJson(data);
+    }); 
+    socket.on("playerJoined", data => {
+      setJson(data);
+      setPlayers(players + 1);
+    }); 
+    socket.on("readyUp", () => {
+      setReady(ready + 1);
+    });
+    socket.on("StopReadyUp", () => {
+      setReady(ready - 1); 
+    });
+
+    return () => {
+      socket.off("changeSetting"); 
+      socket.off("playerLeft");
+      socket.off("playerJoined"); 
+      socket.off("readyUp"); 
+      socket.off("StopReadyUp"); 
+    }
   }, []);
 
   //Setting states: 
@@ -19,15 +42,6 @@ function HostGamePage() {
   // Readying up states:
   const [players, setPlayers] = useState(1);
   const [ready, setReady] = useState(0);
-  const [hostDeckCheck, setHostDeckCheck] = useState(false); 
-  
-  //The host readies up when a deck is chosen
-  const readyUpHost = () => {
-    if(!hostDeckCheck) {
-      setReady(ready + 1);
-    }
-    setHostDeckCheck(true); 
-  }
 
   return (
     <div className="container">
@@ -90,7 +104,7 @@ function HostGamePage() {
       {/*Select deck og start game*/}
       <div className="row p-5">
         <div className="col ">
-          <DeckDropDown hasDeckBeenChosen={readyUpHost} />
+          <DeckDropDown />
         </div>
         <div className="col-md-4 offset-md-4 text-end">
           <StartButton players={players} ready={ready} />
@@ -100,7 +114,7 @@ function HostGamePage() {
   );
 }
 
-function DeckDropDown({ readyUpHandler }) {
+function DeckDropDown() {
   //TODO: Call function here that gets the decks and add dropdown items
   return (
     <div className="dropdown">
@@ -117,7 +131,7 @@ function DeckDropDown({ readyUpHandler }) {
   );
 }
 
-function GetDecksDropDown({ readyUpHandler }) {
+function GetDecksDropDown() {
   const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
   if (decks === null) {
     return (
@@ -128,18 +142,17 @@ function GetDecksDropDown({ readyUpHandler }) {
   //Creates an option for every deck saved in localStorage 
   return (
     decks.forEach(deck => (
-      <li><button key={deck.id} type="button" onClick={() => addDeck(deck, readyUpHandler)}>{deck.name}</button></li>
+      <li><button key={deck.id} type="button" onClick={() => addDeck(deck)}>{deck.name}</button></li>
     )));
 }
 
-function addDeck(deck, handler) {
+function addDeck(deck) {
   // Add room id from the server
   /*const data = {
     deck: deck, 
     id: lobbyIgitd, 
   }*/
   socket.emit("DeckChose", deck);
-  handler();
 }
 
 
