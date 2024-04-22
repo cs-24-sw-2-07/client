@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
 function HostGamePage({ lobbyObj }) {
-  const [lobbyState, setLobbyState] = useState(lobbyObj); 
-  console.log(lobbyState);
+  const [lobbyState, setLobbyState] = useState(lobbyObj);
   //TODO: Socket events placed here 
   useEffect(() => {
     socket.on("changeSetting", data => {
@@ -47,7 +46,6 @@ function HostGamePage({ lobbyObj }) {
   // Readying up states:
   const [players, setPlayers] = useState(lobbyState.playerAmt);
   const [ready, setReady] = useState(lobbyState.ready);
-  console.log(players);
 
   return (
     <div className="container">
@@ -168,7 +166,7 @@ function StartButton({ players, ready }) {
       <button
         type="button"
         className="btn btn-primary col-4"
-        disabled={players >= 2 && ready === players ? "true" : "false"}
+        disabled={players >= 2 && ready === players ? "false" : "true"}
         onClick={() => StartGame(players, ready)}
       >
         Start game
