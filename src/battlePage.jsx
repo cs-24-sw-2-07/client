@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
 import { DisplayLives } from "./components/battleComponets/DisplayLives.jsx";
 import { DisplayHand } from "./components/battleComponets/DisplayHand.jsx";
 import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCard.jsx";
@@ -7,8 +6,6 @@ import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
 // Make websocket listerne for when a OutOfCardnotification comes
 let oppOutOfCards = true;
-let gameResult="";
-
 
 function BattlePage(props) {
   
