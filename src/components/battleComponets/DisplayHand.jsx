@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+//import { useNavigate } from "react-router-dom";
 
 function DisplayHand(props) {
   useEffect(()=>{
@@ -16,6 +16,8 @@ function DisplayHand(props) {
         hand={props.hand}
         handDeck={props.handDeck}
         myTurn={props.myTurn}
+        disableCards={props.disableCards}
+        setdisableCards={props.setdisableCards}
       />
     </div>
   );
@@ -26,7 +28,7 @@ function DisplayCardsInHand(props) {
   return (<>
     {props.handDeck.map((card,index)=>
       <div className="col-4 d-grid p-1" key={index}>
-        <button type="button" className="btn btn-primary" disabled={(props.myTurn)?false:true} onClick={()=>{console.log("hej")}}>
+        <button type="button" className="btn btn-primary" disabled={props.disableCards} onClick={()=>{props.setdisableCards(true);console.log("hej")}}>
           Card Name: {card.name}
           <br/>
           Question:{card.question}
