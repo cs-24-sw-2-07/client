@@ -21,6 +21,7 @@ function HostGamePage() {
       {/*Første row Lobby #id og delete lobby knap*/}
 
       {/*Settings og Players*/}
+      
       <div className="container">
         <div className="row">
           <div className="col">
@@ -55,7 +56,7 @@ function HostGamePage() {
                   <label htmlFor="lobbySize"> Lobby Size:</label>
                   <input
                     type="number"
-                    className="npm " 
+                    className="form-control" 
                     id="lobbySize"
                     value={lobbySize}
                     onChange={(e) => setLobbySize(e.target.value)}>
