@@ -13,31 +13,22 @@ function HostGamePage() {
     <div className="container">
       <div className="row">
         <div className="col">
-          <p>Lobby</p>
+          <p>Lobby </p>
           {/*first column*/}
         </div>
-        <button
-              type="button"
-              className="btn btn-primary"
-              id="Delete_lobby button"
-              onClick={DeleteLobby}
-            >
-            Delete Lobby
-            </button>
-
-        <div className="col">{/*second column*/}</div>
+        <div className="col">{/*second column*/}
+          <button 
+          type="button"
+          className="btn btn-primary"
+          id="Delete_lobby button"
+          onClick={DeleteLobby}
+          >
+          Delete Lobby
+          </button>
+        </div>
       </div>
       {/*Første row Lobby #id og delete lobby knap*/}
     
-
-      <button
-              type="button"
-              className="btn btn-primary"
-              id="Delete_lobby button"
-              onClick={DeleteLobby}
-            >
-            Delete Lobby
-            </button>
       {/*Settings og Players*/}
       <div className="container">
         <div className="row">
@@ -127,10 +118,10 @@ function GetDeckDropDown() {
 
 function addDeck(deck) {
   // Add room id from the server
-  /*const data = {
+  const data = {
     deck: deck, 
     id: lobbyIgitd, 
-  }*/
+  }
   socket.emit("DeckChose", JSON.stringify(deck));
 }
 
