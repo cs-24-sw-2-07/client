@@ -1,10 +1,11 @@
-import {} from "react-router-dom";
+import { } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
 function HostGamePage({ lobbyObj }) {
   const [lobbyState, setLobbyState] = useState(lobbyObj);
-  //TODO: Socket events placed here
+  
+  console.log(lobbyState);
   useEffect(() => {
     socket.on("changeSetting", (data) => {
       setLobbyState(data);
@@ -45,12 +46,11 @@ function HostGamePage({ lobbyObj }) {
     lobbySize: lobbyState.lobbySize,
   });
   const [playerArr, setplayerArr] = useState(new Map());
-  setplayerArr(
-    playerArr.set(lobbyState.name, {
-      ready: lobbyState.ready,
-      name: lobbyState.name,
-    })
-  );
+  const UpdateMapArray = (k, v) => {
+    setplayerArr(new Map(playerArr.set(k, v)));
+  };
+  //UpdateMapArray(lobbyState.name, false);
+  
   // Readying up states:
   const [players, setPlayers] = useState(lobbyState.playerAmt);
   const [ready, setReady] = useState(lobbyState.ready);
@@ -107,7 +107,7 @@ function DeckDropDown() {
           Choose Deck
         </button>
         <ul className="dropdown-menu">
-          <GetDecksDropDown />
+          <GetDecksDropDown onClick={() => socket.emit("test", "/12345 ")} />
         </ul>
       </div>
     </div>
@@ -187,7 +187,10 @@ function Settings({ settingsState, setSettingsState }) {
             className="form-control"
             id="decksize"
             value={settingsState.cardCount}
-            onChange={(e) => setSettingsState.cardCount(e.target.value)}
+            onChange={(e) => setSettingsState({
+              ...settingsState,
+              cardCount: e.target.value
+            })}
           ></input>
           <label htmlFor="handsize"> Hand Size:</label>
           <input
@@ -195,7 +198,10 @@ function Settings({ settingsState, setSettingsState }) {
             className="form-control"
             id="handsize"
             value={settingsState.handSize}
-            onChange={(e) => setSettingsState.handSize(e.target.value)}
+            onChange={(e) => setSettingsState({
+              ...settingsState,
+              handSize: e.target.value
+            })}
           ></input>
           <label htmlFor="Maxlife"> Life: </label>
           <input
@@ -203,7 +209,10 @@ function Settings({ settingsState, setSettingsState }) {
             className="form-control"
             id="lifesize"
             value={settingsState.maxLife}
-            onChange={(e) => settingsState.MaxLife(e.target.value)}
+            onChange={(e) => setSettingsState({
+              ...settingsState,
+              maxLife: e.target.value
+            })}
           ></input>
           <label htmlFor="lobbySize"> Lobby Size:</label>
           <input
@@ -211,7 +220,10 @@ function Settings({ settingsState, setSettingsState }) {
             className="form-control"
             id="lobbySize"
             value={settingsState.lobbySize}
-            onChange={(e) => setSettingsState.LobbySize(e.target.value)}
+            onChange={(e) => setSettingsState({
+              ...settingsState,
+              LobbySize: e.target.value
+            })}
           ></input>
         </div>
       </div>

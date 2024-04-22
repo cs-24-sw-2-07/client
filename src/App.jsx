@@ -13,8 +13,8 @@ function App() {
 
   useEffect(() => {
     socket.on("lobbyCreated", data => {
-      console.log(data); 
-      setLobbyObj(data); 
+      console.log(data);
+      setLobbyObj(data);
     });
     socket.on("joinLobby", data => {
       console.log(data); 
