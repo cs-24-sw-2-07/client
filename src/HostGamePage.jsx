@@ -3,25 +3,26 @@ import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
 function HostGamePage(props) {
-  const [Json, setJson] = useState(props.lobbyJSON); 
-
+  const [lobbyObj, setObj] = useState(props.lobbyJSON); 
+  console.log(lobbyObj);
   //TODO: Socket events placed here 
   useEffect(() => {
     socket.on("changeSetting", data => {
-      setJson(data);
+      setObj(data);
     });
     socket.on("playerLeft", data => {
-      setJson(data);
+      setObj(data);
+      setPlayers(data.playersAmt);
     }); 
     socket.on("playerJoined", data => {
-      setJson(data);
-      setPlayers(players + 1);
+      setObj(data);
+      setPlayers(data.playersAmt);
     }); 
-    socket.on("readyUp", () => {
-      setReady(ready + 1);
+    socket.on("readyUp", data => {
+      setReady(Number(data));
     });
-    socket.on("StopReadyUp", () => {
-      setReady(ready - 1); 
+    socket.on("StopReadyUp", data => {
+      setReady(Number(data)); 
     });
 
     return () => {
@@ -124,7 +125,7 @@ function DeckDropDown() {
           Choose Deck
         </button>
         <ul className="dropdown-menu">
-          <GetDecksDropDown  readyUpHandler={ readyUpHandler } />
+          <GetDecksDropDown />
         </ul>
       </div>
     </div>
