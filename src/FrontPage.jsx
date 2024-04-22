@@ -37,14 +37,13 @@ export default function FrontPage() {
   );
 }
 
-function HostGameModalButton({ navigateTo }) {
+function HostGameModalButton() {
   const [displayName, setDisplayName] = useState("");
 
   function hostGame() {
     //alert(`Host Game!\nInputted Name: ${displayName}`);
     console.log(socket);
     socket.emit("createLobby", {name: displayName});
-    navigateTo("/HostGamePage");
   }
 
   return (
