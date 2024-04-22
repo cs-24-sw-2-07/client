@@ -41,8 +41,9 @@ function HostGameModalButton({ navigateTo }) {
   const [displayName, setDisplayName] = useState("");
 
   function hostGame() {
-    alert(`Host Game!\nInputted Name: ${displayName}`);
-    socket.emit("CreateLobby", JSON.stringify({ name: displayName }));
+    //alert(`Host Game!\nInputted Name: ${displayName}`);
+    console.log(socket);
+    socket.emit("createLobby", {name: displayName});
     navigateTo("/HostGamePage");
   }
 

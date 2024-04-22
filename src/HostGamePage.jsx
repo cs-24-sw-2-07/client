@@ -1,19 +1,39 @@
-import React, {useState, usestate} from "react";
-import { socket } from "./socket.js"; 
-import {} from "react-router-dom";
+import { } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { socket } from "./socket";
 
 function HostGamePage() {
+  //TODO: Socket events placed here 
+  useEffect(() => {
+    socket.on("event", data => {
+      console.log(data); 
+    });
+  }, []);
 
-  let [cardCount, setCardCount] = useState(15);
-  let [handSize, setHandSize]= useState(7);
-  let [maxLife, setMaxLife] = useState(5);
-  let [lobbySize, setLobbySize] = useState(2);
+  //Setting states: 
+  const [cardCount, setCardCount] = useState(15);
+  const [handSize, setHandSize] = useState(7);
+  const [maxLife, setMaxLife] = useState(5);
+  const [lobbySize, setLobbySize] = useState(2);
+
+  // Readying up states:
+  const [players, setPlayers] = useState(1);
+  const [ready, setReady] = useState(0);
+  const [hostDeckCheck, setHostDeckCheck] = useState(false); 
+  
+  //The host readies up when a deck is chosen
+  const readyUpHost = () => {
+    if(!hostDeckCheck) {
+      setReady(ready + 1);
+    }
+    setHostDeckCheck(true); 
+  }
 
   return (
     <div className="container">
       <div className="row">
         <div className="col">
-          <p>Lobby </p>
+          <h1 className="p-5 ">Lobby </h1>
           {/*first column*/}
         </div>
         <div className="col">{/*second column*/}
@@ -64,7 +84,7 @@ function HostGamePage() {
                   <label htmlFor="lobbySize"> Lobby Size:</label>
                   <input
                     type="number"
-                    className="form-control" 
+                    className="form-control"
                     id="lobbySize"
                     value={lobbySize}
                     onChange={(e) => setLobbySize(e.target.value)}>
@@ -76,63 +96,82 @@ function HostGamePage() {
         </div>
       </div>
 
-        {/*Select deck og start game*/}
-        <div className="row">
-          <div className="col">
-            <GetDeckDropDown />
-          </div>
-          <div className="col ml-auto">
-            <button
-              type="button"
-              className="btn btn-primary"
-              id="Start_game button"
-              onClick={StartGame}
-            >
-            Start game
-            </button>
-          </div>
+      {/*Select deck og start game*/}
+      <div className="row p-5">
+        <div className="col ">
+          <DeckDropDown hasDeckBeenChosen={readyUpHost} />
+        </div>
+        <div className="col-md-4 offset-md-4 text-end">
+          <StartButton players={players} ready={ready} />
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
-function GetDeckDropDown() {
+function DeckDropDown({ readyUpHandler }) {
   //TODO: Call function here that gets the decks and add dropdown items
-  const deckArray = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
-
   return (
-    <div className="btn-group">
-      <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Choose Deck
-      </button>
-      <div className="dropdown-menu"> 
-        {deckArray.map((deck) => (
-          <button key={deck.id} type="button" onClick={addDeck(deck)} >{deck.name}</button>
-        ))}
+    <div className="dropdown">
+      <div className="btn-group">
+        <button className="btn btn-primary dropdown-toggle"
+          type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Choose Deck
+        </button>
+        <ul className="dropdown-menu">
+          <GetDecksDropDown  readyUpHandler={ readyUpHandler } />
+        </ul>
       </div>
-        
     </div>
   );
 }
 
-function addDeck(deck) {
+function GetDecksDropDown({ readyUpHandler }) {
+  const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
+  if (decks === null) {
+    return (
+      <li><button type="button" className="dropdown-item"> No decks to choose from :/</button></li>
+    );
+  }
+
+  //Creates an option for every deck saved in localStorage 
+  return (
+    decks.forEach(deck => (
+      <li><button key={deck.id} type="button" onClick={() => addDeck(deck, readyUpHandler)}>{deck.name}</button></li>
+    )));
+}
+
+function addDeck(deck, handler) {
   // Add room id from the server
   const data = {
     deck: deck, 
     id: lobbyIgitd, 
-  }
-  socket.emit("DeckChose", JSON.stringify(deck));
+  }*/
+  socket.emit("DeckChose", deck);
+  handler();
 }
 
-//TODO: make event listener to start game
-function StartGame() {
 
+function StartButton({ players, ready }) {
+  return (
+    <div>
+      <button
+        type="button"
+        className="btn btn-primary col-4"
+        disabled={players >= 2 && ready === players ? "true" : "false"}
+        onClick={() => StartGame(players, ready)}
+      >
+        Start game
+      </button>
+      <p className={ready === players ? "text-success" : "text-danger"}>Players ready: {ready}/{players}</p>
+    </div>
+  );
 }
 
-function DeleteLobby()
-
-
-
+//TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
+function StartGame(players, ready) {
+  //TODO: Start game event here
+  return; 
+}
 
 export default HostGamePage;
