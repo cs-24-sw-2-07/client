@@ -1,4 +1,4 @@
-import React, {useState, usestate} from "react";
+import React, {useState} from "react";
 import {} from "react-router-dom";
 export default HostGamePage;
 
@@ -8,6 +8,8 @@ function HostGamePage() {
   let [handSize, setHandSize]= useState(7);
   let [maxLife, setMaxLife] = useState(5);
   let [lobbySize, setLobbySize] = useState(2);
+  let [players, setPlayers] = useState([]);
+
 
   return (
     <div className="container">
@@ -64,6 +66,10 @@ function HostGamePage() {
                 </div>
               </div>
             </form>
+            <div className="col-md-6">
+              <h3>players</h3>
+              
+            </div>
           </div>
         </div>
       </div>
