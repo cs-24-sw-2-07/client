@@ -4,6 +4,7 @@ function DisplayButtons(props){
         props.setOppLife(props.oppLife-1);
         console.log(props.oppLife);
         if (props.oppLife == 1){
+            props.setGameResult("won");
             props.setShowWonPopUp(true);
         }
         // TODO: Lav så den også sender til server om at det var forkert

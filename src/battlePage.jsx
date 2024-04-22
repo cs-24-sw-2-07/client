@@ -7,6 +7,7 @@ import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
 // Make websocket listerne for when a OutOfCardnotification comes
 let oppOutOfCards = true;
+let gameResult="";
 
 
 function BattlePage(props) {
@@ -17,7 +18,7 @@ function BattlePage(props) {
 
     // Setting up varibels for deck controlling
     const startingHand = useRef(chooseStartingHand(myDeck.cards.length, props.handSize))
-    let cardTraker = useRef({used:0,handSize:props.handSize, size:myDeck.cards.length, usedCard:new Set([...startingHand.current]), playedCard:new Set()})
+    let cardTracker = useRef({used:0,handSize:props.handSize, size:myDeck.cards.length, usedCard:new Set([...startingHand.current]), playedCard:new Set()})
 
     let [hand, setHand] = useState(startingHand.current);
     let [handDeck, setHandDeck] = useState([]);
@@ -28,29 +29,37 @@ function BattlePage(props) {
     let [displayCard, setDisplayCard] = useState("");
     let [hideElement, setHideElement] = useState(false);
     let [showWonPopUp, setShowWonPopUp] = useState(false);
+    let [gameResult, setGameResult] = useState("");
 
     function drawNewCard(index){
         let handCopy=[... hand]
         // Addes the old card to the used cards
-        cardTraker.current.playedCard.add(handCopy[index]);
+        cardTracker.current.playedCard.add(handCopy[index]);
         handCopy.splice(index,1)
-        cardTraker.current.used++;
+        cardTracker.current.used++;
 
         // Check if a new card can be drawn
-        if(cardTraker.current.size >= cardTraker.current.used+cardTraker.current.handSize){
+        if(cardTracker.current.size >= cardTracker.current.used+cardTracker.current.handSize){
             let pickedCard =-1;
-            let usedSize = cardTraker.current.usedCard.size
-            while(cardTraker.current.usedCard.size == usedSize){
-                pickedCard = Math.floor(Math.random()*cardTraker.current.size);
-                cardTraker.current.usedCard.add(pickedCard);
+            let usedSize = cardTracker.current.usedCard.size
+            while(cardTracker.current.usedCard.size == usedSize){
+                pickedCard = Math.floor(Math.random()*cardTracker.current.size);
+                cardTracker.current.usedCard.add(pickedCard);
             }
             handCopy.push(pickedCard);
         }
 
 
         //chec  if both players have run out of cards 
-        if(cardTraker.current.used == cardTraker.current.size){
+        if(cardTracker.current.used == cardTracker.current.size){
             if(oppOutOfCards){
+                if(oppLife > myLife){
+                    setGameResult("lost")
+                } else if (oppLife < myLife){
+                    setGameResult("won")
+                } else(
+                    setGameResult("drawed")
+                )
                 setShowWonPopUp(true)
             }else {
                 console.log("Send OutOfCard notificatin")
@@ -63,6 +72,7 @@ function BattlePage(props) {
         <>
             <WinPopUp
                 foundWinner={showWonPopUp}
+                gameResult={gameResult}
             />
             <button className="btn" type="button" onClick={()=>drawNewCard(0)}>hej</button>
 
@@ -84,6 +94,7 @@ function BattlePage(props) {
                 setOppLife={setOppLife}
                 oppLife={oppLife}   
                 setShowWonPopUp={setShowWonPopUp} 
+                setGameResult={setGameResult}
             />
             }
 
