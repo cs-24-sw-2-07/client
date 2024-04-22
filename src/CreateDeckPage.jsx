@@ -30,30 +30,54 @@ function CreateDeckPage() {
 
   console.log(decks);
   //save changes on edit.
-  //updates everytime cardIndex or deckIndex changes
-  useEffect(() => {
-    setCard(decks[deckIndex].cards[cardIndex]);
-    //setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
-    //setQuestionHook(decks[deckIndex].cards[cardIndex].question);
-    //setCardName(decks[deckIndex].cards[cardIndex].name);
-  }, [cardIndex]);
+  //updates everytime card changes
+  // useEffect(() => {
+  //   let updatedDeck = decks;
+  //   updatedDeck[deckIndex].cards[cardIndex] = card;
+  //   setDecks(updatedDeck);
+  //   //saveDecks();
+  //   //setCard(decks[deckIndex].cards[cardIndex]);
+  //   //setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
+  //   //setQuestionHook(decks[deckIndex].cards[cardIndex].question);
+  //   //setCardName(decks[deckIndex].cards[cardIndex].name);
+  // }, [card]);
+
+  function showCard(index) {
+    let updatedDeck = decks;
+    updatedDeck[deckIndex].cards[cardIndex].question = card.question;
+    updatedDeck[deckIndex].cards[cardIndex].answer = card.answer;
+    updatedDeck[deckIndex].cards[cardIndex].name = card.name;
+    setDecks(updatedDeck);
+    //saveDecks();
+    setCardIndex(index);
+    setCard(decks[deckIndex].cards[index]);
+  }
+
+  function updateCard(card) {
+    let updatedDeck = decks;
+    updatedDeck[deckIndex].cards[cardIndex] = card;
+    setDecks(updatedDeck);
+    setCard(card);
+  }
 
   //updates page everytime a question, answer, cardname or deckname is edited
   useEffect(() => {
     let updatedDeck = decks;
     updatedDeck[deckIndex].name = deckName;
-    updatedDeck[deckIndex].cards[cardIndex].question = card.question;
-    updatedDeck[deckIndex].cards[cardIndex].answer = card.answer;
-    updatedDeck[deckIndex].cards[cardIndex].name = card.name;
+    // Ikke nødvendigt at opdatere kort da det allerede er gjort.
+    //updatedDeck[deckIndex].cards[cardIndex].question = card.question;
+    //updatedDeck[deckIndex].cards[cardIndex].answer = card.answer;
+    //updatedDeck[deckIndex].cards[cardIndex].name = card.name;
     setDecks(updatedDeck);
-    saveDecks();
+    //saveDecks();
   }, [deckName]);
 
-  function showCardEditor(deckIndex, cardIndex) {
+  function showCardEditor(deckIndex) {
     setHiddenDeck(true);
     setDeckIndex(deckIndex);
     setDeckName(decks[deckIndex].name);
-    setCardIndex(cardIndex);
+    setCardIndex(0);
+    //TODO: setCard(decks[deckIndex].cards[cardIndex]);
     //setAnswerHook(decks[2].cards[0].answer);
     //setQuestionHook(decks[2].cards[0].question);
     //setCardName(decks[2].cards[0].name);
@@ -65,6 +89,7 @@ function CreateDeckPage() {
   }
 
   function showDecks() {
+    saveDecks();
     setHiddenDeck(false);
   }
 
@@ -141,10 +166,9 @@ function CreateDeckPage() {
         <div className="row">
           <div className="col-3">
             <ListCards
-              decks={decks}
+              cards={decks[deckIndex].cards}
               cardIndex={cardIndex}
-              deckIndex={deckIndex}
-              setCardIndex={setCardIndex}
+              showCard={showCard}
             />
           </div>
           <div className="col-9">
@@ -156,9 +180,12 @@ function CreateDeckPage() {
                 className="form-control form-control"
                 placeholder="Set Card Name"
                 value={card.name}
-                onChange={(e) => {
-                  setCard((card) => {...card, name: e.target.value});
-                }}
+                onChange={(e) =>
+                  updateCard({
+                    ...card,
+                    name: e.target.value,
+                  })
+                }
               ></input>
             </div>
             <div className="row">
@@ -169,9 +196,12 @@ function CreateDeckPage() {
                 id="question"
                 rows="9"
                 value={card.question}
-                onChange={(e) => {
-                  setCard((card) => (card.question = e.target.value));
-                }}
+                onChange={(e) =>
+                  updateCard({
+                    ...card,
+                    question: e.target.value,
+                  })
+                }
               ></textarea>
             </div>
             <div className="row">
@@ -182,9 +212,12 @@ function CreateDeckPage() {
                 id="answer"
                 rows="9"
                 value={card.answer}
-                onChange={(e) => {
-                  setCard((card) => (card.answer = e.target.value));
-                }}
+                onChange={(e) =>
+                  updateCard({
+                    ...card,
+                    answer: e.target.value,
+                  })
+                }
               ></textarea>
             </div>
           </div>
@@ -204,7 +237,7 @@ function CreateDeckPage() {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={ deleteCard }
+              onClick={deleteCard}
             >
               Delete Card
             </button>
