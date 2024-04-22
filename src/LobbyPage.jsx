@@ -1,11 +1,8 @@
- 
-import {  } from "react-router-dom";
 
 function LobbyPage(){ 
-  
   return (
     <div className="row">
-      <div className="text-center p-5"><h1>Lobby</h1></div>
+      <div className="text-center p-5"><h1>lobby page</h1></div>
     </div>
   );
 }
