@@ -7,7 +7,7 @@ import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCar
 
 function BattlePage(props) {
   
-  let myDeck = JSON.parse(localStorage.getItem("userDeck"))[1];//props.chosenDeck;
+  let myDeck = JSON.parse(localStorage.getItem("userDeck"))[0];//props.chosenDeck;
   // TODO FUNCTION TO GET OPPENTED DECK
   let oppDeck = props.oppDeck
 
@@ -22,6 +22,7 @@ function BattlePage(props) {
   let [disableCards, setdisableCards] = useState(false);
   let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
   let [displayCard, setDisplayCard] = useState(myDeck.cards[0]);
+  let [hideElement, setHideElement] = useState(false);
 
   //console.log(hand)
   function drawNewCard(index){
@@ -50,7 +51,6 @@ function BattlePage(props) {
       handCopy.push(pickedCard);
     }
     setHand(handCopy)
-    //console.table(cardTraker)
   }
 
 
@@ -70,6 +70,8 @@ function BattlePage(props) {
         displayCard={displayCard}
         setDisplayCard={setDisplayCard}
         myTurn={myTurn}
+        hideElement={hideElement}
+        setHideElement={setHideElement}
       />
 
       <DisplayHand
