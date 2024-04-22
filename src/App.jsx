@@ -14,7 +14,7 @@ function App(){
         <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
         <Route path="HostGamePage" element={<HostGamePage />}></Route>        
         <Route path="LobbyPage" element={<LobbyPage/>}></Route>    
-        <Route path="battlePage" element={<BattlePage maxLives={5}/>}></Route>      
+        <Route path="battlePage" element={<BattlePage maxLives={5} handSize={2}/>}></Route>      
       </Routes>
     </BrowserRouter>
   );

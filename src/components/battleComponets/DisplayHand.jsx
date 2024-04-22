@@ -38,7 +38,6 @@ function DisplayCardsInHand(props) {
           Answer:{card.answer}
         </button>
       </div>
-      
     )}
   </>
   );

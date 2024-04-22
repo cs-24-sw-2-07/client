@@ -6,12 +6,14 @@ import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCar
 
 
 function BattlePage(props) {
-  const startingHand = useRef(chooseStartingHand(10,8))
   
   let myDeck = JSON.parse(localStorage.getItem("userDeck"))[1];//props.chosenDeck;
   // TODO FUNCTION TO GET OPPENTED DECK
   let oppDeck = props.oppDeck
 
+  // Setting up varibels for deck controlling
+  const startingHand = useRef(chooseStartingHand(myDeck.cards.length, props.handSize))
+  let cardTraker = useRef({used:0,handSize:props.handSize, startSize:myDeck.cards.length, usedCard:new Set([...startingHand.current]), playedCard:new Set()})
 
   let [hand, setHand] = useState(startingHand.current);
   let [handDeck, setHandDeck] = useState([]);
@@ -20,10 +22,43 @@ function BattlePage(props) {
   let [disableCards, setdisableCards] = useState(false);
   let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
   let [displayCard, setDisplayCard] = useState(myDeck.cards[0]);
-  console.log(displayCard)
+
+  //console.log(hand)
+  function drawNewCard(index){
+    let handCopy=[... hand]
+    console.log("played, ", handCopy[index])
+    // Addes the old card to the used cards
+    //cardTraker.current.usedCard.add(handCopy[index]);
+    cardTraker.current.playedCard.add(handCopy[index]);
+    handCopy.splice(index,1)
+    console.log("used ",cardTraker.current.usedCard)
+    console.log("played ",cardTraker.current.playedCard)
+    cardTraker.current.used++;
+
+    // Check if a new card can be drawn
+    if(cardTraker.current.startSize >= cardTraker.current.used+cardTraker.current.handSize){
+      let pickedCard =-1;
+      let usedSize = cardTraker.current.usedCard.size
+      //console.log("træk")
+      //console.log(cardTraker.current.usedCard)
+      while(cardTraker.current.usedCard.size == usedSize){
+        pickedCard = Math.floor(Math.random()*cardTraker.current.startSize);
+        //console.log(pickedCard)
+        cardTraker.current.usedCard.add(pickedCard);
+      }
+      console.log("Pickec ",pickedCard)
+      handCopy.push(pickedCard);
+    }
+    setHand(handCopy)
+    //console.table(cardTraker)
+  }
+
 
   return (
     <>
+      <button className="btn" type="button" onClick={()=>drawNewCard(1)}>
+        hej
+      </button>
       <DisplayLives
         myLives={myLife}
         oppLives={oppLife}
@@ -60,5 +95,7 @@ function chooseStartingHand(deckSize,cardAmount){
   }
   return [...hand];
 }
+
+
 
 export default BattlePage;

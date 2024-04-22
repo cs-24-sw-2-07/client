@@ -198,8 +198,8 @@ function CreateDeckPage(){
           </div>
           <div className="col-9">
             <div className="row">
-              <label htmlFor="question">Question:</label>
-              <textarea type="text" placeholder="Place Your Question Here" id="question" rows="9" value={questionHook} onChange={(e) => {setQuestionHook(e.target.value)}}></textarea>
+              <label htmlFor="cardName">Card Name: </label>
+              <input type="text" id="cardName" className="form-control form-control" placeholder="Set Card Name" value={cardName} onChange={(e) => {setCardName(e.target.value)}}></input>
             </div>
             <div className="row">
               <label htmlFor="question">Question:</label>
