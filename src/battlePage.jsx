@@ -6,9 +6,9 @@ import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCar
 
 
 function BattlePage(props) {
-  const startingHand = useRef(chooseStartingHand(10,8))
+  const startingHand = useRef(chooseStartingHand(6,3))
   
-  let myDeck = JSON.parse(localStorage.getItem("userDeck"))[1];//props.chosenDeck;
+  let myDeck = JSON.parse(localStorage.getItem("userDeck"))[0];//props.chosenDeck;
   // TODO FUNCTION TO GET OPPENTED DECK
   let oppDeck = props.oppDeck
 
