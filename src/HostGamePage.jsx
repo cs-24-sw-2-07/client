@@ -3,19 +3,31 @@ import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
 function HostGamePage({ lobbyObj }) {
-  const [lobbyState, setLobbyState] = useState(lobbyObj);
-  
+  const [lobbyState, setLobbyState] = useState({
+    "deckSize": 15,
+    "handSize": 5,
+    "life": 3,
+    "lobbySize": 2,
+    "id": "12345",
+    "ready": 0,
+    "playerAmt": 1
+  });
+
   console.log(lobbyState);
   useEffect(() => {
     socket.on("changeSetting", (data) => {
-      setLobbyState(data);
+      setLobbyState({
+
+      });
     });
     socket.on("playerLeft", (data) => {
       setLobbyState(data);
       setPlayers(data.playersAmt);
     });
     socket.on("playerJoined", (data) => {
-      setLobbyState(data);
+      socket.emit("playerJoined", (playerData) => {
+        setPlayers(playerData);
+      })
       setPlayers(data.playersAmt);
     });
     socket.on("readyUp", (data) => {
@@ -40,20 +52,25 @@ function HostGamePage({ lobbyObj }) {
 
   //Setting states:
   const [settingsState, setSettingsState] = useState({
-    cardCount: lobbyState.deckSize,
+    cardCount: lobbyObj.deckSize,
     handSize: lobbyState.handSize,
     maxLife: lobbyState.life,
     lobbySize: lobbyState.lobbySize,
   });
   const [playerArr, setplayerArr] = useState(new Map());
   const UpdateMapArray = (k, v) => {
+    let tempArray = playerArr;
+    tempArray.set();
+    setplayerArr(tempArray);
     setplayerArr(new Map(playerArr.set(k, v)));
   };
   //UpdateMapArray(lobbyState.name, false);
-  
+
   // Readying up states:
   const [players, setPlayers] = useState(lobbyState.playerAmt);
   const [ready, setReady] = useState(lobbyState.ready);
+
+
 
   return (
     <div className="container">
@@ -78,6 +95,9 @@ function HostGamePage({ lobbyObj }) {
         </div>
         <div className="col-md-6 text-end">
           <h2>Players</h2>
+          {players.map(player => {
+            <h1>Player 3</h1>
+          })}
         </div>
         {/*Select deck og start game*/}
         <div className="row p-5">
@@ -85,7 +105,7 @@ function HostGamePage({ lobbyObj }) {
             <DeckDropDown />
           </div>
           <div className="col-md-4 offset-md-4 text-end">
-            <StartButton players={players} ready={ready} />
+            <StartButton players={players.size} ready={ready} />
           </div>
         </div>
       </div>
@@ -149,24 +169,6 @@ function addDeck(deck) {
     id: lobbyIgitd, 
   }*/
   socket.emit("DeckChose", deck);
-}
-
-function StartButton({ players, ready }) {
-  return (
-    <div>
-      <button
-        type="button"
-        className="btn btn-primary col-4"
-        disabled={players >= 2 && ready === players ? false : true}
-        onClick={() => StartGame(players, ready)}
-      >
-        Start game
-      </button>
-      <p className={ready === players ? "text-success" : "text-danger"}>
-        Players ready: {ready}/{players}
-      </p>
-    </div>
-  );
 }
 
 //TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
