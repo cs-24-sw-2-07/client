@@ -55,7 +55,7 @@ function HostGamePage() {
                   <label htmlFor="lobbySize"> Lobby Size:</label>
                   <input
                     type="number"
-                    className="form-control" 
+                    className="npm " 
                     id="lobbySize"
                     value={lobbySize}
                     onChange={(e) => setLobbySize(e.target.value)}>
