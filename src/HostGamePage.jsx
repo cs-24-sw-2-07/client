@@ -24,6 +24,9 @@ function HostGamePage(props) {
     socket.on("StopReadyUp", data => {
       setReady(Number(data)); 
     });
+    socket.on("hostReadyUp", readyPlayers => {
+      setReady(Number(readyPlayers));
+    })
 
     return () => {
       socket.off("changeSetting"); 
@@ -31,6 +34,7 @@ function HostGamePage(props) {
       socket.off("playerJoined"); 
       socket.off("readyUp"); 
       socket.off("StopReadyUp"); 
+      socket.off("hostReadyUp");
     }
   }, []);
 
@@ -143,7 +147,7 @@ function GetDecksDropDown() {
   //Creates an option for every deck saved in localStorage 
   return (
     decks.forEach(deck => (
-      <li><button key={deck.id} type="button" onClick={() => addDeck(deck)}>{deck.name}</button></li>
+      <li><button key={deck.id} type="button" className="dropdown-item" onClick={() => addDeck(deck)}>{deck.name}</button></li>
     )));
 }
 
@@ -174,9 +178,10 @@ function StartButton({ players, ready }) {
 }
 
 //TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
-function StartGame(players, ready) {
+function StartGame() {
   //TODO: Start game event here
-  return; 
+  //Make an obj that contains the room id
+  socket.emit("StartGame");
 }
 
 export default HostGamePage;
