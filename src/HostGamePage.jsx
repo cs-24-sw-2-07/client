@@ -42,6 +42,12 @@ function HostGamePage({ lobbyObj }) {
   const [handSize, setHandSize] = useState(lobbyState.handSize);
   const [maxLife, setMaxLife] = useState(lobbyState.life);
   const [lobbySize, setLobbySize] = useState(lobbyState.lobbySize);
+  const [settingsState, setSettingsState] = useState({
+    cardCount: lobbyState.deckSize,
+    handSize: lobbyState.handSize,  
+    maxLife: lobbyState.life,
+    lobbySize: lobbyState.lobbySize
+  });
 
   // Readying up states:
   const [players, setPlayers] = useState(lobbyState.playerAmt);
@@ -166,7 +172,7 @@ function StartButton({ players, ready }) {
       <button
         type="button"
         className="btn btn-primary col-4"
-        disabled={players >= 2 && ready === players ? "false" : "true"}
+        disabled={players >= 2 && ready === players ? false : true}
         onClick={() => StartGame(players, ready)}
       >
         Start game
