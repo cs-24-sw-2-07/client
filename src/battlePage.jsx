@@ -19,7 +19,8 @@ function BattlePage(props) {
   let [oppLife, setOppLife] = useState(props.maxLives);
   let [disableCards, setdisableCards] = useState(false);
   let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
-  let [displayCard, setDisplayCard] = useState(myDeck[0]);
+  let [displayCard, setDisplayCard] = useState(myDeck.cards[0]);
+  console.log(displayCard)
 
   return (
     <>
@@ -33,6 +34,7 @@ function BattlePage(props) {
       <DisplayChosenCard
         displayCard={displayCard}
         setDisplayCard={setDisplayCard}
+        myTurn={myTurn}
       />
 
       <DisplayHand
@@ -44,6 +46,7 @@ function BattlePage(props) {
         setMyTurn={setMyTurn}
         disableCards={disableCards}
         setdisableCards={setdisableCards}
+        setDisplayCard={setDisplayCard}
       />
     </>
   );

@@ -198,7 +198,7 @@ function CreateDeckPage(){
           </div>
           <div className="col-9">
             <div className="row">
-            <label htmlFor="question">Question:</label>
+              <label htmlFor="question">Question:</label>
               <textarea type="text" placeholder="Place Your Question Here" id="question" rows="9" value={questionHook} onChange={(e) => {setQuestionHook(e.target.value)}}></textarea>
             </div>
             <div className="row">
