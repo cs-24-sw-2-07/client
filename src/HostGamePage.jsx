@@ -43,7 +43,8 @@ function HostGamePage(props) {
   const [handSize, setHandSize] = useState(7);
   const [maxLife, setMaxLife] = useState(5);
   const [lobbySize, setLobbySize] = useState(2);
-
+  const playerArr = [{}]
+  const [joinedPlayer, setJoinedPlayers] = useState([{}]);
   // Readying up states:
   const [players, setPlayers] = useState(1);
   const [ready, setReady] = useState(0);
