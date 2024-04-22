@@ -4,7 +4,6 @@ import { socket } from "./socket";
 
 function HostGamePage({ lobbyObj }) {
   const [lobbyState, setLobbyState] = useState(lobbyObj);
-  console.log(lobbyState);
   //TODO: Socket events placed here
   useEffect(() => {
     socket.on("changeSetting", (data) => {
@@ -39,16 +38,22 @@ function HostGamePage({ lobbyObj }) {
   }, []);
 
   //Setting states:
-  const [cardCount, setCardCount] = useState(15);
-  const [handSize, setHandSize] = useState(7);
-  const [maxLife, setMaxLife] = useState(5);
-  const [lobbySize, setLobbySize] = useState(2);
-  const playerArr = [{}];
-  const [joinedPlayer, setJoinedPlayers] = useState([{}]);
+  const [settingsState, setSettingsState] = useState({
+    cardCount: lobbyState.deckSize,
+    handSize: lobbyState.handSize,
+    maxLife: lobbyState.life,
+    lobbySize: lobbyState.lobbySize,
+  });
+  const [playerArr, setplayerArr] = useState(new Map());
+  setplayerArr(
+    playerArr.set(lobbyState.name, {
+      ready: lobbyState.ready,
+      name: lobbyState.name,
+    })
+  );
   // Readying up states:
   const [players, setPlayers] = useState(lobbyState.playerAmt);
   const [ready, setReady] = useState(lobbyState.ready);
-  console.log(players);
 
   return (
     <div className="container">
@@ -63,26 +68,25 @@ function HostGamePage({ lobbyObj }) {
 
       {/*Settings og Players*/}
 
-      <div className="row">
-        <div className="col">
+      <div className="row align-items-start">
+        <div className="col-md-6">
           <h2>Settings</h2>
-          <Settings 
-            cardCount={cardCount} setCardCount={setCardCount} 
-            handSize={handSize} setHandSize={setHandSize}
-            maxLife={maxLife} setMaxLife={setMaxLife}/>
-          <div className="col-md-6">
-            <h3>players</h3>
+          <Settings
+            settingsState={settingsState}
+            setSettingsState={setSettingsState}
+          />
+        </div>
+        <div className="col-md-6 text-end">
+          <h2>Players</h2>
+        </div>
+        {/*Select deck og start game*/}
+        <div className="row p-5">
+          <div className="col ">
+            <DeckDropDown />
           </div>
-        </div>
-      </div>
-
-      {/*Select deck og start game*/}
-      <div className="row p-5">
-        <div className="col ">
-          <DeckDropDown />
-        </div>
-        <div className="col-md-4 offset-md-4 text-end">
-          <StartButton players={players} ready={ready} />
+          <div className="col-md-4 offset-md-4 text-end">
+            <StartButton players={players} ready={ready} />
+          </div>
         </div>
       </div>
     </div>
@@ -153,7 +157,7 @@ function StartButton({ players, ready }) {
       <button
         type="button"
         className="btn btn-primary col-4"
-        disabled={players >= 2 && ready === players ? "true" : "false"}
+        disabled={players >= 2 && ready === players ? "false" : "true"}
         onClick={() => StartGame(players, ready)}
       >
         Start game
@@ -171,7 +175,8 @@ function StartGame() {
   //Make an obj that contains the room id
   socket.emit("StartGame");
 }
-function Settings(props) {
+
+function Settings({ settingsState, setSettingsState }) {
   return (
     <form>
       <div className="form-group">
@@ -181,36 +186,41 @@ function Settings(props) {
             type="number"
             className="form-control"
             id="decksize"
-            value={cardCount}
-            onChange={(e) => setCardCount(e.target.value)}
+            value={settingsState.cardCount}
+            onChange={(e) => setSettingsState.cardCount(e.target.value)}
           ></input>
           <label htmlFor="handsize"> Hand Size:</label>
           <input
             type="number"
             className="form-control"
             id="handsize"
-            value={handSize}
-            onChange={(e) => setHandSize(e.target.value)}
+            value={settingsState.handSize}
+            onChange={(e) => setSettingsState.handSize(e.target.value)}
           ></input>
           <label htmlFor="Maxlife"> Life: </label>
           <input
             type="number"
             className="form-control"
             id="lifesize"
-            value={maxLife}
-            onChange={(e) => setMaxLife(e.target.value)}
+            value={settingsState.maxLife}
+            onChange={(e) => settingsState.MaxLife(e.target.value)}
           ></input>
           <label htmlFor="lobbySize"> Lobby Size:</label>
           <input
             type="number"
             className="form-control"
             id="lobbySize"
-            value={lobbySize}
-            onChange={(e) => setLobbySize(e.target.value)}
+            value={settingsState.lobbySize}
+            onChange={(e) => setSettingsState.LobbySize(e.target.value)}
           ></input>
         </div>
       </div>
     </form>
   );
 }
+
+function PlayerOverview({playerArr, setplayerArr}) {
+
+}
+
 export default HostGamePage;
