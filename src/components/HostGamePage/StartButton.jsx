@@ -1,3 +1,7 @@
+export { StartButton }
+
+import { socket } from "./socket";
+
 function StartButton({ players, ready }) {
     return (
         <div>
@@ -15,3 +19,10 @@ function StartButton({ players, ready }) {
         </div>
     );
 }
+
+//TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
+function StartGame() {
+    //TODO: Start game event here
+    //Make an obj that contains the room id
+    socket.emit("StartGame");
+  }

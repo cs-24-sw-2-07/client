@@ -1,6 +1,8 @@
 import { } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
+import {StartButton} from "./components/HostGamePage/StartButton";
+import {DeckDropDown} from "./components/HostGamePage/DropDown";
 
 function HostGamePage({ lobbyObj }) {
   /*const [lobbyState, setLobbyState] = useState({
@@ -13,11 +15,11 @@ function HostGamePage({ lobbyObj }) {
     "playerAmt": 1
   });*/
   
-  console.log(lobbyState);
+  console.log(lobbyObj);
   useEffect(() => {
     socket.on("changeSetting", (data) => {
       setLobbyState({
-
+        
       });
     });
     socket.on("playerLeft", (data) => {
@@ -96,9 +98,7 @@ function HostGamePage({ lobbyObj }) {
         </div>
         <div className="col-md-6 text-end">
           <h2>Players</h2>
-          {players.map(player => {
-            <h1>Player 3</h1>
-          })}
+
         </div>
         {/*Select deck og start game*/}
         <div className="row p-5">
@@ -112,71 +112,6 @@ function HostGamePage({ lobbyObj }) {
       </div>
     </div>
   );
-}
-
-function DeckDropDown() {
-  //TODO: Call function here that gets the decks and add dropdown items
-  return (
-    <div className="dropdown">
-      <div className="btn-group">
-        <button
-          className="btn btn-primary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Choose Deck
-        </button>
-        <ul className="dropdown-menu">
-          <GetDecksDropDown onClick={() => socket.emit("test", "/12345 ")} />
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-function GetDecksDropDown() {
-  const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
-  if (decks === null) {
-    return (
-      <li>
-        <button type="button" className="dropdown-item">
-          {" "}
-          No decks to choose from :/
-        </button>
-      </li>
-    );
-  }
-
-  //Creates an option for every deck saved in localStorage
-  return decks.forEach((deck) => (
-    <li>
-      <button
-        key={deck.id}
-        type="button"
-        className="dropdown-item"
-        onClick={() => addDeck(deck)}
-      >
-        {deck.name}
-      </button>
-    </li>
-  ));
-}
-
-function addDeck(deck) {
-  // Add room id from the server
-  /*const data = {
-    deck: deck, 
-    id: lobbyIgitd, 
-  }*/
-  socket.emit("DeckChose", deck);
-}
-
-//TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
-function StartGame() {
-  //TODO: Start game event here
-  //Make an obj that contains the room id
-  socket.emit("StartGame");
 }
 
 function Settings({ settingsState, setSettingsState }) {
