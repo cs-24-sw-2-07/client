@@ -3,7 +3,7 @@ import { Deck } from "./classes/deck";
 import { Card } from "./classes/card";
 
 // Components in use
-import { DeckPicker } from "./components/deckbuilderComponets/DeckPicker2.jsx";
+import { DeckPicker } from "./components/deckbuilderComponets/DeckPicker.jsx";
 import { DeckEditor } from "./components/deckbuilderComponets/DeckEditor.jsx";
 
 function CreateDeckPage() {
@@ -20,27 +20,9 @@ function CreateDeckPage() {
   let [hiddenDeck, setHiddenDeck] = useState(false);
   let [decks, setDecks] = useState(startDeck);
   let [deckName, setDeckName] = useState(decks[0].name);
-  //let [cardName, setCardName]=useState(decks[0].cards[0].name);
   let [deckIndex, setDeckIndex] = useState(0);
   let [cardIndex, setCardIndex] = useState(0);
-  //let [questionHook, setQuestionHook]=useState(decks[0].cards[0].question);
-  //let [answerHook, setAnswerHook]=useState(decks[0].cards[0].answer);
-
   let [card, setCard] = useState(decks[0].cards[0]);
-
-  console.log(decks);
-  //save changes on edit.
-  //updates everytime card changes
-  // useEffect(() => {
-  //   let updatedDeck = decks;
-  //   updatedDeck[deckIndex].cards[cardIndex] = card;
-  //   setDecks(updatedDeck);
-  //   //saveDecks();
-  //   //setCard(decks[deckIndex].cards[cardIndex]);
-  //   //setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
-  //   //setQuestionHook(decks[deckIndex].cards[cardIndex].question);
-  //   //setCardName(decks[deckIndex].cards[cardIndex].name);
-  // }, [card]);
 
   function showCard(index) {
     let updatedDeck = decks;
@@ -48,7 +30,6 @@ function CreateDeckPage() {
     updatedDeck[deckIndex].cards[cardIndex].answer = card.answer;
     updatedDeck[deckIndex].cards[cardIndex].name = card.name;
     setDecks(updatedDeck);
-    //saveDecks();
     setCardIndex(index);
     setCard(decks[deckIndex].cards[index]);
   }
@@ -60,16 +41,11 @@ function CreateDeckPage() {
     setCard(card);
   }
 
-  //updates page everytime a question, answer, cardname or deckname is edited
+  //updates page everytime a deckname is edited
   useEffect(() => {
     let updatedDeck = decks;
     updatedDeck[deckIndex].name = deckName;
-    // Ikke nødvendigt at opdatere kort da det allerede er gjort.
-    //updatedDeck[deckIndex].cards[cardIndex].question = card.question;
-    //updatedDeck[deckIndex].cards[cardIndex].answer = card.answer;
-    //updatedDeck[deckIndex].cards[cardIndex].name = card.name;
     setDecks(updatedDeck);
-    //saveDecks();
   }, [deckName]);
 
   function showCardEditor(deckIndex) {
@@ -78,10 +54,6 @@ function CreateDeckPage() {
     setDeckName(decks[deckIndex].name);
     setCardIndex(0);
     setCard(decks[deckIndex].cards[0]);
-    //TODO: setCard(decks[deckIndex].cards[cardIndex]);
-    //setAnswerHook(decks[2].cards[0].answer);
-    //setQuestionHook(decks[2].cards[0].question);
-    //setCardName(decks[2].cards[0].name);
   }
 
   function saveDecks() {
@@ -109,9 +81,6 @@ function CreateDeckPage() {
       setCardIndex(0);
       setCard(decks[deckIndex].cards[0]);
       setDecks(updatedDecks);
-      //setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
-      //setQuestionHook(decks[deckIndex].cards[cardIndex].question);
-      //setCardName(decks[deckIndex].cards[cardIndex].name);
     }
   };
 

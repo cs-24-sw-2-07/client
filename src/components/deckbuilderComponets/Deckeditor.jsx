@@ -1,4 +1,4 @@
-import { ListCards } from "./ListCards.jsx";
+import { CardsList } from "./CardsList.jsx";
 
 function DeckEditor({
   hiddenDeck,
@@ -46,7 +46,7 @@ function DeckEditor({
       <div className="row p-3"></div>
       <div className="row">
         <div className="col-3">
-          <ListCards cards={cards} cardIndex={cardIndex} showCard={showCard} />
+          <CardsList cards={cards} cardIndex={cardIndex} showCard={showCard} />
         </div>
         <div className="col-9">
           <div className="row">

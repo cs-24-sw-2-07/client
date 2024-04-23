@@ -1,5 +1,5 @@
 //renders list of cards and shows the individual card when clicked
-function ListCards({cards, cardIndex, showCard}){
+function CardsList({cards, cardIndex, showCard}){
   return <>
     <label htmlFor="cards">Pick A Card:</label>
     <select className="form-select" id="cards" size="18" defaultValue={cardIndex}>
@@ -11,4 +11,4 @@ function ListCards({cards, cardIndex, showCard}){
   </>
 }
 
-export {ListCards};
+export {CardsList};
