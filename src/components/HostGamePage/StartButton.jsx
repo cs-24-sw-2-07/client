@@ -1,6 +1,5 @@
 export { StartButton }
-
-import { socket } from "./socket";
+import { socket } from "./../../socket";
 
 function StartButton({ players, ready }) {
     return (
