@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { socket } from "./socket";
 import { StartButton } from "./components/HostGamePage/StartButton";
 import { DeckDropDown } from "./components/HostGamePage/DropDown";
+import { Settings } from "./components/HostGamePage/Settings";
 
-function HostGamePage({ lobbyObj }) {
+function HostGamePage({ lobbyObj: lobbyState }) {
 	/*const [lobbyState, setLobbyState] = useState({
 	  "deckSize": 15,
 	  "handSize": 5,
@@ -15,7 +16,7 @@ function HostGamePage({ lobbyObj }) {
 	  "playerAmt": 1
 	});*/
 
-	console.log(lobbyObj);
+	console.log(lobbyState);
 	useEffect(() => {
 		socket.on("changeSetting", (data) => {
 			
@@ -48,15 +49,9 @@ function HostGamePage({ lobbyObj }) {
 	}, []);
 
 	//Room id
-	const roomID = lobbyObj.id;
+	const roomID = lobbyState.id;
 
-	//Setting states:
-	const [settingsState, setSettingsState] = useState({
-		cardCount: lobbyObj.deckSize,
-		handSize: lobbyObj.handSize,
-		maxLife: lobbyObj.life,
-		lobbySize: lobbyObj.lobbySize,
-	});
+	
 	//TODO: Send the player map from the server and put it into a map here 
 	const [playerArr, setplayerArr] = useState(new Map());
 	const UpdateMapArray = (k, v) => {
@@ -67,8 +62,8 @@ function HostGamePage({ lobbyObj }) {
 	//UpdateMapArray(lobbyObj.name, false);
 
 	// Readying up states: //TODO: make it such that this is updated by the map
-	const [players, setPlayers] = useState(lobbyObj.playerAmt);
-	const [ready, setReady] = useState(lobbyObj.ready);
+	const [players, setPlayers] = useState(lobbyState.playerAmt);
+	const [ready, setReady] = useState(lobbyState.ready);
 
 	return (
 		<div className="container">
@@ -85,10 +80,8 @@ function HostGamePage({ lobbyObj }) {
 
 			<div className="row align-items-start">
 				<div className="col-md-6">
-					<h2>Settings</h2>
 					<Settings
-						settingsState={settingsState}
-						setSettingsState={setSettingsState}
+						lobbyState={lobbyState}
 					/>
 				</div>
 				<div className="col-md-6 text-end">
@@ -97,7 +90,7 @@ function HostGamePage({ lobbyObj }) {
 				</div>
 				{/*Select deck og start game*/}
 				<div className="row p-5">
-					<div className="col ">
+					<div className="col">
 						<DeckDropDown />
 					</div>
 					<div className="col-md-4 offset-md-4 text-end">
@@ -109,60 +102,6 @@ function HostGamePage({ lobbyObj }) {
 	);
 }
 
-function Settings({ settingsState, setSettingsState }) {
-	return (
-		<form>
-			<div className="form-group">
-				<div className="col-4">
-					<label htmlFor="decksize">Deck Size:</label>
-					<input
-						type="number"
-						className="form-control"
-						id="decksize"
-						value={settingsState.cardCount}
-						onChange={(e) => setSettingsState({
-							...settingsState,
-							cardCount: e.target.value
-						})}
-					></input>
-					<label htmlFor="handsize"> Hand Size:</label>
-					<input
-						type="number"
-						className="form-control"
-						id="handsize"
-						value={settingsState.handSize}
-						onChange={(e) => setSettingsState({
-							...settingsState,
-							handSize: e.target.value
-						})}
-					></input>
-					<label htmlFor="Maxlife"> Life: </label>
-					<input
-						type="number"
-						className="form-control"
-						id="lifesize"
-						value={settingsState.maxLife}
-						onChange={(e) => setSettingsState({
-							...settingsState,
-							maxLife: e.target.value
-						})}
-					></input>
-					<label htmlFor="lobbySize"> Lobby Size:</label>
-					<input
-						type="number"
-						className="form-control"
-						id="lobbySize"
-						value={settingsState.lobbySize}
-						onChange={(e) => setSettingsState({
-							...settingsState,
-							LobbySize: e.target.value
-						})}
-					></input>
-				</div>
-			</div>
-		</form>
-	);
-}
 
 //function PlayerOverview({playerArr, setplayerArr}) {}
 
