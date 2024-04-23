@@ -23,7 +23,7 @@ function DeckPicker(props){
   const addDeck = () => {
     const updatedDecks = [...props.decks, new Deck({name:"New Deck"})];
     props.setDecks(updatedDecks);
-    props.saveDecks();
+    props.saveDecks(updatedDecks);
   };
 
   //delete deck
@@ -31,9 +31,11 @@ function DeckPicker(props){
     if(props.decks.length === 1){
       const updatedDecks = [new Deck({name:"New Deck"})];
       props.setDecks(updatedDecks);
+      props.saveDecks(updatedDecks);
     }else{
       const updatedDecks = props.decks.filter((_,index) => index !== deckIndex);
       props.setDecks(updatedDecks);
+      props.saveDecks(updatedDecks);
     }
   };
 
