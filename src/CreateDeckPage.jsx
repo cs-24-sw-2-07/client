@@ -77,6 +77,7 @@ function CreateDeckPage() {
     setDeckIndex(deckIndex);
     setDeckName(decks[deckIndex].name);
     setCardIndex(0);
+    setCard(decks[deckIndex].cards[0]);
     //TODO: setCard(decks[deckIndex].cards[cardIndex]);
     //setAnswerHook(decks[2].cards[0].answer);
     //setQuestionHook(decks[2].cards[0].question);
@@ -106,8 +107,8 @@ function CreateDeckPage() {
       let updatedDecks = [...decks];
       updatedDecks[deckIndex].cards.splice(cardIndex, 1);
       setCardIndex(0);
+      setCard(decks[deckIndex].cards[0]);
       setDecks(updatedDecks);
-      setCard(decks[deckIndex].cards[cardIndex]);
       //setAnswerHook(decks[deckIndex].cards[cardIndex].answer);
       //setQuestionHook(decks[deckIndex].cards[cardIndex].question);
       //setCardName(decks[deckIndex].cards[cardIndex].name);

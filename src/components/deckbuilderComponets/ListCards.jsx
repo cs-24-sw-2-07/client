@@ -5,7 +5,7 @@ function ListCards({cards, cardIndex, showCard}){
     <select className="form-select" id="cards" size="18" defaultValue={cardIndex}>
       {// ? is if there are no cards
         cards.map((_,index)=>
-          <option className={(index===cardIndex)?"text-primary font-wieght-bold":""}key={index} onClick={() => {showCard(index);}}>{"Card "+[index+1]+": " + cards[index].name}</option>)
+          <option selected={index==cardIndex} key={index} onClick={() => {showCard(index);}}>{"Card "+[index+1]+": " + cards[index].name}</option>)
       }
     </select>
   </>
