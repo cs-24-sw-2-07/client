@@ -56,8 +56,8 @@ function CreateDeckPage() {
     setCard(decks[deckIndex].cards[0]);
   }
 
-  function saveDecks() {
-    const deckString = JSON.stringify(decks);
+  function saveDecks(deckToSave) {
+    const deckString = JSON.stringify(deckToSave || decks);
     localStorage.setItem("userDeck", deckString);
   }
 
