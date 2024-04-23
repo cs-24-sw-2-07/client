@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
 function HostGamePage({ lobbyObj }) {
-  const [lobbyState, setLobbyState] = useState({
+  /*const [lobbyState, setLobbyState] = useState({
     "deckSize": 15,
     "handSize": 5,
     "life": 3,
@@ -11,8 +11,8 @@ function HostGamePage({ lobbyObj }) {
     "id": "12345",
     "ready": 0,
     "playerAmt": 1
-  });
-
+  });*/
+  
   console.log(lobbyState);
   useEffect(() => {
     socket.on("changeSetting", (data) => {
@@ -50,27 +50,28 @@ function HostGamePage({ lobbyObj }) {
     };
   }, []);
 
+  //Room id
+  const roomID = lobbyObj.id;
+
   //Setting states:
   const [settingsState, setSettingsState] = useState({
     cardCount: lobbyObj.deckSize,
-    handSize: lobbyState.handSize,
-    maxLife: lobbyState.life,
-    lobbySize: lobbyState.lobbySize,
+    handSize: lobbyObj.handSize,
+    maxLife: lobbyObj.life,
+    lobbySize: lobbyObj.lobbySize,
   });
+  //TODO: Send the player map from the server and put it into a map here 
   const [playerArr, setplayerArr] = useState(new Map());
   const UpdateMapArray = (k, v) => {
     let tempArray = playerArr;
-    tempArray.set();
+    tempArray.set(k, v);
     setplayerArr(tempArray);
-    setplayerArr(new Map(playerArr.set(k, v)));
   };
-  //UpdateMapArray(lobbyState.name, false);
+  UpdateMapArray(lobbyState.name, false);
 
-  // Readying up states:
-  const [players, setPlayers] = useState(lobbyState.playerAmt);
-  const [ready, setReady] = useState(lobbyState.ready);
-
-
+  // Readying up states: //TODO: make it such that this is updated by the map
+  const [players, setPlayers] = useState(lobbyObj.playerAmt);
+  const [ready, setReady] = useState(lobbyObj.ready);
 
   return (
     <div className="container">
