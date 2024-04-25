@@ -11,7 +11,7 @@ function BattlePage(props) {
   
     let myDeck = JSON.parse(localStorage.getItem("userDeck"))[0];//props.chosenDeck;
     // TODO FUNCTION TO GET OPPENTED DECK
-    let oppDeck = props.oppDeck
+    //let oppDeck = props.oppDeck
 
     // Setting up varibels for deck controlling
     const startingHand = useRef(chooseStartingHand(myDeck.cards.length, props.handSize))
@@ -19,7 +19,7 @@ function BattlePage(props) {
 
     let [hand, setHand] = useState(startingHand.current);
     let [handDeck, setHandDeck] = useState([]);
-    let [myLife, setMyLife] = useState(props.maxLives);
+    let [myLife, /*setMyLife*/] = useState(props.maxLives);
     let [oppLife, setOppLife] = useState(props.maxLives);
     let [disableCards, setdisableCards] = useState(false);
     let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
@@ -82,7 +82,6 @@ function BattlePage(props) {
       
             <DisplayChosenCard
                 displayCard={displayCard}
-                setDisplayCard={setDisplayCard}
                 myTurn={myTurn}
             />
 
