@@ -1,4 +1,4 @@
-function DisplayChosenCard(props) {
+function DisplayChosenCard({displayCard, myTurn}) {
     return (
         <div className="container-fluid">
             <div className="row  px-3">
@@ -9,7 +9,7 @@ function DisplayChosenCard(props) {
                             type="text"
                             disabled
                             rows="8"
-                            value={props.displayCard.question}
+                            value={displayCard.question}
                         ></textarea>
                     </div>
 
@@ -19,7 +19,8 @@ function DisplayChosenCard(props) {
                             type="text"
                             disabled
                             rows="8"
-                            value={props.myTurn ? props.displayCard.answer : ""}
+                            value={myTurn ? displayCard.answer : ""}
+
                         ></textarea>
                     </div>
                 </div>
