@@ -12,11 +12,11 @@ function DisplayLives(props) {
                     </h1>
                 </div>
                 <div className="col-2 text-center">
-                    <h1>{[props.myTurn ? "Your Turn" : "Opp Turn"]}</h1>
+                    <h1>{[props.myTurn ? "Your Turn" : "Opponent Turn"]}</h1>
                 </div>
                 <div className="col-5 text-end">
                     <h1>
-            OppLives: {"❤".repeat(props.oppLives)}
+                    OpponentLives: {"❤".repeat(props.oppLives)}
                         {"🖤".repeat(props.maxLives - props.oppLives)}
                     </h1>
                 </div>
