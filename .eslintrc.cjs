@@ -25,7 +25,6 @@ module.exports = {
     ],
     "react/prop-types": 0,
     indent: ["error", 4],
-    "linebreak-style": ["error", "windows"],
     quotes: ["error", "double"],
     "react/button-has-type": 2,
     "react/no-unused-prop-types": 2,
