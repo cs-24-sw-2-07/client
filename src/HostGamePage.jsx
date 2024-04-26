@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
 function HostGamePage({ lobbyObj }) {
-  const [lobbyState, setLobbyState] = useState(lobbyObj); 
+  const [lobbyState, setLobbyState] = useState(lobbyObj);
   console.log(lobbyState);
 
 
- // lobby ID number 
- let lobbyid  = "34567";//lobbyState.id
-
-function HostGamePage() {
+  // lobby ID number 
+  let lobbyid = lobbyState.id;//lobbyState.id
   //TODO: Socket events placed here 
   useEffect(() => {
     socket.on("changeSetting", data => {
@@ -19,27 +17,27 @@ function HostGamePage() {
     socket.on("playerLeft", data => {
       setLobbyState(data);
       setPlayers(data.playersAmt);
-    }); 
+    });
     socket.on("playerJoined", data => {
       setLobbyState(data);
       setPlayers(data.playersAmt);
-    }); 
+    });
     socket.on("readyUp", data => {
       setReady(Number(data));
     });
     socket.on("StopReadyUp", data => {
-      setReady(Number(data)); 
+      setReady(Number(data));
     });
     socket.on("hostReadyUp", readyPlayers => {
       setReady(Number(readyPlayers));
     });
 
     return () => {
-      socket.off("changeSetting"); 
+      socket.off("changeSetting");
       socket.off("playerLeft");
-      socket.off("playerJoined"); 
-      socket.off("readyUp"); 
-      socket.off("StopReadyUp"); 
+      socket.off("playerJoined");
+      socket.off("readyUp");
+      socket.off("StopReadyUp");
       socket.off("hostReadyUp");
     }
   }, []);
@@ -63,18 +61,13 @@ function HostGamePage() {
           {/*first column*/}
         </div>
         <div className="col">{/*second column*/}
-          {/*<button 
-          type="button"
-          className="btn btn-primary"
-          id="Delete_lobby button"
-          onClick={DeleteLobby}
-          >
-          Delete Lobby
-  </button>*/}
+          <div className="col-md-4 offset-md-4 text-end">
+            <DeleteButton id={lobbyid} />
+          </div>
         </div>
       </div>
       {/*Første row Lobby #id og delete lobby knap*/}
-    
+
       {/*Settings og Players*/}
       <div className="container">
         <div className="row">
@@ -170,8 +163,8 @@ function GetDecksDropDown() {
 function addDeck(deck) {
   // Add room id from the server
   const data = {
-    deck: deck, 
-    id: lobbyIgitd, 
+    deck: deck,
+    id: lobbyIgitd,
   }
   socket.emit("DeckChose", deck);
 }
@@ -192,6 +185,24 @@ function StartButton({ players, ready }) {
     </div>
   );
 }
+
+function DeleteButton(props) {
+  return (
+    <div>
+      <button
+        type="button"
+        className="btn btn-primary col-4"
+        onClick={() => socket.emit("deleteLobby", { id: props.id })}
+      > DeleteLobby
+      </button>
+    </div>
+  );
+}
+
+//kalde eventet delete lobby 
+//og lave pop up der der spørger om man er siker på om man vil dele et lobby 
+
+
 
 //TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
 function StartGame() {
