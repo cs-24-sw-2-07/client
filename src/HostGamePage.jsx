@@ -2,6 +2,9 @@ import { } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 
+function HostGamePage({ lobbyObj }) {
+  const [lobbyState, setLobbyState] = useState(lobbyObj); 
+  console.log(lobbyState);
 
 
  // lobby ID number 
@@ -10,29 +13,47 @@ import { socket } from "./socket";
 function HostGamePage() {
   //TODO: Socket events placed here 
   useEffect(() => {
-    socket.on("event", data => {
-      console.log(data); 
+    socket.on("changeSetting", data => {
+      setLobbyState(data);
     });
+    socket.on("playerLeft", data => {
+      setLobbyState(data);
+      setPlayers(data.playersAmt);
+    }); 
+    socket.on("playerJoined", data => {
+      setLobbyState(data);
+      setPlayers(data.playersAmt);
+    }); 
+    socket.on("readyUp", data => {
+      setReady(Number(data));
+    });
+    socket.on("StopReadyUp", data => {
+      setReady(Number(data)); 
+    });
+    socket.on("hostReadyUp", readyPlayers => {
+      setReady(Number(readyPlayers));
+    });
+
+    return () => {
+      socket.off("changeSetting"); 
+      socket.off("playerLeft");
+      socket.off("playerJoined"); 
+      socket.off("readyUp"); 
+      socket.off("StopReadyUp"); 
+      socket.off("hostReadyUp");
+    }
   }, []);
 
   //Setting states: 
-  const [cardCount, setCardCount] = useState(15);
-  const [handSize, setHandSize] = useState(7);
-  const [maxLife, setMaxLife] = useState(5);
-  const [lobbySize, setLobbySize] = useState(2);
+  const [cardCount, setCardCount] = useState(lobbyState.deckSize);
+  const [handSize, setHandSize] = useState(lobbyState.handSize);
+  const [maxLife, setMaxLife] = useState(lobbyState.life);
+  const [lobbySize, setLobbySize] = useState(lobbyState.lobbySize);
 
   // Readying up states:
-  const [players, setPlayers] = useState(1);
-  const [ready, setReady] = useState(0);
-  const [hostDeckCheck, setHostDeckCheck] = useState(false); 
-  
-  //The host readies up when a deck is chosen
-  const readyUpHost = () => {
-    if(!hostDeckCheck) {
-      setReady(ready + 1);
-    }
-    setHostDeckCheck(true); 
-  }
+  const [players, setPlayers] = useState(lobbyState.playerAmt);
+  const [ready, setReady] = useState(lobbyState.ready);
+  console.log(players);
 
   return (
     <div className="container">
@@ -104,7 +125,7 @@ function HostGamePage() {
       {/*Select deck og start game*/}
       <div className="row p-5">
         <div className="col ">
-          <DeckDropDown hasDeckBeenChosen={readyUpHost} />
+          <DeckDropDown />
         </div>
         <div className="col-md-4 offset-md-4 text-end">
           <StartButton players={players} ready={ready} />
@@ -114,7 +135,7 @@ function HostGamePage() {
   );
 }
 
-function DeckDropDown({ readyUpHandler }) {
+function DeckDropDown() {
   //TODO: Call function here that gets the decks and add dropdown items
   return (
     <div className="dropdown">
@@ -124,14 +145,14 @@ function DeckDropDown({ readyUpHandler }) {
           Choose Deck
         </button>
         <ul className="dropdown-menu">
-          <GetDecksDropDown  readyUpHandler={ readyUpHandler } />
+          <GetDecksDropDown />
         </ul>
       </div>
     </div>
   );
 }
 
-function GetDecksDropDown({ readyUpHandler }) {
+function GetDecksDropDown() {
   const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
   if (decks === null) {
     return (
@@ -142,18 +163,17 @@ function GetDecksDropDown({ readyUpHandler }) {
   //Creates an option for every deck saved in localStorage 
   return (
     decks.forEach(deck => (
-      <li><button key={deck.id} type="button" onClick={() => addDeck(deck, readyUpHandler)}>{deck.name}</button></li>
+      <li><button key={deck.id} type="button" className="dropdown-item" onClick={() => addDeck(deck)}>{deck.name}</button></li>
     )));
 }
 
-function addDeck(deck, handler) {
+function addDeck(deck) {
   // Add room id from the server
   const data = {
     deck: deck, 
     id: lobbyIgitd, 
   }
   socket.emit("DeckChose", deck);
-  handler();
 }
 
 
@@ -174,9 +194,10 @@ function StartButton({ players, ready }) {
 }
 
 //TODO: Ponder whether the button should check if people are ready or an event should --> Event would probably make more sense
-function StartGame(players, ready) {
+function StartGame() {
   //TODO: Start game event here
-  return; 
+  //Make an obj that contains the room id
+  socket.emit("StartGame");
 }
 
 export default HostGamePage;
