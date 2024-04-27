@@ -9,6 +9,16 @@ import { ReadyButton } from "./components/LobbyPage/ReadyUp.jsx";
 import { PlayerOverview } from "./components/LobbyPage/PlayersOverview.jsx";
 
 function LobbyPage({ lobbyState }) {
+  /*const [lobbyState, setLobbyState] = useState({
+	  "deckSize": 15,
+	  "handSize": 5,
+	  "life": 3,
+	  "lobbySize": 2,
+	  "id": "12345",
+	  "ready": 0,
+	  "playerAmt": 1
+	});*/
+
   console.log(lobbyState);
   useEffect(() => {
     socket.on("changeSetting", (data) => {
@@ -49,6 +59,7 @@ function LobbyPage({ lobbyState }) {
 
   //Room id & Host //TODO: figure this out
   const roomID = lobbyState.id;
+  //const isHost = isPlayerHost(players, socket.id);
   const [player, setPlayer] = useState(GetPlayer(players, socket.id));
   const isHost = player.host; 
   return (
@@ -67,11 +78,11 @@ function LobbyPage({ lobbyState }) {
         <div className="col-md-6">
           { isHost 
             ? <HostSettings lobbyState={lobbyState} />
-            : <JoinedSettings lobbyState={lobbyState} />
+            : <JoinedSettings lobbyState={lobbyState} /> 
           }
         </div>
-        <div className="col-md-4 order-md-2 mb-4">
-          <PlayerOverview id={roomID} players={players} player={player} /> 
+        <div className="col-md-6 text-end">
+          <PlayerOverview id={roomID} players={players} player={player} />
         </div>
       </div>
       <div className="row p-5">
@@ -92,6 +103,7 @@ function LobbyPage({ lobbyState }) {
 
 
 //function PlayerOverview({playerArr, setplayerArr}) {}
+//TODO: Move these to seperate function
 function countReadyPlayers(players) {
   let count = 0; 
   for(const player of players)
