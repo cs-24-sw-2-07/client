@@ -43,16 +43,13 @@ function LobbyPage({ lobbyState }) {
   }, []);
 
 	
-  // Player states: //TODO: make it such that this is updated by the map
+  //Room id & Host
   const [players, setPlayers] = useState(lobbyState.players);
-  const [playersAmt, setPlayerAmt] = useState(lobbyState.players.length);
-  const [ready, setReady] = useState(countReadyPlayers(lobbyState.players));
-
-  //Room id & Host //TODO: figure this out
-  const roomID = lobbyState.id;
-  //const isHost = isPlayerHost(players, socket.id);
   const [player, setPlayer] = useState(GetPlayer(players, socket.id));
+
   const isHost = player.host; 
+  const roomID = lobbyState.id;
+
   return (
     <div className="container">
       <div className="row">
@@ -65,14 +62,14 @@ function LobbyPage({ lobbyState }) {
       {/*Første row Lobby #id og delete lobby knap*/}
 
       {/*Settings og Players*/}
-      <div className="row p-5">
+      <div className="row p-6">
         <div className="col-3 bg-light">
           { isHost 
             ? <HostSettings lobbyState={lobbyState} />
             : <JoinedSettings lobbyState={lobbyState} /> 
           }
         </div>
-        <div className="col-6"></div>
+      <div className="col-6"></div>
         <div className="col-3 bg-light">
           <PlayerOverview players={players} />
         </div>
@@ -84,7 +81,7 @@ function LobbyPage({ lobbyState }) {
         <div className="col-6"></div>
         <div className="col-md-4 text-end">
           { isHost 
-            ? <StartButton players={playersAmt} ready={ready} id={roomID}/> 
+            ? <StartButton players={players} id={roomID} /> 
             : <ReadyButton player={player} id={roomID} />
           }
         </div>
@@ -97,12 +94,7 @@ function LobbyPage({ lobbyState }) {
 
 //function PlayerOverview({playerArr, setplayerArr}) {}
 //TODO: Move these to seperate file
-function countReadyPlayers(players) {
-  let count = 0; 
-  for(const player of players)
-    if(player.ready) count++; 
-  return count; 
-}
+
 
 function GetPlayer(playersArray, id) {
   for(const player of playersArray) {
