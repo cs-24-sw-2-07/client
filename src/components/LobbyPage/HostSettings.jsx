@@ -65,25 +65,25 @@ function CreateSetting({ label, id, settingsState, setSettingsState }) {
 
 function ReturnSettingObject(event, settingsState, key) {
   switch(key) {
-  case "deckSize":
-    return {
-      ...settingsState, 
-      deckSize: event.target.value
-    };
-  case "handSize": 
-    return {
-      ...settingsState, 
-      handSize: event.target.value
-    };
-  case "lifeSize": 
-    return {
-      ...settingsState, 
-      maxLife: event.target.value
-    };
-  case "lobbySize":
-    return {
-      ...settingsState, 
-      lobbySize: event.target.value
-    };
+    case "deckSize":
+      return {
+        ...settingsState, 
+        deckSize: event.target.value
+      };
+    case "handSize": 
+      return {
+        ...settingsState, 
+        handSize: event.target.value
+      };
+    case "lifeSize": 
+      return {
+        ...settingsState, 
+        maxLife: event.target.value
+      };
+    case "lobbySize":
+      return {
+        ...settingsState, 
+        lobbySize: event.target.value
+      };
   }
 }
