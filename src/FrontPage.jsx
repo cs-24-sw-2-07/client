@@ -17,7 +17,7 @@ export default function FrontPage() {
           <JoinGameModalButton navigateTo={() => navigateTo("/LobbyPage")} />
         </div>
         <div className="d-grid gap-2 col">
-          <HostGameModalButton navigateTo={() => navigateTo("/HostGamePage")} />
+          <HostGameModalButton navigateTo={() => navigateTo("/LobbyPage")} />
         </div>
         <div className="row p-5">
           <div className="d-grid gap-2 col-8 mx-auto">
@@ -43,7 +43,7 @@ function HostGameModalButton() {
   function hostGame() {
     //alert(`Host Game!\nInputted Name: ${displayName}`);
     console.log(socket);
-    socket.emit("createLobby", {name: displayName});
+    socket.emit("createLobby", displayName);
   }
 
   return (

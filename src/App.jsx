@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function App() {
-  const [lobbyObj, setLobbyObj] = useState({});
+  const [lobbyState, setLobbyState] = useState({});
 
   const navigate = useNavigate();
   function navigateTo(path) {
@@ -17,9 +17,9 @@ function App() {
   }
 
   useEffect(() => {
-    socket.on("Lobby", data => {
+    socket.on("lobby", data => {
       console.log(data);
-      setLobbyObj(data);
+      setLobbyState(data);
       navigateTo("/LobbyPage");
     });
     socket.on("RoomNotExist", () => {
@@ -27,7 +27,6 @@ function App() {
     });
     return () => {
       socket.off("Lobby");
-      socket.off("joinLobby");
       socket.off("RoomNotExist");
     };
   }, []);
@@ -36,7 +35,7 @@ function App() {
     <Routes>
       <Route path="/" element={<FrontPage />}></Route>
       <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
-      <Route path="LobbyPage" element={<LobbyPage lobbyObj={lobbyObj} />}></Route>
+      <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
     </Routes>
   );
 }

@@ -5,7 +5,7 @@ import { StartButton } from "./components/HostGamePage/StartButton";
 import { DeckDropDown } from "./components/HostGamePage/DropDown";
 import { Settings } from "./components/HostGamePage/Settings";
 
-function LobbyPage({ lobbyObj: lobbyState }) {
+function LobbyPage({ lobbyState }) {
 	/*const [lobbyState, setLobbyState] = useState({
 	  "deckSize": 15,
 	  "handSize": 5,
@@ -82,7 +82,7 @@ function LobbyPage({ lobbyObj: lobbyState }) {
 			</div>
 			<div className="row p-5">
 				<div className="col">
-					<DeckDropDown />
+					<DeckDropDown id={roomID} />
 				</div>
 				<div className="col-md-4 offset-md-4 text-end">
 					{isHost ? <StartButton players={playersAmt} ready={ready} /> : <ReadyUpButton player={player} />}

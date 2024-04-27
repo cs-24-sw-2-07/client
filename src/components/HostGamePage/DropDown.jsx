@@ -4,8 +4,7 @@ import { } from "react-router-dom";
 
 export { DeckDropDown };
 
-function DeckDropDown() {
-    //TODO: Call function here that gets the decks and add dropdown items
+function DeckDropDown( { id }) {
     return (
         <div className="dropdown">
             <div className="btn-group">
@@ -17,45 +16,54 @@ function DeckDropDown() {
                 >
                     Choose Deck
                 </button>
-                <ul className="dropdown-menu">
-                    <GetDecksDropDown />
-                </ul>
+                <GetDecksDropDown id={id} />
             </div>
         </div>
     );
 }
 //onClick={() => socket.emit("test", "/12345 ")
-function GetDecksDropDown() {
+function GetDecksDropDown( { id }) {
     const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
     if (decks === null) {
         return (
-            <li>
-                <button type="button" className="dropdown-item">
-                    No decks to choose from :/
-                </button>
-            </li>
+            <ul className="dropdown-menu">
+                <li>
+                    <button type="button" className="dropdown-item">
+                        No decks to choose from :/
+                    </button>
+                </li>
+            </ul>
         );
     }
+    /**/
     //Creates an option for every deck saved in localStorage
-    return decks.forEach((deck) => (
-        <li>
-            <button
-                key={deck.id}
-                type="button"
-                className="dropdown-item"
-                onClick={() => addDeck(deck)}
-            >
-                {deck.name}
-            </button>
-        </li>
-    ));
+    return (
+        <ul className="dropdown-menu">
+            {decks.map((deck, index) => {
+                return (
+                <li>
+                    <button
+                        type="button"
+                        className="dropdown-item"
+                        key={index}
+                        onClick={() => addDeck(deck, id)}>
+                        {deck.name}
+                    </button>
+                </li>);
+            })}
+        </ul>
+    );
 }
 
-function addDeck(deck) {
+function addDeck(deck, roomID) {
     // Add room id from the server
     /*const data = {
       deck: deck, 
       id: lobbyIgitd, 
     }*/
-    socket.emit("DeckChose", deck);
+    const eventObj = {
+        deck: deck, 
+        id: roomID
+    };
+    socket.emit("chooseDeck", eventObj);
 }
