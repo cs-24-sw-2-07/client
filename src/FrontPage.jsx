@@ -27,8 +27,7 @@ export default function FrontPage() {
               onClick={() => {
                 navigateTo("/CreateDeckPage");
               }}
-            >
-              Create or Edit Decks
+            > Create or Edit Decks
             </button>
           </div>
         </div>
