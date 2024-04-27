@@ -4,6 +4,7 @@ import { socket } from "./socket";
 import { StartButton } from "./components/HostGamePage/StartButton";
 import { DeckDropDown } from "./components/HostGamePage/DropDown";
 import { Settings } from "./components/HostGamePage/Settings";
+import { ReadyButton } from "./components/HostGamePage/ReadyButton";
 
 function LobbyPage({ lobbyState }) {
 	/*const [lobbyState, setLobbyState] = useState({
@@ -54,7 +55,7 @@ function LobbyPage({ lobbyState }) {
 	const [playersAmt, setPlayerAmt] = useState(lobbyState.players.length);
 	const [ready, setReady] = useState(countReadyPlayers(lobbyState.players));
 
-	//Room id & Host
+	//Room id & Host //TODO: figure this out
 	const roomID = lobbyState.id;
 	//const isHost = isPlayerHost(players, socket.id);
 	const [player, setPlayer] = useState(GetPlayer(players, socket.id));
@@ -85,27 +86,14 @@ function LobbyPage({ lobbyState }) {
 					<DeckDropDown id={roomID} />
 				</div>
 				<div className="col-md-4 offset-md-4 text-end">
-					{isHost ? <StartButton players={playersAmt} ready={ready} /> : <ReadyUpButton player={player} />}
+					{isHost ? <StartButton players={playersAmt} ready={ready} id={roomID}/> : <ReadyButton player={player} id={roomID} />}
 				</div>
 			</div>
 		</div>
 	);
 }
 
-function ReadyUpButton({ player }) {
-	return (
-		<div>
-            <button
-                type="button"
-                className="btn btn-primary col-4"
-				disabled={player.deck === null ? true : false}
-                onClick={() => ReadyUp()}
-            >
-                Ready Up
-            </button>
-        </div>
-	)
-}
+
 
 //function PlayerOverview({playerArr, setplayerArr}) {}
 function countReadyPlayers(players) {
