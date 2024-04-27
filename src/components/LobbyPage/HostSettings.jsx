@@ -1,7 +1,8 @@
 import { socket } from "../../socket";
-export { Settings }
+import { useState } from "react";
+export { HostSettings }
 
-function Settings({ lobbyState }) {
+function HostSettings({ lobbyState }) {
   //Setting states:
   const [settingsState, setSettingsState] = useState({
     cardCount: lobbyState.deckSize,

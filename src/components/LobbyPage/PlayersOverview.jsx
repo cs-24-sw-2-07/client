@@ -1,5 +1,5 @@
 import { socket } from "../../socket";
-import { useState, useEffect } from "react";
+//import { useState, useEffect } from "react";
 import { } from "react-router-dom";
 export { PlayerOverview };
 
@@ -24,7 +24,7 @@ function PrintPlayer(player) {
 
   return (
     <p>
-      {player.name} {isYou ? "(You)" : ""} 
+      {player.name} {isYou ? "(You)" : ""} {player.ready}
     </p>
   );
 }
