@@ -2,7 +2,9 @@ import { socket } from "../../socket";
 import { useState } from "react";
 export { HostSettings }
 
-function HostSettings({ lobbyState }) {
+//TODO: Currently you cannot change the number --> maybe because the setting has been implemented? 
+
+function HostSettings({ lobbyState }) { 
   //Setting states:
   const [settingsState, setSettingsState] = useState({
     cardCount: lobbyState.deckSize,
@@ -16,54 +18,72 @@ function HostSettings({ lobbyState }) {
       <h2>Settings</h2>
       <form>
         <div className="form-group">
-          <div className="col-4 bg-light text-dark">
-            <label htmlFor="decksize">Deck Size:</label>
-            <input
-              type="number"
-              className="form-control"
-              id="decksize"
-              value={settingsState.cardCount}
-              onChange={(e) => setSettingsState({
-                ...settingsState,
-                cardCount: e.target.value
-              })}
-            ></input>
-            <label htmlFor="handsize"> Hand Size:</label>
-            <input
-              type="number"
-              className="form-control"
-              id="handsize"
-              value={settingsState.handSize}
-              onChange={(e) => setSettingsState({
-                ...settingsState,
-                handSize: e.target.value
-              })}
-            ></input>
-            <label htmlFor="Maxlife"> Life: </label>
-            <input
-              type="number"
-              className="form-control"
-              id="lifesize"
-              value={settingsState.maxLife}
-              onChange={(e) => setSettingsState({
-                ...settingsState,
-                maxLife: e.target.value
-              })}
-            ></input>
-            <label htmlFor="lobbySize"> Lobby Size:</label>
-            <input
-              type="number"
-              className="form-control"
-              id="lobbySize"
-              value={settingsState.lobbySize}
-              onChange={(e) => setSettingsState({
-                ...settingsState,
-                LobbySize: e.target.value
-              })}
-            ></input>
-          </div>
+          <CreateSetting 
+            label="Deck Size:" 
+            id="deckSize" 
+            settingsState={settingsState} 
+            setSettingsState={setSettingsState}
+          />
+          <CreateSetting 
+            label="Hand Size:" 
+            id="handSize" 
+            settingsState={settingsState} 
+            setSettingsState={setSettingsState}
+          />
+          <CreateSetting 
+            label="Life:" 
+            id="lifeSize" 
+            settingsState={settingsState} 
+            setSettingsState={setSettingsState}
+          />
+          <CreateSetting 
+            label="Lobby Size:" 
+            id="lobbySize" 
+            settingsState={settingsState} 
+            setSettingsState={setSettingsState}
+          />
         </div>
       </form>
     </div>
   );
+}
+
+function CreateSetting({ label, id, settingsState, setSettingsState }) {
+  return (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input
+        type="number"
+        className="form-control"
+        id={id}
+        value={settingsState.cardCount}
+        onChange={(e) => setSettingsState(ReturnSettingObject(e, settingsState, id))}
+      ></input>
+    </div>
+  );
+}
+
+function ReturnSettingObject(event, settingsState, key) {
+  switch(key) {
+  case "deckSize":
+    return {
+      ...settingsState, 
+      deckSize: event.target.value
+    };
+  case "handSize": 
+    return {
+      ...settingsState, 
+      handSize: event.target.value
+    };
+  case "lifeSize": 
+    return {
+      ...settingsState, 
+      maxLife: event.target.value
+    };
+  case "lobbySize":
+    return {
+      ...settingsState, 
+      lobbySize: event.target.value
+    };
+  }
 }

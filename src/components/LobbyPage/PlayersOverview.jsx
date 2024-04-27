@@ -3,28 +3,26 @@ import { socket } from "../../socket";
 import { } from "react-router-dom";
 export { PlayerOverview };
 
-function PlayerOverview({ playersArr }) {
-  /*playersArr[0] = {
-		name: value.name,
-		ready: value.ready,
-		host: value.host,
-		playerid: key
-	}
-	*/
+function PlayerOverview({ players }) {
   return (
     <>
       <h2>Players: </h2>
-      {playersArr.map(player => PrintPlayer(player))}
+      {players.map(player => PrintPlayer(player))}
     </>
   );
 }
 
-function PrintPlayer(player) {
-  const isYou = player.playerid === socket.id; 
+function PrintPlayer(player) { //TODO: make it scrollable
+  const isYouStr = player.playerid === socket.id ? "(You)" : ""; 
+  const playerText = `${player.name} ${isYouStr}`;
+  const isReady = player.ready ? "Ready" : "Not ready"; 
+
+  let dots = ".....";
+  for(let i = playerText.length + isReady.length; i < 53; i++ ) {
+    dots += "."; 
+  }
 
   return (
-    <p>
-      {player.name} {isYou ? "(You)" : ""} {player.ready}
-    </p>
+    <p>{playerText + dots + isReady}</p>
   );
 }

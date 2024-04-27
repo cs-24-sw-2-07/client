@@ -10,8 +10,7 @@ function ReadyButton({ player, id }) {
                 className="btn btn-primary col-4"
 				disabled={player.deck === null}
                 onClick={() => socket.emit("playerReady", id)}
-            >
-                Ready Up
+            > Ready Up
             </button>
         </div>
 	);
