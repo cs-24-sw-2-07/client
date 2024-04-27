@@ -1,13 +1,14 @@
 import { socket } from "./../../socket";
 export { Settings }
+import { useState, useEffect } from "react";
 
 function Settings({ lobbyState }) {
 	//Setting states:
 	const [settingsState, setSettingsState] = useState({
-		cardCount: lobbyObj.deckSize,
-		handSize: lobbyObj.handSize,
-		maxLife: lobbyObj.life,
-		lobbySize: lobbyObj.lobbySize,
+		cardCount: lobbyState.deckSize,
+		handSize: lobbyState.handSize,
+		maxLife: lobbyState.life,
+		lobbySize: lobbyState.lobbySize,
 	});
     
     return (
