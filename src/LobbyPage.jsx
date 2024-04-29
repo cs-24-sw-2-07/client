@@ -77,8 +77,8 @@ function LobbyPage({ lobbyState }) {
         <div className="col-6"></div>
         <div className="col-md-4 text-end">
           { isHost 
-            ? <StartButton players={players} id={roomID} /> 
-            : <ReadyButton players={players} id={roomID} />
+            ? <StartButton players={players}  /> 
+            : <ReadyButton players={players}  />
           }
         </div>
       </div>

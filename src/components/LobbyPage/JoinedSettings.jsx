@@ -21,10 +21,10 @@ function JoinedSettings({ lobbyState }) {
   return (
     <div>
       <h2>Settings</h2>
-      <ShowSetting label="Deck Size:" setting={settingsState.deckSize}/>
-      <ShowSetting label="Hand Size:" setting={settingsState.handSize}/>
-      <ShowSetting label="Life:" setting={settingsState.life}/>
-      <ShowSetting label="lobbySize:" setting={settingsState.lobbySize}/>
+      <ShowSetting label="Deck Size:" setting={settingsState.deckSize} />
+      <ShowSetting label="Hand Size:" setting={settingsState.handSize} />
+      <ShowSetting label="Life:" setting={settingsState.life} />
+      <ShowSetting label="lobbySize:" setting={settingsState.lobbySize} />
     </div>
   );
 }
