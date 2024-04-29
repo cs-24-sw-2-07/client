@@ -23,7 +23,7 @@ function PrintPlayer(player, index) { //TODO: make it scrollable
   }
 
   return (
-    <div className="row">
+    <div className="row" key={index}>
       <div className="col"><p>{playerText}</p></div>
       <div className="col text-end"><p>{isReady}</p></div>
     </div>

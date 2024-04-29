@@ -30,9 +30,6 @@ function JoinedSettings({ lobbyState }) {
 }
 
 function ShowSetting({ label, setting }) {
-  const numberOfSpaces = 50 - label.length + String(setting).length; 
-  const space = Array(numberOfSpaces).fill("\u00A0").join("");
-
   return (
     <div className="row">
       <div className="col"><p>{label}</p></div>

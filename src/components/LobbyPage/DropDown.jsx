@@ -20,7 +20,7 @@ function DeckDropDown({ dropDownLabel }) {
   );
 }
 //onClick={() => socket.emit("test", "/12345 ")
-function GetDecksDropDown({ }) {
+function GetDecksDropDown() {
   const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
   if (decks === null) {
     return (

@@ -31,7 +31,7 @@ function LobbyPage({ lobbyState }) {
     };
   }, []);
 
-	const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
+  const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
 
   //Room id & Host
   const [players, setPlayers] = useState(lobbyState.players);
