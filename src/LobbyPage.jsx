@@ -11,34 +11,32 @@ import { DeleteButton} from "./components/LobbyPage/DeleteButton.jsx";
 import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx";
 
 function LobbyPage({ lobbyState }) {
-  
   console.log(lobbyState);
   useEffect(() => {
-    socket.on("playerLeft", (data) => {
-      setPlayers(data.players);
+    socket.on("playerHandler", (players) => {
+      console.log(players); 
+      setPlayers(players);
     });
-    socket.on("playerJoined", (data) => {
-      setPlayers(data.players);
+    socket.on("changeDeck", (deckName) => {
+      setDeckLabel(deckName); 
     });
-    socket.on("readyUp", (data) => {
-      setPlayers(data.players);
-    });
-    socket.on("hostReadyUp", (data) => {
-      setPlayers(data.players);
+    socket.on("deckNotAccepted", () => {
+      alert("Deck Does not fit the Lobby criteria");
     });
 
     return () => {
-      socket.off("playerLeft");
-      socket.off("playerJoined");
-      socket.off("readyUp");
-      socket.off("hostReadyUp");
+      socket.off("playerHandler");
+      socket.off("changeDeck"); 
+      socket.off("deckNotAccepted"); 
     };
   }, []);
 
-	
+	const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
+
   //Room id & Host
   const [players, setPlayers] = useState(lobbyState.players);
-  const player = GetPlayer(players, socket.id);
+  const player = players.find(player => player.playerid === socket.id); 
+  console.log(player);
   const isHost = player.host; 
   const roomID = lobbyState.id;
 
@@ -74,7 +72,7 @@ function LobbyPage({ lobbyState }) {
       </div>
       <div className="row p-5">
         <div className="col">
-          <DeckDropDown id={roomID} />
+          <DeckDropDown dropDownLabel={deckLabel}/>
         </div>
         <div className="col-6"></div>
         <div className="col-md-4 text-end">
@@ -87,21 +85,5 @@ function LobbyPage({ lobbyState }) {
     </div>
   );
 }
-
-//function PlayerOverview({playerArr, setplayerArr}) {}
-//TODO: Move these to seperate file
-
-
-function GetPlayer(playersArray, id) {
-  for(const player of playersArray) {
-    if(player.playerid === id) {
-      return player; 
-    }
-  }
-}
-
-//unction RemovePlayerFromArray(players, playerid) {
-//  return players.filter(player => player.id !== playerid); 
-//}
 
 export default LobbyPage;

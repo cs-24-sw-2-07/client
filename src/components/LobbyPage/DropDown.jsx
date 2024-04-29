@@ -3,7 +3,7 @@ import { } from "react-router-dom";
 
 export { DeckDropDown };
 
-function DeckDropDown({ id }) {
+function DeckDropDown({ dropDownLabel }) {
   return (
     <div className="dropdown">
       <div className="btn-group">
@@ -12,15 +12,15 @@ function DeckDropDown({ id }) {
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
-        >Choose Deck
+        >{dropDownLabel}
         </button>
-        <GetDecksDropDown id={id} />
+        <GetDecksDropDown />
       </div>
     </div>
   );
 }
 //onClick={() => socket.emit("test", "/12345 ")
-function GetDecksDropDown({ id }) {
+function GetDecksDropDown({ }) {
   const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
   if (decks === null) {
     return (
@@ -42,7 +42,7 @@ function GetDecksDropDown({ id }) {
           <button
             type="button"
             className="dropdown-item"
-            onClick={() => addDeck(deck, id)}
+            onClick={() => socket.emit("changeDeck", deck)}
           >{deck.name}
           </button>
         </li>))
@@ -50,20 +50,6 @@ function GetDecksDropDown({ id }) {
     </ul>
   );
 }
-
-function addDeck(deck, roomID) {
-  // Add room id from the server
-  /*const data = {
-      deck: deck, 
-      id: lobbyIgitd, 
-    }*/
-  const eventObj = {
-    deck: deck,
-    id: roomID
-  };
-  socket.emit("chooseDeck", eventObj);
-}
-
 
 /**
 //TODO: Ting der mangler

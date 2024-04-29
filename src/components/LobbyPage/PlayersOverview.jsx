@@ -18,7 +18,7 @@ function PrintPlayer(player) { //TODO: make it scrollable
   const isReady = player.ready ? "Ready" : "Not ready"; 
 
   let dots = ".....";
-  for(let i = playerText.length + isReady.length; i < 53; i++ ) {
+  for(let i = playerText.length + isReady.length; i < 66; i++ ) {
     dots += "."; 
   }
 

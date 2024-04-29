@@ -2,8 +2,6 @@ import { socket } from "../../socket";
 import { useState, useEffect } from "react";
 export { HostSettings, ReturnSettingObject } //TODO: Move function into seperate file
 
-//TODO: Currently you cannot change the number --> maybe because the setting has been implemented? 
-
 function HostSettings({ lobbyState, roomID }) {
   //Setting states:
   const [settingsState, setSettingsState] = useState({
@@ -12,19 +10,19 @@ function HostSettings({ lobbyState, roomID }) {
     maxLife: lobbyState.life,
     lobbySize: lobbyState.lobbySize,
   });
-
+  console.log(settingsState);
   //Event handler
   useEffect(() => {
     socket.on("cantChangeSettings", (data) => {
       const setting = data.key; 
       setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+      console.log(settingsState);
     });
-    /*socket.on("changeSettings", (data) => {
-      setTimeout(() => {
-        const setting = data.key; 
-        setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
-      }, 5000);
-    });*/
+    socket.on("changeSetting", (data) => {
+      const setting = data.key; 
+      setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+      console.log("Accepted", settingsState);
+    });
 
     return () => {
       socket.off("cantChangeSettings"); 
@@ -82,14 +80,14 @@ function CreateSetting({ label, id, settingsState, setSettingsState, lobbyid, mi
   let value = settingsState[getValue(id)]; 
   return (
     <div>
-      <label htmlFor={id}>{label} <p className="text-danger">{value > Number(max) || value < Number(min) ? "Setting is invalid" : ""}</p></label>
+      <label htmlFor={id}> {label} <span className="text-danger">{checkValue(value, min, max)}</span></label>
       <input
         type="number"
         className="form-control"
         id={id}
         min={min}
         max={max}
-        value={setSettingsState[getValue(id)]}
+        value={settingsState[getValue(id)]}
         onChange={(e) => { 
           setSettingsState(ReturnSettingObject(e.target.value, settingsState, id));
           socket.emit("changeSettings", setSendObj(e.target.value, id, lobbyid));
@@ -147,6 +145,16 @@ function setSendObj(value, key, roomID) {
   return obj; 
 }
 
+
+function checkValue(value, min, max) {
+  if (value > Number(max)) {
+    return "Setting is set too large";
+  } else if (value < Number(min)) {
+    return "Setting is set too small";
+  } else {
+    return ""; 
+  }
+}
 /*
 "deckSize": 15, 
 "handSize" : 5,

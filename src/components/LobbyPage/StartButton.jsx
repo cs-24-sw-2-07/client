@@ -22,7 +22,7 @@ function StartButton({ players, id }) {
         onClick={() => socket.emit("StartGame", { id: id })}
       > Start game
       </button>
-      <p className={playersReady === playersAmount ? "text-success" : "text-danger"}>
+      <p className={playersReady === playersAmount && playersAmount > 1 ? "text-success" : "text-danger"}>
 		Players ready: {playersReady}/{playersAmount}
       </p>
     </div>
