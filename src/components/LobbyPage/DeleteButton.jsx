@@ -8,9 +8,10 @@ function DeleteButton({RoomID}) {
       <button
         type="button"
         className="btn btn-primary col-4"
-        onClick={() => socket.emit("DeleteLobby", id)}
+        onClick={() => socket.emit("DeleteLobby", RoomID)}
       > Delete Lobby
       </button>
     </div>
   );
 }
+// sæt serverren op også kan du teste det 

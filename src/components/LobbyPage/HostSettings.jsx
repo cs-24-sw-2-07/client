@@ -1,6 +1,6 @@
 import { socket } from "../../socket";
 import { useState, useEffect } from "react";
-export { HostSettings }
+export { HostSettings, ReturnSettingObject } //TODO: Move function into seperate file
 
 //TODO: Currently you cannot change the number --> maybe because the setting has been implemented? 
 

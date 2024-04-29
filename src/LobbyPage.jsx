@@ -51,6 +51,8 @@ function LobbyPage({ lobbyState }) {
 
   return (
     <div className="container">
+
+      {/*lobby id and Leave- or delete lobby*/}
       <div className="row">
         <div className="col">
           <h1 className="p-5 ">Lobby: {roomID}</h1>
@@ -58,11 +60,10 @@ function LobbyPage({ lobbyState }) {
         <div className="col">
           { isHost 
             ? <DeleteButton RoomID={roomID}/> 
-            : <LeaveButton  Player = {Player}/>
+            : <LeaveButton  RoomID={roomID}/>
           }
         </div>
       </div>
-      {/*Første row Lobby #id og delete lobby knap*/}
 
       {/*Settings og Players*/}
       <div className="row p-6">

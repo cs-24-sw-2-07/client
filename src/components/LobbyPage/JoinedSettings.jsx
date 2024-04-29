@@ -1,5 +1,6 @@
 import { socket } from "../../socket";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ReturnSettingObject } from "./HostSettings.jsx"; 
 export { JoinedSettings }
 
 function JoinedSettings({ lobbyState }) {
@@ -10,9 +11,13 @@ function JoinedSettings({ lobbyState }) {
     maxLife: lobbyState.life,
     lobbySize: lobbyState.lobbySize,
   });
-
-  //TODO: Implement event here 
-
+  
+  useEffect(() => {
+    socket.on("changeSetting", (data) => {
+      const setting = data.key;
+      setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+    });
+  }, []);
   return (
     <div>
       <h2>Settings</h2>
