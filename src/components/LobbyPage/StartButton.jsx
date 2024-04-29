@@ -1,30 +1,31 @@
 export { StartButton }
+//import { useEffect } from "react";
 import { socket } from "../../socket";
-import { useState } from "react";
 
 function StartButton({ players, id }) {
-  const [playersAmt, setPlayerAmt] = useState(players.length);
+  /*const [playersAmt, setPlayerAmt] = useState(players.length);
   const [ready, setReady] = useState(countReadyPlayers(players));
 
+  function updatePlayers(players) {
+    setPlayerAmt(players.length);
+    setReady(countReadyPlayers(players)); 
+  }*/
+  let playersReady = players.filter(player => player.ready).length;
+  let playersAmount = players.length;
+	
   return (
     <div>
       <button
         type="button"
         className="btn btn-primary col-4"
-        disabled={players < 2 || ready !== players}
+        disabled={playersAmount < 2 || playersReady !== playersAmount}
         onClick={() => socket.emit("StartGame", { id: id })}
       > Start game
       </button>
-      <p className={ready === playersAmt ? "text-success" : "text-danger"}>
-				Players ready: {ready}/{playersAmt}
+      <p className={playersReady === playersAmount ? "text-success" : "text-danger"}>
+		Players ready: {playersReady}/{playersAmount}
       </p>
     </div>
   );
 }
 
-function countReadyPlayers(players) {
-  let count = 0;
-  for (const player of players)
-    if (player.ready) count++;
-  return count;
-}
