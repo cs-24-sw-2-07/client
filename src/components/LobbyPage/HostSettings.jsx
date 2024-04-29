@@ -28,7 +28,6 @@ function HostSettings({ lobbyState, roomID }) {
   
   //Timer and object for onChange event
   const [eventObject, setEventObject] = useState({});
-  startTimer = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       socket.emit("changeSettings", eventObject);
@@ -36,7 +35,7 @@ function HostSettings({ lobbyState, roomID }) {
 
     return () => clearTimeout(timer); 
   }, [eventObject]);
-  
+
   return (
     <div>
       <h2>Settings</h2>
