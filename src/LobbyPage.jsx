@@ -54,10 +54,11 @@ function LobbyPage({ lobbyState }) {
 
       {/*lobby id and Leave- or delete lobby*/}
       <div className="row">
-        <div className="col">
-          <h1 className="p-5 ">Lobby: {roomID}</h1>
+        <div className="col" >
+          <h1 className="py-5 ">Lobby: {roomID}</h1>
         </div>
-        <div className="col">
+    
+        <div className="col-md-4 text-end py-5">
           { isHost 
             ? <DeleteButton RoomID={roomID}/> 
             : <LeaveButton  RoomID={roomID}/>
