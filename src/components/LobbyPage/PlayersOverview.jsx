@@ -7,14 +7,14 @@ function PlayerOverview({ players }) {
   return (
     <>
       <h2>Players: </h2>
-      {players.map(player => PrintPlayer(player))}
+      {players.map((player, index) => PrintPlayer(player, index))}
     </>
   );
 }
 
-function PrintPlayer(player) { //TODO: make it scrollable
+function PrintPlayer(player, index) { //TODO: make it scrollable
   const isYouStr = player.playerid === socket.id ? " (You):" : ":"; 
-  const playerText = `${player.name}${isYouStr}`;
+  const playerText = `${player.name.trim()}${isYouStr}`;
   const isReady = player.ready ? "Ready  " : "Not ready"; 
 
   let spaces = "   ";
@@ -23,6 +23,11 @@ function PrintPlayer(player) { //TODO: make it scrollable
   }
 
   return (
-    <pre style={{fontFamily: "var(--bs-body-font-family)", fontSize: "var(--bs-body-font-size)"}}>{playerText + spaces + isReady}</pre>
+    <div className="row">
+      <div className="col"><p>{playerText}</p></div>
+      <div className="col text-end"><p>{isReady}</p></div>
+    </div>
+    
   );
 }
+//<pre key={index} style={{fontFamily: "var(--bs-body-font-family)", fontSize: "var(--bs-body-font-size)"}}>{ + spaces + }</pre>

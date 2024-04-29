@@ -50,7 +50,7 @@ function LobbyPage({ lobbyState }) {
         </div>
     
         <div className="col-md-4 text-end py-5">
-          { isHost 
+          { isHost
             ? <DeleteButton RoomID={roomID}/> 
             : <LeaveButton  RoomID={roomID}/>
           }
@@ -78,7 +78,7 @@ function LobbyPage({ lobbyState }) {
         <div className="col-md-4 text-end">
           { isHost 
             ? <StartButton players={players}  /> 
-            : <ReadyButton players={players}  />
+            : <ReadyButton player={player}  />
           }
         </div>
       </div>

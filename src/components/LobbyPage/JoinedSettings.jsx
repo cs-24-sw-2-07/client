@@ -8,7 +8,7 @@ function JoinedSettings({ lobbyState }) {
   const [settingsState, setSettingsState] = useState({
     deckSize: lobbyState.deckSize,
     handSize: lobbyState.handSize,
-    maxLife: lobbyState.life,
+    life: lobbyState.life,
     lobbySize: lobbyState.lobbySize,
   });
   
@@ -29,7 +29,10 @@ function JoinedSettings({ lobbyState }) {
   );
 }
 
-function ShowSetting(label, setting) {
+function ShowSetting({ label, setting }) {
+  const numberOfSpaces = 50 - label.length + String(setting).length; 
+  const space = Array(numberOfSpaces).fill("\u00A0").join("");
+
   return (
     <div className="row">
       <div className="col"><p>{label}</p></div>
@@ -37,3 +40,18 @@ function ShowSetting(label, setting) {
     </div>
   );
 }
+
+
+/*
+
+<p>{label} <span className="text-end">{setting}</span></p>
+<div className="row">
+      <div className="col"><p>{label}</p></div>
+      <div className="col text-end"><p>{setting}</p></div>
+    </div>
+
+
+<ShowSetting label="Deck Size:" setting={settingsState.deckSize} />
+      <ShowSetting label="Hand Size:" setting={settingsState.handSize} />
+      <ShowSetting label="Life:" setting={settingsState.life} />
+      <ShowSetting label="lobbySize:" setting={settingsState.lobbySize} /> */
