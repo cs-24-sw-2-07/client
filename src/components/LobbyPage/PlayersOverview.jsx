@@ -13,16 +13,16 @@ function PlayerOverview({ players }) {
 }
 
 function PrintPlayer(player) { //TODO: make it scrollable
-  const isYouStr = player.playerid === socket.id ? "(You)" : ""; 
-  const playerText = `${player.name} ${isYouStr}`;
-  const isReady = player.ready ? "Ready" : "Not ready"; 
+  const isYouStr = player.playerid === socket.id ? " (You):" : ":"; 
+  const playerText = `${player.name}${isYouStr}`;
+  const isReady = player.ready ? "Ready  " : "Not ready"; 
 
-  let dots = ".....";
-  for(let i = playerText.length + isReady.length; i < 66; i++ ) {
-    dots += "."; 
+  let spaces = "   ";
+  for(let i = playerText.length + isReady.length + spaces.length; i < 56; i++ ) {
+    spaces += " "; 
   }
 
   return (
-    <p>{playerText + dots + isReady}</p>
+    <pre style={{fontFamily: "var(--bs-body-font-family)", fontSize: "var(--bs-body-font-size)"}}>{playerText + spaces + isReady}</pre>
   );
 }
