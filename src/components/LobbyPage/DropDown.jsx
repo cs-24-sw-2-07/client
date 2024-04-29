@@ -12,7 +12,7 @@ function DeckDropDown({ id }) {
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
-        > Choose Deck
+        >Choose Deck
         </button>
         <GetDecksDropDown id={id} />
       </div>

@@ -7,14 +7,14 @@ import { HostSettings } from "./components/LobbyPage/HostSettings.jsx";
 import { JoinedSettings } from "./components/LobbyPage/JoinedSettings.jsx";
 import { ReadyButton } from "./components/LobbyPage/ReadyUp.jsx";
 import { PlayerOverview } from "./components/LobbyPage/PlayersOverview.jsx";
+import { DeleteButton} from "./components/LobbyPage/DeleteButton.jsx";
+import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx";
 
 function LobbyPage({ lobbyState }) {
   
   console.log(lobbyState);
   useEffect(() => {
-    socket.on("changeSetting", (data) => {
-			
-    });
+    
     socket.on("playerLeft", (data) => {
       setPlayers(RemovePlayerFromArray(players, data.id));
       setPlayerAmt(data.playersAmt);
@@ -33,7 +33,6 @@ function LobbyPage({ lobbyState }) {
     });
 
     return () => {
-      socket.off("changeSetting");
       socket.off("playerLeft");
       socket.off("playerJoined");
       socket.off("readyUp");
@@ -54,22 +53,26 @@ function LobbyPage({ lobbyState }) {
     <div className="container">
       <div className="row">
         <div className="col">
-          <h1 className="p-5 ">Lobby</h1>
-          {/*first column*/}
+          <h1 className="p-5 ">Lobby: {roomID}</h1>
         </div>
-        <div className="col">{/*second column*/}</div>
+        <div className="col">
+          { isHost 
+            ? <DeleteButton RoomID={roomID}/> 
+            : <LeaveButton  Player = {Player}/>
+          }
+        </div>
       </div>
       {/*Første row Lobby #id og delete lobby knap*/}
 
       {/*Settings og Players*/}
       <div className="row p-6">
-        <div className="col-3 bg-light">
+        <div className="col-3 bg-light pb-3">
           { isHost 
-            ? <HostSettings lobbyState={lobbyState} />
+            ? <HostSettings lobbyState={lobbyState} roomID={roomID} />
             : <JoinedSettings lobbyState={lobbyState} /> 
           }
         </div>
-      <div className="col-6"></div>
+        <div className="col-6"></div>
         <div className="col-3 bg-light">
           <PlayerOverview players={players} />
         </div>
