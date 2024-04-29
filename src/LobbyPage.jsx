@@ -14,29 +14,23 @@ function LobbyPage({ lobbyState }) {
   
   console.log(lobbyState);
   useEffect(() => {
-    
     socket.on("playerLeft", (data) => {
-      setPlayers(RemovePlayerFromArray(players, data.id));
-      setPlayerAmt(data.playersAmt);
+      setPlayers(data.players);
     });
     socket.on("playerJoined", (data) => {
-      setPlayerAmt(data.playersAmt);
+      setPlayers(data.players);
     });
     socket.on("readyUp", (data) => {
-      setReady(Number(data));
+      setPlayers(data.players);
     });
-    socket.on("StopReadyUp", (data) => {
-      setReady(Number(data));
-    });
-    socket.on("hostReadyUp", (readyPlayers) => {
-      setReady(Number(readyPlayers));
+    socket.on("hostReadyUp", (data) => {
+      setPlayers(data.players);
     });
 
     return () => {
       socket.off("playerLeft");
       socket.off("playerJoined");
       socket.off("readyUp");
-      socket.off("StopReadyUp");
       socket.off("hostReadyUp");
     };
   }, []);
@@ -44,8 +38,7 @@ function LobbyPage({ lobbyState }) {
 	
   //Room id & Host
   const [players, setPlayers] = useState(lobbyState.players);
-  const [player, setPlayer] = useState(GetPlayer(players, socket.id));
-
+  const player = GetPlayer(players, socket.id);
   const isHost = player.host; 
   const roomID = lobbyState.id;
 
@@ -87,15 +80,13 @@ function LobbyPage({ lobbyState }) {
         <div className="col-md-4 text-end">
           { isHost 
             ? <StartButton players={players} id={roomID} /> 
-            : <ReadyButton player={player} id={roomID} />
+            : <ReadyButton players={players} id={roomID} />
           }
         </div>
       </div>
     </div>
   );
 }
-
-
 
 //function PlayerOverview({playerArr, setplayerArr}) {}
 //TODO: Move these to seperate file
@@ -109,8 +100,8 @@ function GetPlayer(playersArray, id) {
   }
 }
 
-function RemovePlayerFromArray(players, playerid) {
-  return players.filter(player => player.id !== playerid); 
-}
+//unction RemovePlayerFromArray(players, playerid) {
+//  return players.filter(player => player.id !== playerid); 
+//}
 
 export default LobbyPage;

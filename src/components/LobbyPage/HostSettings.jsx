@@ -34,7 +34,7 @@ function HostSettings({ lobbyState, roomID }) {
     }, 3000);
 
     return () => clearTimeout(timer); 
-  }, [eventObject])
+  }, [eventObject]);
 
   return (
     <div>
