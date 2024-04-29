@@ -16,25 +16,20 @@ function HostSettings({ lobbyState, roomID }) {
   //Event handler
   useEffect(() => {
     socket.on("cantChangeSettings", (data) => {
-      alert("Setting is not allowed. Reverting change");
       const setting = data.key; 
       setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
     });
+    /*socket.on("changeSettings", (data) => {
+      setTimeout(() => {
+        const setting = data.key; 
+        setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+      }, 5000);
+    });*/
 
     return () => {
       socket.off("cantChangeSettings"); 
     };
   }, []);
-  
-  //Timer and object for onChange event
-  const [eventObject, setEventObject] = useState({});
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      socket.emit("changeSettings", eventObject);
-    }, 3000);
-
-    return () => clearTimeout(timer); 
-  }, [eventObject]);
 
   return (
     <div>
@@ -47,15 +42,17 @@ function HostSettings({ lobbyState, roomID }) {
             settingsState={settingsState}
             setSettingsState={setSettingsState}
             lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="15"
+            max="50"
           />
-          <CreateSetting
+          <CreateSetting 
             label="Hand Size:"
             id="handSize"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
             lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="5"
+            max="7"
           />
           <CreateSetting
             label="Life:"
@@ -63,7 +60,8 @@ function HostSettings({ lobbyState, roomID }) {
             settingsState={settingsState}
             setSettingsState={setSettingsState}
             lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="1"
+            max="5"
           />
           <CreateSetting
             label="Lobby Size:"
@@ -71,7 +69,8 @@ function HostSettings({ lobbyState, roomID }) {
             settingsState={settingsState}
             setSettingsState={setSettingsState}
             lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="2"
+            max="30"
           />
         </div>
       </form>
@@ -79,18 +78,21 @@ function HostSettings({ lobbyState, roomID }) {
   );
 }
 
-function CreateSetting({ label, id, settingsState, setSettingsState, lobbyid, setEventObject }) {
+function CreateSetting({ label, id, settingsState, setSettingsState, lobbyid, min, max }) {
+  let value = settingsState[getValue(id)]; 
   return (
     <div>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{label} <p className="text-danger">{value > Number(max) || value < Number(min) ? "Setting is invalid" : ""}</p></label>
       <input
         type="number"
         className="form-control"
         id={id}
-        value={settingsState[getValue(id)]}
+        min={min}
+        max={max}
+        value={setSettingsState[getValue(id)]}
         onChange={(e) => { 
           setSettingsState(ReturnSettingObject(e.target.value, settingsState, id));
-          setEventObject(setSendObj(e.target.value, id, lobbyid));
+          socket.emit("changeSettings", setSendObj(e.target.value, id, lobbyid));
         }}
       ></input>
     </div>
@@ -135,10 +137,10 @@ function getValue(key) {
   }
 }
 
-function setSendObj(event, key, roomID) {
+function setSendObj(value, key, roomID) {
   const obj = {
     "key": key,
-    [key]: event.target.value,
+    [key]: value,
     "id": roomID
   }
   console.log(obj); 
