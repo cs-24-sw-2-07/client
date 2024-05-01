@@ -46,7 +46,6 @@ function BattlePage(props) {
             handCopy.push(pickedCard);
         }
 
-
         //chec  if both players have run out of cards 
         if(cardTracker.current.used == cardTracker.current.size){
             if(oppOutOfCards){
