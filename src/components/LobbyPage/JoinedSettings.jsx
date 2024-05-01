@@ -1,6 +1,5 @@
 import { socket } from "../../socket";
 import { useState, useEffect } from "react";
-import { ReturnSettingObject } from "./HostSettings.jsx"; 
 export { JoinedSettings }
 
 function JoinedSettings({ lobbyState }) {
@@ -15,9 +14,10 @@ function JoinedSettings({ lobbyState }) {
   useEffect(() => {
     socket.on("changeSetting", (data) => {
       const setting = data.key;
-      setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+      setSettingsState({...settingsState, [setting]: data[setting]});
     });
-  }, []);
+  }, [settingsState]);
+
   return (
     <div>
       <h2>Settings</h2>
@@ -38,17 +38,27 @@ function ShowSetting({ label, setting }) {
   );
 }
 
-
-/*
-
-<p>{label} <span className="text-end">{setting}</span></p>
-<div className="row">
-      <div className="col"><p>{label}</p></div>
-      <div className="col text-end"><p>{setting}</p></div>
-    </div>
-
-
-<ShowSetting label="Deck Size:" setting={settingsState.deckSize} />
-      <ShowSetting label="Hand Size:" setting={settingsState.handSize} />
-      <ShowSetting label="Life:" setting={settingsState.life} />
-      <ShowSetting label="lobbySize:" setting={settingsState.lobbySize} /> */
+/*function ReturnSettingObject(value, settingsState, key) {
+  switch (key) {
+  case "deckSize":
+    return {
+      ...settingsState,
+      cardCount: value
+    };
+  case "handSize":
+    return {
+      ...settingsState,
+      handSize: value
+    };
+  case "life":
+    return {
+      ...settingsState,
+      life: value
+    };
+  case "lobbySize":
+    return {
+      ...settingsState,
+      lobbySize: value
+    };
+  }
+}*/

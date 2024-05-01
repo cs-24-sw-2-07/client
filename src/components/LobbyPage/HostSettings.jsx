@@ -1,13 +1,13 @@
 import { socket } from "../../socket";
 import { useState, useEffect } from "react";
-export { HostSettings, ReturnSettingObject } //TODO: Move function into seperate file
+export { HostSettings } //TODO: Move function into seperate file
 
-function HostSettings({ lobbyState, roomID }) {
+function HostSettings({ lobbyState }) {
   //Setting states:
   const [settingsState, setSettingsState] = useState({
-    cardCount: lobbyState.deckSize,
+    deckSize: lobbyState.deckSize,
     handSize: lobbyState.handSize,
-    maxLife: lobbyState.life,
+    life: lobbyState.life,
     lobbySize: lobbyState.lobbySize,
   });
   console.log(settingsState);
@@ -15,17 +15,18 @@ function HostSettings({ lobbyState, roomID }) {
   useEffect(() => {
     socket.on("cantChangeSettings", (data) => {
       const setting = data.key; 
-      setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+      setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
       console.log(settingsState);
     });
     socket.on("changeSetting", (data) => {
       const setting = data.key; 
-      setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+      setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
       console.log("Accepted", settingsState);
     });
 
     return () => {
       socket.off("cantChangeSettings"); 
+      socket.off("changeSetting");
     };
   }, []);
 
@@ -39,7 +40,6 @@ function HostSettings({ lobbyState, roomID }) {
             id="deckSize"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
             min="15"
             max="50"
           />
@@ -48,7 +48,6 @@ function HostSettings({ lobbyState, roomID }) {
             id="handSize"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
             min="5"
             max="7"
           />
@@ -57,7 +56,6 @@ function HostSettings({ lobbyState, roomID }) {
             id="life"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
             min="1"
             max="5"
           />
@@ -66,7 +64,6 @@ function HostSettings({ lobbyState, roomID }) {
             id="lobbySize"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
             min="2"
             max="30"
           />
@@ -76,8 +73,8 @@ function HostSettings({ lobbyState, roomID }) {
   );
 }
 
-function CreateSetting({ label, id, settingsState, setSettingsState, lobbyid, min, max }) {
-  let value = settingsState[getValue(id)]; 
+function CreateSetting({ label, id, settingsState, setSettingsState, min, max }) {
+  let value = settingsState[id]; 
   return (
     <div>
       <label htmlFor={id}> {label} <span className="text-danger">{checkValue(value, min, max)}</span></label>
@@ -87,64 +84,31 @@ function CreateSetting({ label, id, settingsState, setSettingsState, lobbyid, mi
         id={id}
         min={min}
         max={max}
-        value={settingsState[getValue(id)]}
+        value={settingsState[id]}
         onChange={(e) => { 
-          setSettingsState(ReturnSettingObject(e.target.value, settingsState, id));
-          socket.emit("changeSettings", setSendObj(e.target.value, id, lobbyid));
+          setSettingsState(ReturnSettingObject(e.target.value, id, settingsState));
+          socket.emit("changeSettings", setSendObj(e.target.value, id));
         }}
       ></input>
     </div>
   );
 }
 
-function ReturnSettingObject(value, settingsState, key) {
-  switch (key) {
-  case "deckSize":
-    return {
-      ...settingsState,
-      cardCount: value
-    };
-  case "handSize":
-    return {
-      ...settingsState,
-      handSize: value
-    };
-  case "life":
-    return {
-      ...settingsState,
-      maxLife: value
-    };
-  case "lobbySize":
-    return {
-      ...settingsState,
-      lobbySize: value
-    };
-  }
-}
-
-function getValue(key) {
-  switch (key) {
-  case "deckSize": 
-    return "cardCount";
-  case "handSize":
-    return "handSize"; 
-  case "life": 
-    return "maxLife";
-  case "lobbySize": 
-    return "lobbySize";
-  }
-}
-
-function setSendObj(value, key, roomID) {
+function setSendObj(value, key) {
   const obj = {
     "key": key,
     [key]: value,
-    "id": roomID
   }
   console.log(obj); 
   return obj; 
 }
 
+function ReturnSettingObject(value, setting, settingsState) {
+  return {
+    ...settingsState, 
+    [setting]: value
+  }; 
+}
 
 function checkValue(value, min, max) {
   if (value > Number(max)) {
@@ -155,9 +119,3 @@ function checkValue(value, min, max) {
     return ""; 
   }
 }
-/*
-"deckSize": 15, 
-"handSize" : 5,
-"life": 3,
-"lobbySize": 2 
-*/

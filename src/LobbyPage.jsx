@@ -12,12 +12,25 @@ import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx";
 
 function LobbyPage({ lobbyState }) {
   console.log(lobbyState);
+  
+
+  const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
+
+  //Room id & Host
+  const [players, setPlayers] = useState(lobbyState.players);
+  const player = players.find(player => player.playerid === socket.id); 
+  console.log(player);
+  const isHost = player.host; 
+  const roomID = lobbyState.id;
+
+
   useEffect(() => {
     socket.on("playerHandler", (players) => {
       console.log(players); 
       setPlayers(players);
     });
     socket.on("changeDeck", (deckName) => {
+      console.log(deckName);
       setDeckLabel(deckName); 
     });
     socket.on("deckNotAccepted", () => {
@@ -30,15 +43,6 @@ function LobbyPage({ lobbyState }) {
       socket.off("deckNotAccepted"); 
     };
   }, []);
-
-  const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
-
-  //Room id & Host
-  const [players, setPlayers] = useState(lobbyState.players);
-  const player = players.find(player => player.playerid === socket.id); 
-  console.log(player);
-  const isHost = player.host; 
-  const roomID = lobbyState.id;
 
   return (
     <div className="container">
@@ -78,7 +82,7 @@ function LobbyPage({ lobbyState }) {
         <div className="col-md-4 text-end">
           { isHost 
             ? <StartButton players={players}  /> 
-            : <ReadyButton player={player}  />
+            : <ReadyButton deck={deckLabel}  />
           }
         </div>
       </div>
