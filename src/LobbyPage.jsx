@@ -13,36 +13,38 @@ import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx";
 // du er nået til deletebutton kig der 
 
 function LobbyPage({ lobbyState }) {
-  
   console.log(lobbyState);
+  
+
+  const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
+
+  //Room id & Host
+  const [players, setPlayers] = useState(lobbyState.players);
+  const player = players.find(player => player.playerid === socket.id); 
+  console.log(player);
+  const isHost = player.host; 
+  const roomID = lobbyState.id;
+
+
   useEffect(() => {
-    socket.on("playerLeft", (data) => {
-      setPlayers(data.players);
+    socket.on("playerHandler", (players) => {
+      console.log(players); 
+      setPlayers(players);
     });
-    socket.on("playerJoined", (data) => {
-      setPlayers(data.players);
+    socket.on("changeDeck", (deckName) => {
+      console.log(deckName);
+      setDeckLabel(deckName); 
     });
-    socket.on("readyUp", (data) => {
-      setPlayers(data.players);
-    });
-    socket.on("hostReadyUp", (data) => {
-      setPlayers(data.players);
+    socket.on("deckNotAccepted", () => {
+      alert("Deck Does not fit the Lobby criteria");
     });
 
     return () => {
-      socket.off("playerLeft");
-      socket.off("playerJoined");
-      socket.off("readyUp");
-      socket.off("hostReadyUp");
+      socket.off("playerHandler");
+      socket.off("changeDeck"); 
+      socket.off("deckNotAccepted"); 
     };
   }, []);
-
-	
-  //Room id & Host
-  const [players, setPlayers] = useState(lobbyState.players);
-  const player = GetPlayer(players, socket.id);
-  const isHost = player.host; 
-  const roomID = lobbyState.id;
 
   return (
     <div className="container">
@@ -54,7 +56,7 @@ function LobbyPage({ lobbyState }) {
         </div>
     
         <div className="col-md-4 text-end py-5">
-          { isHost 
+          { isHost
             ? <DeleteButton RoomID={roomID}/> 
             : <LeaveButton  RoomID={roomID}/>
           }
@@ -76,34 +78,18 @@ function LobbyPage({ lobbyState }) {
       </div>
       <div className="row p-5">
         <div className="col">
-          <DeckDropDown id={roomID} />
+          <DeckDropDown dropDownLabel={deckLabel}/>
         </div>
         <div className="col-6"></div>
         <div className="col-md-4 text-end">
           { isHost 
-            ? <StartButton players={players} id={roomID} /> 
-            : <ReadyButton players={players} id={roomID} />
+            ? <StartButton players={players}  /> 
+            : <ReadyButton deck={deckLabel}  />
           }
         </div>
       </div>
     </div>
   );
 }
-
-//function PlayerOverview({playerArr, setplayerArr}) {}
-//TODO: Move these to seperate file
-
-
-function GetPlayer(playersArray, id) {
-  for(const player of playersArray) {
-    if(player.playerid === id) {
-      return player; 
-    }
-  }
-}
-
-//unction RemovePlayerFromArray(players, playerid) {
-//  return players.filter(player => player.id !== playerid); 
-//}
 
 export default LobbyPage;

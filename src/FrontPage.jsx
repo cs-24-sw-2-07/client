@@ -124,8 +124,7 @@ function JoinGameModalButton({ navigateTo }) {
 
   function joinGame() {
     alert(`Join Game!\nInputted Name: ${displayName}\nGame Code: ${gameCode}`);
-    
-    navigateTo("/LobbyPage");
+    socket.emit("joinLobby", {name: displayName, id: gameCode});
   }
 
   return (

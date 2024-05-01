@@ -1,40 +1,34 @@
 import { socket } from "../../socket";
 import { useState, useEffect } from "react";
-export { HostSettings, ReturnSettingObject } //TODO: Move function into seperate file
+export { HostSettings } //TODO: Move function into seperate file
 
-//TODO: Currently you cannot change the number --> maybe because the setting has been implemented? 
-
-function HostSettings({ lobbyState, roomID }) {
+function HostSettings({ lobbyState }) {
   //Setting states:
   const [settingsState, setSettingsState] = useState({
-    cardCount: lobbyState.deckSize,
+    deckSize: lobbyState.deckSize,
     handSize: lobbyState.handSize,
-    maxLife: lobbyState.life,
+    life: lobbyState.life,
     lobbySize: lobbyState.lobbySize,
   });
-
+  console.log(settingsState);
   //Event handler
   useEffect(() => {
     socket.on("cantChangeSettings", (data) => {
-      alert("Setting is not allowed. Reverting change");
       const setting = data.key; 
-      setSettingsState(ReturnSettingObject(data[setting], settingsState, setting));
+      setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
+      console.log(settingsState);
+    });
+    socket.on("changeSetting", (data) => {
+      const setting = data.key; 
+      setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
+      console.log("Accepted", settingsState);
     });
 
     return () => {
       socket.off("cantChangeSettings"); 
+      socket.off("changeSetting");
     };
   }, []);
-  
-  //Timer and object for onChange event
-  const [eventObject, setEventObject] = useState({});
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      socket.emit("changeSettings", eventObject);
-    }, 3000);
-
-    return () => clearTimeout(timer); 
-  }, [eventObject]);
 
   return (
     <div>
@@ -46,32 +40,32 @@ function HostSettings({ lobbyState, roomID }) {
             id="deckSize"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="15"
+            max="50"
           />
-          <CreateSetting
+          <CreateSetting 
             label="Hand Size:"
             id="handSize"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="5"
+            max="7"
           />
           <CreateSetting
             label="Life:"
             id="life"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="1"
+            max="5"
           />
           <CreateSetting
             label="Lobby Size:"
             id="lobbySize"
             settingsState={settingsState}
             setSettingsState={setSettingsState}
-            lobbyid={roomID}
-            setEventObject={setEventObject}
+            min="2"
+            max="30"
           />
         </div>
       </form>
@@ -79,75 +73,49 @@ function HostSettings({ lobbyState, roomID }) {
   );
 }
 
-function CreateSetting({ label, id, settingsState, setSettingsState, lobbyid, setEventObject }) {
+function CreateSetting({ label, id, settingsState, setSettingsState, min, max }) {
+  let value = settingsState[id]; 
   return (
     <div>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}> {label} <span className="text-danger">{checkValue(value, min, max)}</span></label>
       <input
         type="number"
         className="form-control"
         id={id}
-        value={settingsState[getValue(id)]}
+        min={min}
+        max={max}
+        value={settingsState[id]}
         onChange={(e) => { 
-          setSettingsState(ReturnSettingObject(e.target.value, settingsState, id));
-          setEventObject(setSendObj(e.target.value, id, lobbyid));
+          setSettingsState(ReturnSettingObject(e.target.value, id, settingsState));
+          socket.emit("changeSettings", setSendObj(e.target.value, id));
         }}
       ></input>
     </div>
   );
 }
 
-function ReturnSettingObject(value, settingsState, key) {
-  switch (key) {
-  case "deckSize":
-    return {
-      ...settingsState,
-      cardCount: value
-    };
-  case "handSize":
-    return {
-      ...settingsState,
-      handSize: value
-    };
-  case "life":
-    return {
-      ...settingsState,
-      maxLife: value
-    };
-  case "lobbySize":
-    return {
-      ...settingsState,
-      lobbySize: value
-    };
-  }
-}
-
-function getValue(key) {
-  switch (key) {
-  case "deckSize": 
-    return "cardCount";
-  case "handSize":
-    return "handSize"; 
-  case "life": 
-    return "maxLife";
-  case "lobbySize": 
-    return "lobbySize";
-  }
-}
-
-function setSendObj(event, key, roomID) {
+function setSendObj(value, key) {
   const obj = {
     "key": key,
-    [key]: event.target.value,
-    "id": roomID
+    [key]: value,
   }
   console.log(obj); 
   return obj; 
 }
 
-/*
-"deckSize": 15, 
-"handSize" : 5,
-"life": 3,
-"lobbySize": 2 
-*/
+function ReturnSettingObject(value, setting, settingsState) {
+  return {
+    ...settingsState, 
+    [setting]: value
+  }; 
+}
+
+function checkValue(value, min, max) {
+  if (value > Number(max)) {
+    return "Setting is set too large";
+  } else if (value < Number(min)) {
+    return "Setting is set too small";
+  } else {
+    return ""; 
+  }
+}
