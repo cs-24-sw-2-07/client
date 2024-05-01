@@ -17,11 +17,6 @@ function PrintPlayer(player, index) { //TODO: make it scrollable
   const playerText = `${player.name.trim()}${isYouStr}`;
   const isReady = player.ready ? "Ready  " : "Not ready"; 
 
-  let spaces = "   ";
-  for(let i = playerText.length + isReady.length + spaces.length; i < 56; i++ ) {
-    spaces += " "; 
-  }
-
   return (
     <div className="row" key={index}>
       <div className="col"><p>{playerText}</p></div>
@@ -30,4 +25,3 @@ function PrintPlayer(player, index) { //TODO: make it scrollable
     
   );
 }
-//<pre key={index} style={{fontFamily: "var(--bs-body-font-family)", fontSize: "var(--bs-body-font-size)"}}>{ + spaces + }</pre>
