@@ -10,6 +10,8 @@ import { PlayerOverview } from "./components/LobbyPage/PlayersOverview.jsx";
 import { DeleteButton} from "./components/LobbyPage/DeleteButton.jsx";
 import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx";
 
+// du er nået til deletebutton kig der 
+
 function LobbyPage({ lobbyState }) {
   
   console.log(lobbyState);

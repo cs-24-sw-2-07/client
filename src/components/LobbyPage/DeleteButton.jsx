@@ -1,5 +1,6 @@
 import { socket } from "../../socket";
-export {DeleteButton}
+export {DeleteButton};
+
 
 function DeleteButton({ RoomID }) {
   const handleDelete = () => {
@@ -8,6 +9,7 @@ function DeleteButton({ RoomID }) {
       socket.emit("DeleteLobby", RoomID);
     }
   };
+
 
   return (
     <button

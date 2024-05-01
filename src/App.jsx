@@ -25,10 +25,16 @@ function App() {
     socket.on("RoomNotExist", () => {
       alert("The room does not exist");
     });
+    socket.on("LeaveLobby", data => {
+      console.log(data);
+      //setLobbyState(data);
+      navigateTo("/");
+    });
     return () => {
       socket.off("Lobby");
       socket.off("RoomNotExist");
     };
+
   }, []);
 
   return (
