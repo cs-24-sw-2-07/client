@@ -1,5 +1,4 @@
-//import { useEffect } from "react";
-//import { useNavigate } from "react-router-dom";
+import { socket } from "../../socket.js"
 
 function DisplayHand(props) {
     return (
@@ -13,9 +12,9 @@ function DisplayHand(props) {
                             disabled={props.disableCards}
                             onClick={() => {
                                 props.setdisableCards(true);
-                                props.drawNewCard(index);
                                 props.setDisplayCard(props.myDeck.cards[props.hand[index]]);
-                                props.setHideElement(true);
+                                //props.setHideElement(true);
+                                socket.emit("cardPicked", index)
                             }}
                         >
                             Card Name: {card.name}
