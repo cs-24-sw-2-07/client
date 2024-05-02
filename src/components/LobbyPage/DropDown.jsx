@@ -1,8 +1,6 @@
 import { socket } from "../../socket";
 
-export { DeckDropDown };
-
-function DeckDropDown({ dropDownLabel }) {
+export function DeckDropDown({ dropDownLabel }) {
     return (
         <div className="dropdown">
             <div className="btn-group">
