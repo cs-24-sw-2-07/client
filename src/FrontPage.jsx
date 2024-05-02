@@ -121,7 +121,13 @@ function JoinGameModalButton() {
     const [gameCode, setGameCode] = useState("");
 
     function joinGame() {
-        socket.emit("joinLobby", {name: displayName, id: gameCode});
+        const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
+        if(hasDecks !== null) {
+            socket.emit("joinLobby", {name: displayName, id: gameCode});
+        } else {
+            alert("Please make a deck before proceeding");
+        }
+        
     }
 
     return (

@@ -19,13 +19,8 @@ function App() {
 
     useEffect(() => {
         socket.on("lobby", data => {
-            const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
-            if(hasDecks !== null) {
-                setLobbyState(data);
-                navigateTo("/LobbyPage");
-            } else {
-                alert("Please make a deck before proceeding");
-            }
+            setLobbyState(data);
+            navigateTo("/LobbyPage");
         });
         socket.on("roomNotExist", () => {
             alert("The room does not exist");

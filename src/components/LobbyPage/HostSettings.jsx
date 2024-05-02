@@ -11,24 +11,17 @@ function HostSettings({ lobbyState }) {
         lobbySize: lobbyState.lobbySize,
     });
     console.log(settingsState);
-    //Event handler
+    /*//Event handler
     useEffect(() => {
-        socket.on("cantChangeSettings", (data) => {
-            const setting = data.key; 
-            setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
-            console.log(settingsState);
-        });
         socket.on("changeSetting", (data) => {
             const setting = data.key; 
             setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
             console.log("Accepted", settingsState);
         });
-
         return () => {
-            socket.off("cantChangeSettings"); 
             socket.off("changeSetting");
         };
-    });
+    });*/
 
     return (
         <div>
