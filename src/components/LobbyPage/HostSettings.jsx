@@ -40,16 +40,15 @@ function HostSettings({ lobbyState }) {
                         id="deckSize"
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
-                        min="15"
-                        max="50"
+                        min="5"
                     />
                     <CreateSetting 
                         label="Hand Size:"
                         id="handSize"
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
-                        min="5"
-                        max="7"
+                        min="3"
+                        max="15"
                     />
                     <CreateSetting
                         label="Life:"
@@ -57,7 +56,7 @@ function HostSettings({ lobbyState }) {
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
                         min="1"
-                        max="5"
+                        max="10"
                     />
                     <CreateSetting
                         label="Lobby Size:"

@@ -39,13 +39,14 @@ function App() {
             navigateTo("/battlePage"); //TODO: Change this
         });
         socket.on("RoomFull", () => {
-          alert("The room you tried to join is full");
-        })
+            alert("The room you tried to join is full");
+        });
         return () => {
             socket.off("Lobby");
             socket.off("RoomNotExist");
             socket.off("startedGame");
             socket.off("LeaveLobby");
+            socket.off("RoomFull"); 
         };
 
     }, []);
