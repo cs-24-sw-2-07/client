@@ -40,6 +40,8 @@ function App() {
     return () => {
       socket.off("Lobby");
       socket.off("RoomNotExist");
+      socket.off("startedGame");
+      socket.off("LeaveLobby");
     };
 
   }, []);
