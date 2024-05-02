@@ -28,11 +28,21 @@ function BattlePage(props) {
         }
         setHand(props.data.hand)
         myDeck.current = props.data.deck
-        makeHandDeck(/*props.data.hand*/)
+        //makeHandDeck(/*props.data.hand*/)
         console.log("Hand",props.data.hand,hand)
         console.log(myDeck)
         console.log("cardHand ", handDeck)
     },[props.data])
+    
+    // Takes the index of cards in the hand, and makes it into an array of cards
+    useEffect(()=>{
+        console.log("inside makehand: ",myDeck)
+        let newHandDeck = [];
+        hand.forEach((i) => {
+            newHandDeck.push(myDeck.current.cards[i]);
+        });
+        setHandDeck(newHandDeck);
+    },[hand])
     
     // Handle socket events from server
     useEffect(()=>{
@@ -52,16 +62,16 @@ function BattlePage(props) {
         }
         
         function switchRoles(data){
-            setMyTurn(!myTurn)
             console.log("turn: ",myTurn);
             setHideElement(true)
-            if(myTurn){
-                setdisableCards(false)
-            }else{
+            if(data){
+                setMyTurn(false)
                 setShowAnswer(false)
                 setdisableCards(true)
-                setHand(data)
-                makeHandDeck()
+                setHand(data) // PROBLEM HERE
+            }else{
+                setMyTurn(true)
+                setdisableCards(false)
             }
         }
 
@@ -77,16 +87,6 @@ function BattlePage(props) {
             socket.off("switchRoles", switchRoles)         
         };
     },[])
-
-    // Takes the index of cards in the hand, and makes it into an array of cards
-    function makeHandDeck(){
-        console.log("inside makehand: ",myDeck)
-        let newHandDeck = [];
-        hand.forEach((i) => {
-            newHandDeck.push(myDeck.current.cards[i]);
-        });
-        setHandDeck(newHandDeck);
-    }
 
     return (
         <>
