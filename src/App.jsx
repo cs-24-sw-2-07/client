@@ -27,7 +27,7 @@ function App() {
                 alert("Please make a deck before proceeding");
             }
         });
-        socket.on("RoomNotExist", () => {
+        socket.on("roomNotExist", () => {
             alert("The room does not exist");
         });
         socket.on("LeaveLobby", data => {
