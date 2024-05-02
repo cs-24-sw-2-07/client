@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { socket } from "../../socket.js"
-//import { useNavigate } from "react-router-dom";
 
 function DisplayLives(props) {
     let [myLife, setMyLife] = useState(props.maxLives);
@@ -11,13 +10,11 @@ function DisplayLives(props) {
         function lifeUpdateFunc(data){
             setMyLife(data)
         }
-        
         function lifeUpdateOppFunc(data){
             setOppLife(data)
         }
 
         socket.on("lifeUpdate", lifeUpdateFunc)
-
         socket.on("lifeUpdateOpp", lifeUpdateOppFunc)
  
         return () => {

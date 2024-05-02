@@ -88,7 +88,7 @@ function BattlePage(props) {
                 gameResult={gameResult}
             />
 
-            {/* Displays the live amounts of the players in the top */}
+            {/* Displays the life amounts of the players in the top */}
             <DisplayLives
                 maxLives={props.maxLives}
                 myTurn={myTurn}
@@ -101,7 +101,7 @@ function BattlePage(props) {
                 showAnswer={showAnswer}
             />
 
-            {/* Button for then you are done answering and rewieing the answer */}
+            {/* Button for then you are done answering and reviewing the answer */}
             {hideElement && <DisplayButtons 
                 myTurn={myTurn}   
                 setShowAnswer={setShowAnswer}
@@ -109,7 +109,7 @@ function BattlePage(props) {
             />
             }
 
-            {/* Displayes all of the cards that you have on the hand */}
+            {/* Displays all of the cards that you have on the hand */}
             <DisplayHand
                 hand={hand}
                 myDeck={myDeck}
