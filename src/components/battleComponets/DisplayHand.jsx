@@ -14,7 +14,7 @@ function DisplayHand(props) {
                                 props.setdisableCards(true);
                                 props.setDisplayCard(props.myDeck.cards[props.hand[index]]);
                                 //props.setHideElement(true);
-                                socket.emit("cardPicked", index)
+                                socket.emit("cardPicked", {cardID: index})
                             }}
                         >
                             Card Name: {card.name}

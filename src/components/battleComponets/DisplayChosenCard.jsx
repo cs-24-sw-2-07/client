@@ -1,4 +1,5 @@
 function DisplayChosenCard({displayCard, myTurn, showAnswer}) {
+    console.log("displaycard: ", displayCard)
     return (
         <div className="container-fluid">
             <div className="row  px-3">

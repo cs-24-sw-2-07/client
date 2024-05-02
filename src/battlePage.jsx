@@ -7,7 +7,7 @@ import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx"
 import { socket } from "./socket.js"
 
 function BattlePage(props) {
-    let myDeck = useRef({});
+    let myDeck = useRef(props.data);
 
     let [hand, setHand] = useState([]);
     let [handDeck, setHandDeck] = useState([]);
@@ -19,20 +19,28 @@ function BattlePage(props) {
     let [gameResult, setGameResult] = useState("");
     let [showAnswer, setShowAnswer] = useState(false);
 
+    useEffect(()=>{
+        console.log("GOT DECK")
+        if(props.data.host){
+            setMyTurn(true)
+        }else{
+            setdisableCards(true)
+        }
+        setHand(props.data.hand)
+        myDeck.current = props.data.deck
+        makeHandDeck(/*props.data.hand*/)
+        console.log("Hand",props.data.hand,hand)
+        console.log(myDeck)
+        console.log("cardHand ", handDeck)
+    },[props.data])
+    
     // Handle socket events from server
     useEffect(()=>{
-        function playerInfoFunc(data){
-            if(data.host){
-                setMyTurn(true)
-            }
-            setHand(data.hand)
-            makeHandDeck()
-            myDeck = data.deck
-        }
         function cardPickedFunc(data){
             setShowAnswer(false)
+            console.log(data)
             setDisplayCard(data)
-            setHideElement(true)
+            setHideElement(false)
         }
         function doneAnsweringFunc(){
             setHideElement(false)
@@ -45,6 +53,7 @@ function BattlePage(props) {
         
         function switchRoles(data){
             setMyTurn(!myTurn)
+            console.log("turn: ",myTurn);
             setHideElement(true)
             if(myTurn){
                 setdisableCards(false)
@@ -56,14 +65,12 @@ function BattlePage(props) {
             }
         }
 
-        socket.on("playerInfo",playerInfoFunc)
         socket.on("cardPicked",cardPickedFunc)
         socket.on("doneAnswering", doneAnsweringFunc)
         socket.on("foundWinner",foundWinnerFunc)
         socket.on("switchRoles", switchRoles)    
 
         return () => {   
-            socket.off("playerInfo",playerInfoFunc)
             socket.off("cardPicked",cardPickedFunc)
             socket.off("doneAnswering", doneAnsweringFunc)
             socket.off("foundWinner",foundWinnerFunc)
@@ -73,9 +80,10 @@ function BattlePage(props) {
 
     // Takes the index of cards in the hand, and makes it into an array of cards
     function makeHandDeck(){
+        console.log("inside makehand: ",myDeck)
         let newHandDeck = [];
         hand.forEach((i) => {
-            newHandDeck.push(props.myDeck.cards[i]);
+            newHandDeck.push(myDeck.current.cards[i]);
         });
         setHandDeck(newHandDeck);
     }
@@ -102,7 +110,7 @@ function BattlePage(props) {
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
-            {hideElement && <DisplayButtons 
+            {!hideElement && <DisplayButtons 
                 myTurn={myTurn}   
                 setShowAnswer={setShowAnswer}
                 setHideElement={setHideElement}
@@ -112,7 +120,7 @@ function BattlePage(props) {
             {/* Displays all of the cards that you have on the hand */}
             <DisplayHand
                 hand={hand}
-                myDeck={myDeck}
+                myDeck={myDeck.current}
                 handDeck={handDeck}
                 disableCards={disableCards}
                 setdisableCards={setdisableCards}

@@ -9,18 +9,15 @@ export function HostSettings({ lobbyState }) {
         life: lobbyState.life,
         lobbySize: lobbyState.lobbySize,
     });
-    console.log(settingsState);
     //Event handler
     useEffect(() => {
         socket.on("cantChangeSettings", (data) => {
             const setting = data.key; 
             setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
-            console.log(settingsState);
         });
         socket.on("changeSetting", (data) => {
             const setting = data.key; 
             setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
-            console.log("Accepted", settingsState);
         });
 
         return () => {

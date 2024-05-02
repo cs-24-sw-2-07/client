@@ -10,7 +10,7 @@ export function StartButton({ players }) {
                 type="button"
                 className="btn btn-primary col-4"
                 disabled={playersAmount < 2 || playersReady !== playersAmount}
-                onClick={() => socket.emit("StartGame")}
+                onClick={() => socket.emit("startGame")}
             > Start game
             </button>
             <p className={playersReady === playersAmount && playersAmount > 1 ? "text-success" : "text-danger"}>
