@@ -1,8 +1,7 @@
 import { socket } from "../../socket";
 import { useState, useEffect } from "react";
-export { JoinedSettings }
 
-function JoinedSettings({ lobbyState }) {
+export function JoinedSettings({ lobbyState }) {
     //Setting states:
     const [settingsState, setSettingsState] = useState({
         deckSize: lobbyState.deckSize,
