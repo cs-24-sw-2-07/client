@@ -1,6 +1,6 @@
 import { socket } from "../../socket";
 import { useState, useEffect } from "react";
-export { HostSettings } //TODO: Move function into seperate file
+export { HostSettings } 
 
 function HostSettings({ lobbyState }) {
   //Setting states:
@@ -28,7 +28,7 @@ function HostSettings({ lobbyState }) {
       socket.off("cantChangeSettings"); 
       socket.off("changeSetting");
     };
-  }, []);
+  });
 
   return (
     <div>

@@ -14,17 +14,14 @@ import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx";
 
 function LobbyPage({ lobbyState }) {
   console.log(lobbyState);
-  
 
-  const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
-
-  //Room id & Host
+  // All the variables that changes throughout the lobby lifetime
   const [players, setPlayers] = useState(lobbyState.players);
   const player = players.find(player => player.playerid === socket.id); 
-  console.log(player);
   const isHost = player.host; 
   const roomID = lobbyState.id;
-
+  const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
+  const [isDeckChosen, setDeckChosen] = useState(false); 
 
   useEffect(() => {
     socket.on("playerHandler", (players) => {
@@ -34,6 +31,7 @@ function LobbyPage({ lobbyState }) {
     socket.on("changeDeck", (deckName) => {
       console.log(deckName);
       setDeckLabel(deckName); 
+      setDeckChosen(true);
     });
     socket.on("deckNotAccepted", () => {
       alert("Deck Does not fit the Lobby criteria");
@@ -64,7 +62,7 @@ function LobbyPage({ lobbyState }) {
       </div>
 
       {/*Settings og Players*/}
-      <div className="row p-6">
+      <div className="row p-6 h-100">
         <div className="col-3 bg-light pb-3">
           { isHost 
             ? <HostSettings lobbyState={lobbyState} roomID={roomID} />
@@ -84,7 +82,7 @@ function LobbyPage({ lobbyState }) {
         <div className="col-md-4 text-end">
           { isHost 
             ? <StartButton players={players}  /> 
-            : <ReadyButton deck={deckLabel}  />
+            : <ReadyButton isDeckChosen={isDeckChosen}  />
           }
         </div>
       </div>

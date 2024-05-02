@@ -6,18 +6,16 @@ function DeleteButton({ RoomID }) {
   const handleDelete = () => {
     const confirmed = window.confirm("Are you sure you want to delete this lobby?");
     if (confirmed) {
-      socket.emit("DeleteLobby", RoomID);
+      socket.emit("deleteLobby", RoomID);
     }
   };
-
 
   return (
     <button
       type="button"
       className="btn btn-primary"
       onClick={handleDelete} 
-    >
-      Delete Lobby
+    > Delete Lobby
     </button>
   );
 }
