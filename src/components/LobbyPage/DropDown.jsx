@@ -19,10 +19,9 @@ function DeckDropDown({ dropDownLabel }) {
     </div>
   );
 }
-//onClick={() => socket.emit("test", "/12345 ")
 function GetDecksDropDown() {
   const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
-  if (decks === null) {
+  /*if (decks === null) {
     return (
       <ul className="dropdown-menu">
         <li>
@@ -32,8 +31,8 @@ function GetDecksDropDown() {
         </li>
       </ul>
     );
-  }
-  /**/
+  }*/ //! Check har været der
+
   //Creates an option for every deck saved in localStorage
   return (
     <ul className="dropdown-menu">
@@ -50,9 +49,3 @@ function GetDecksDropDown() {
     </ul>
   );
 }
-
-/**
-//TODO: Ting der mangler
- * Få client til at kommunikere med server
- * Lave playerOverview, så den er scrollable
- */

@@ -18,9 +18,13 @@ function App() {
 
   useEffect(() => {
     socket.on("lobby", data => {
-      console.log(data);
-      setLobbyState(data);
-      navigateTo("/LobbyPage");
+      const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
+      if(hasDecks !== null) {
+        setLobbyState(data);
+        navigateTo("/LobbyPage");
+      } else {
+        alert("Please make a deck before proceeding");
+      }
     });
     socket.on("RoomNotExist", () => {
       alert("The room does not exist");
@@ -29,6 +33,9 @@ function App() {
       console.log(data);
       //setLobbyState(data);
       navigateTo("/");
+    });
+    socket.on("startedGame", () => {
+      navigateTo("/battlePage"); //TODO: Change this
     });
     return () => {
       socket.off("Lobby");

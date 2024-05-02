@@ -14,10 +14,10 @@ export default function FrontPage() {
       <div className="p-5"></div>
       <div className="row">
         <div className="d-grid gap-2 col">
-          <JoinGameModalButton navigateTo={() => navigateTo("/LobbyPage")} />
+          <JoinGameModalButton />
         </div>
         <div className="d-grid gap-2 col">
-          <HostGameModalButton navigateTo={() => navigateTo("/LobbyPage")} />
+          <HostGameModalButton />
         </div>
         <div className="row p-5">
           <div className="d-grid gap-2 col-8 mx-auto">
@@ -40,8 +40,6 @@ function HostGameModalButton() {
   const [displayName, setDisplayName] = useState("");
 
   function hostGame() {
-    //alert(`Host Game!\nInputted Name: ${displayName}`);
-    console.log(socket);
     socket.emit("createLobby", displayName);
   }
 
@@ -118,12 +116,11 @@ function HostGameModalButton() {
   );
 }
 
-function JoinGameModalButton({ navigateTo }) {
+function JoinGameModalButton() {
   const [displayName, setDisplayName] = useState("");
   const [gameCode, setGameCode] = useState("");
 
   function joinGame() {
-    alert(`Join Game!\nInputted Name: ${displayName}\nGame Code: ${gameCode}`);
     socket.emit("joinLobby", {name: displayName, id: gameCode});
   }
 

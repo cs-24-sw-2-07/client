@@ -1,8 +1,6 @@
 import { socket } from "../../socket";
 export { LeaveButton }
 
-
-
 function LeaveButton() {
   const HandleLeave =() => {
     const confirmed =window.confirm(" Are you sure you want to leave this lobby?");

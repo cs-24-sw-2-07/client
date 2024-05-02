@@ -3,13 +3,6 @@ export { StartButton }
 import { socket } from "../../socket";
 
 function StartButton({ players }) {
-  /*const [playersAmt, setPlayerAmt] = useState(players.length);
-  const [ready, setReady] = useState(countReadyPlayers(players));
-
-  function updatePlayers(players) {
-    setPlayerAmt(players.length);
-    setReady(countReadyPlayers(players)); 
-  }*/
   let playersReady = players.filter(player => player.ready).length;
   let playersAmount = players.length;
 	

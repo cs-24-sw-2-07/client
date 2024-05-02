@@ -8,35 +8,29 @@ import { JoinedSettings } from "./components/LobbyPage/JoinedSettings.jsx";
 import { ReadyButton } from "./components/LobbyPage/ReadyUp.jsx";
 import { PlayerOverview } from "./components/LobbyPage/PlayersOverview.jsx";
 import { DeleteButton} from "./components/LobbyPage/DeleteButton.jsx";
-import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx";
-
-// du er nået til deletebutton kig der 
+import {LeaveButton} from "./components/LobbyPage/LeaveButton.jsx"; 
 
 function LobbyPage({ lobbyState }) {
-  console.log(lobbyState);
-
   // All the variables that changes throughout the lobby lifetime
   const [players, setPlayers] = useState(lobbyState.players);
-  const player = players.find(player => player.playerid === socket.id); 
-  const isHost = player.host; 
-  const roomID = lobbyState.id;
   const [deckLabel, setDeckLabel] = useState("Choose Deck"); 
   const [isDeckChosen, setDeckChosen] = useState(false); 
 
+  const player = players.find(player => player.playerid === socket.id); 
+  const isHost = player.host; 
+  const roomID = lobbyState.id;
+
   useEffect(() => {
     socket.on("playerHandler", (players) => {
-      console.log(players); 
       setPlayers(players);
     });
     socket.on("changeDeck", (deckName) => {
-      console.log(deckName);
       setDeckLabel(deckName); 
       setDeckChosen(true);
     });
     socket.on("deckNotAccepted", () => {
       alert("Deck Does not fit the Lobby criteria");
     });
-
     return () => {
       socket.off("playerHandler");
       socket.off("changeDeck"); 
@@ -55,8 +49,8 @@ function LobbyPage({ lobbyState }) {
     
         <div className="col-md-4 text-end py-5">
           { isHost
-            ? <DeleteButton RoomID={roomID}/> 
-            : <LeaveButton  RoomID={roomID}/>
+            ? <DeleteButton /> 
+            : <LeaveButton  />
           }
         </div>
       </div>
@@ -65,7 +59,7 @@ function LobbyPage({ lobbyState }) {
       <div className="row p-6 h-100">
         <div className="col-3 bg-light pb-3">
           { isHost 
-            ? <HostSettings lobbyState={lobbyState} roomID={roomID} />
+            ? <HostSettings lobbyState={lobbyState} />
             : <JoinedSettings lobbyState={lobbyState} /> 
           }
         </div>

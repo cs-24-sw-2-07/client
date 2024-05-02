@@ -37,28 +37,3 @@ function ShowSetting({ label, setting }) {
     </div>
   );
 }
-
-/*function ReturnSettingObject(value, settingsState, key) {
-  switch (key) {
-  case "deckSize":
-    return {
-      ...settingsState,
-      cardCount: value
-    };
-  case "handSize":
-    return {
-      ...settingsState,
-      handSize: value
-    };
-  case "life":
-    return {
-      ...settingsState,
-      life: value
-    };
-  case "lobbySize":
-    return {
-      ...settingsState,
-      lobbySize: value
-    };
-  }
-}*/

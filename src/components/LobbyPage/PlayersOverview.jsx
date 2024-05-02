@@ -12,7 +12,7 @@ function PlayerOverview({ players }) {
   );
 }
 
-function PrintPlayer(player, index) { //TODO: make it scrollable
+function PrintPlayer(player, index) {
   const isYouStr = player.playerid === socket.id ? " (You):" : ":"; 
   const playerText = `${player.name.trim()}${isYouStr}`;
   const isReady = player.ready ? "Ready  " : "Not ready"; 
@@ -22,6 +22,5 @@ function PrintPlayer(player, index) { //TODO: make it scrollable
       <div className="col"><p>{playerText}</p></div>
       <div className="col text-end"><p>{isReady}</p></div>
     </div>
-    
   );
 }
