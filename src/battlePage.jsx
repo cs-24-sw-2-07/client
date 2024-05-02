@@ -8,7 +8,7 @@ import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx"
 let oppOutOfCards = true;
 
 function BattlePage(props) {
-  
+
     let myDeck = JSON.parse(localStorage.getItem("userDeck"))[0];//props.chosenDeck;
     // TODO FUNCTION TO GET OPPENTED DECK
     //let oppDeck = props.oppDeck
@@ -47,7 +47,7 @@ function BattlePage(props) {
         }
 
 
-        //chec  if both players have run out of cards 
+        //chec  if both players have run out of cards
         if(cardTracker.current.used == cardTracker.current.size){
             if(oppOutOfCards){
                 if(oppLife > myLife){
@@ -79,17 +79,17 @@ function BattlePage(props) {
                 maxLives={props.maxLives}
                 myTurn={myTurn}
             />
-      
+
             <DisplayChosenCard
                 displayCard={displayCard}
                 myTurn={myTurn}
             />
 
-            {hideElement && <DisplayButtons 
+            {hideElement && <DisplayButtons
                 myTurn={myTurn}
                 setOppLife={setOppLife}
-                oppLife={oppLife}   
-                setShowWonPopUp={setShowWonPopUp} 
+                oppLife={oppLife}
+                setShowWonPopUp={setShowWonPopUp}
                 setGameResult={setGameResult}
             />
             }
@@ -120,4 +120,4 @@ function chooseStartingHand(deckSize,cardAmount){
     return [...hand];
 }
 
-export default BattlePage;
+export { BattlePage };
