@@ -18,7 +18,8 @@ function BattlePage(props) {
     let [showWonPopUp, setShowWonPopUp] = useState(false);
     let [gameResult, setGameResult] = useState("");
     let [showAnswer, setShowAnswer] = useState(false);
-    
+
+    // Handle socket events from server
     useEffect(()=>{
         function playerInfoFunc(data){
             if(data.host){
@@ -28,7 +29,6 @@ function BattlePage(props) {
             makeHandDeck()
             myDeck = data.deck
         }
-
         function cardPickedFunc(data){
             setShowAnswer(false)
             setDisplayCard(data)
@@ -71,6 +71,7 @@ function BattlePage(props) {
         };
     },[])
 
+    // Takes the index of cards in the hand, and makes it into an array of cards
     function makeHandDeck(){
         let newHandDeck = [];
         hand.forEach((i) => {
@@ -81,22 +82,26 @@ function BattlePage(props) {
 
     return (
         <>
+            {/* Modal for when a winner have been found */}
             <WinPopUp
                 foundWinner={showWonPopUp}
                 gameResult={gameResult}
             />
 
+            {/* Displays the live amounts of the players in the top */}
             <DisplayLives
                 maxLives={props.maxLives}
                 myTurn={myTurn}
             />
       
+            {/* Displays the card that are played */}
             <DisplayChosenCard
                 displayCard={displayCard}
                 myTurn={myTurn}
                 showAnswer={showAnswer}
             />
 
+            {/* Button for then you are done answering and rewieing the answer */}
             {hideElement && <DisplayButtons 
                 myTurn={myTurn}   
                 setShowAnswer={setShowAnswer}
@@ -104,6 +109,7 @@ function BattlePage(props) {
             />
             }
 
+            {/* Displayes all of the cards that you have on the hand */}
             <DisplayHand
                 hand={hand}
                 myDeck={myDeck}
