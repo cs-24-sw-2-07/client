@@ -5,7 +5,6 @@ import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCar
 import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
 import { socket } from "./socket.js"
-// Make websocket listerne for when a OutOfCardnotification comes
 
 function BattlePage(props) {
     let myDeck = useRef({});
@@ -58,13 +57,9 @@ function BattlePage(props) {
         }
 
         socket.on("playerInfo",playerInfoFunc)
-
         socket.on("cardPicked",cardPickedFunc)
-
         socket.on("doneAnswering", doneAnsweringFunc)
-
         socket.on("foundWinner",foundWinnerFunc)
-
         socket.on("switchRoles", switchRoles)    
 
         return () => {   
@@ -111,15 +106,12 @@ function BattlePage(props) {
 
             <DisplayHand
                 hand={hand}
-                myTurn={myTurn}
                 myDeck={myDeck}
                 handDeck={handDeck}
-                setHandDeck={setHandDeck}
-                setMyTurn={setMyTurn}
                 disableCards={disableCards}
                 setdisableCards={setdisableCards}
                 setDisplayCard={setDisplayCard}
-                setHideElement={setHideElement}
+                //setHideElement={setHideElement}
             />
         </>
     );
