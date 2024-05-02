@@ -1,9 +1,7 @@
 import { socket } from "../../socket";
-//import { useState, useEffect } from "react";
 import { } from "react-router-dom";
-export { PlayerOverview };
 
-function PlayerOverview({ players }) {
+export function PlayerOverview({ players }) {
     return (
         <>
             <h2>Players: </h2>

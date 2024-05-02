@@ -1,9 +1,6 @@
 import { socket } from "../../socket";
-import { } from "react-router-dom";
 
-export { DeckDropDown };
-
-function DeckDropDown({ dropDownLabel }) {
+export function DeckDropDown({ dropDownLabel }) {
     return (
         <div className="dropdown">
             <div className="btn-group">
