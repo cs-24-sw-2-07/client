@@ -38,6 +38,11 @@ function BattlePage(props) {
         function playerInfoFunc(data){
 
         }
+        function foundWinnerFunc(data){
+            setShowWonPopUp(true)
+            setGameResult(data)
+        }
+        
         function playerInfoFunc(data){
 
         }
@@ -49,12 +54,12 @@ function BattlePage(props) {
 
         socket.on("doneAnswering")
 
-        socket.on("foundWinner")
+        socket.on("foundWinner",foundWinnerFunc)
 
         socket.on("switchRoles")    
 
         return () => {
-            
+            socket.off("foundWinner",foundWinnerFunc)            
         };
     },[])
 
