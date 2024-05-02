@@ -41,12 +41,16 @@ function App() {
         socket.on("RoomFull", () => {
             alert("The room you tried to join is full");
         });
+        socket.on("invalidUsername", () => {
+            alert("Username is invalid");
+        });
         return () => {
             socket.off("Lobby");
             socket.off("RoomNotExist");
             socket.off("startedGame");
             socket.off("LeaveLobby");
             socket.off("RoomFull"); 
+            socket.off("invalidUsername");
         };
 
     }, []);
