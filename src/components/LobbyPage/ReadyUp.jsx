@@ -1,8 +1,6 @@
-export { ReadyButton }
 import { socket } from "../../socket";
 
-
-function ReadyButton({ isDeckChosen }) {
+export function ReadyButton({ isDeckChosen }) {
     return (
         <div>
             <button
