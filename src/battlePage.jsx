@@ -6,60 +6,74 @@ import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
 import { socket } from "./socket.js"
 // Make websocket listerne for when a OutOfCardnotification comes
-let oppOutOfCards = true;
 
 function BattlePage(props) {
-  
     let myDeck = JSON.parse(localStorage.getItem("userDeck"))[0];//props.chosenDeck;
     // TODO FUNCTION TO GET OPPENTED DECK
     //let oppDeck = props.oppDeck
 
-    // Setting up varibels for deck controlling
-    const startingHand = useRef(chooseStartingHand(myDeck.cards.length, props.handSize))
-    let cardTracker = useRef({used:0,handSize:props.handSize, size:myDeck.cards.length, usedCard:new Set([...startingHand.current]), playedCard:new Set()})
-
-    let [hand, setHand] = useState(startingHand.current);
+    let [hand, setHand] = useState([]);
     let [handDeck, setHandDeck] = useState([]);
-
     let [disableCards, setdisableCards] = useState(false);
     let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
     let [displayCard, setDisplayCard] = useState("");
-    let [hideElement, setHideElement] = useState(false);
+    let [hideElement, setHideElement] = useState(true);
     let [showWonPopUp, setShowWonPopUp] = useState(false);
     let [gameResult, setGameResult] = useState("");
+    let [showAnswer, setShowAnswer] = useState(false);
 
     useEffect(()=>{
         function playerInfoFunc(data){
 
         }
-        function playerInfoFunc(data){
-
+        function cardPickedFunc(data){
+            setShowAnswer(false)
+            setDisplayCard(data)
+            setHideElement(true)
         }
-        function playerInfoFunc(data){
-
+        function doneAnsweringFunc(){
+            setHideElement(false)
+            setShowAnswer(true)
         }
         function foundWinnerFunc(data){
             setShowWonPopUp(true)
             setGameResult(data)
         }
         
-        function playerInfoFunc(data){
+        function switchRoles(data){
+            setMyTurn(!myTurn)
+            setHideElement(true)
+            if(myTurn){
+                setdisableCards(false)
+            }else{
+                setShowAnswer(false)
+                setdisableCards(true)
+                setHand(data)
 
+                let newHandDeck = [];
+                hand.forEach((i) => {
+                    newHandDeck.push(props.myDeck.cards[i]);
+                });
+                setHandDeck(newHandDeck);
+            }
         }
-
 
         socket.on("playerInfo",playerInfoFunc)
 
-        socket.on("cardPicked")
+        socket.on("cardPicked",cardPickedFunc)
 
-        socket.on("doneAnswering")
+        socket.on("doneAnswering", doneAnsweringFunc)
 
         socket.on("foundWinner",foundWinnerFunc)
 
-        socket.on("switchRoles")    
+        socket.on("switchRoles", switchRoles)    
 
-        return () => {
-            socket.off("foundWinner",foundWinnerFunc)            
+        return () => {   
+            socket.off("playerInfo",playerInfoFunc)
+            socket.off("cardPicked",cardPickedFunc)
+            socket.off("doneAnswering", doneAnsweringFunc)
+            socket.off("foundWinner",foundWinnerFunc)
+            socket.off("switchRoles", switchRoles)         
         };
     },[])
 
@@ -78,14 +92,11 @@ function BattlePage(props) {
             <DisplayChosenCard
                 displayCard={displayCard}
                 myTurn={myTurn}
+                showAnswer={showAnswer}
             />
 
             {hideElement && <DisplayButtons 
-                myTurn={myTurn}
-                setOppLife={setOppLife}
-                oppLife={oppLife}   
-                setShowWonPopUp={setShowWonPopUp} 
-                setGameResult={setGameResult}
+                myTurn={myTurn}   
             />
             }
 

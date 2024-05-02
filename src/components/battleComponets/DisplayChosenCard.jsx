@@ -1,4 +1,4 @@
-function DisplayChosenCard({displayCard, myTurn}) {
+function DisplayChosenCard({displayCard, myTurn, showAnswer}) {
     return (
         <div className="container-fluid">
             <div className="row  px-3">
@@ -19,8 +19,7 @@ function DisplayChosenCard({displayCard, myTurn}) {
                             type="text"
                             disabled
                             rows="8"
-                            value={myTurn ? displayCard.answer : ""}
-
+                            value={(myTurn || showAnswer) ? displayCard.answer : ""}
                         ></textarea>
                     </div>
                 </div>

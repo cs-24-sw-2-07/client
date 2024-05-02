@@ -1,17 +1,10 @@
 function DisplayButtons(props){
     function answeredWrong(){
-        console.log("forkert");
-        props.setOppLife(props.oppLife-1);
-        console.log(props.oppLife);
-        if (props.oppLife == 1){
-            props.setGameResult("won");
-            props.setShowWonPopUp(true);
-        }
-        // TODO: Lav så den også sender til server om at det var forkert
+        
+        
     }
     function answeredRight(){
-        console.log("korrekt");
-        // TODO: Lav så den også sender til server om at det var forkert
+        
     }
 
     if (props.myTurn == true){
