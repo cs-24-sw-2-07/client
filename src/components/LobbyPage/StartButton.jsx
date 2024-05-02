@@ -1,8 +1,6 @@
-export { StartButton }
-//import { useEffect } from "react";
 import { socket } from "../../socket";
 
-function StartButton({ players }) {
+export function StartButton({ players }) {
     let playersReady = players.filter(player => player.ready).length;
     let playersAmount = players.length;
 	
