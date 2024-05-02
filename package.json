@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0 --fix",
     "test": "jest",
-    "preview": "vite preview"
+    "preview": "vite preview --host"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
