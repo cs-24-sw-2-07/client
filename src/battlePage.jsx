@@ -123,4 +123,4 @@ function BattlePage(props) {
     );
 }
 
-export default BattlePage;
+export { BattlePage };

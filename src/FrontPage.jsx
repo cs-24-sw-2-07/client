@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { socket } from "./socket"
 
 export default function FrontPage() {
     const navigate = useNavigate();
@@ -13,10 +14,10 @@ export default function FrontPage() {
             <div className="p-5"></div>
             <div className="row">
                 <div className="d-grid gap-2 col">
-                    <JoinGameModalButton navigateTo={() => navigateTo("/LobbyPage")} />
+                    <JoinGameModalButton />
                 </div>
                 <div className="d-grid gap-2 col">
-                    <HostGameModalButton navigateTo={() => navigateTo("/HostGamePage")} />
+                    <HostGameModalButton />
                 </div>
                 <div className="row p-5">
                     <div className="d-grid gap-2 col-8 mx-auto">
@@ -26,8 +27,7 @@ export default function FrontPage() {
                             onClick={() => {
                                 navigateTo("/CreateDeckPage");
                             }}
-                        >
-              Create or Edit Decks
+                        > Create or Edit Decks
                         </button>
                     </div>
                 </div>
@@ -36,12 +36,11 @@ export default function FrontPage() {
     );
 }
 
-function HostGameModalButton({ navigateTo }) {
+function HostGameModalButton() {
     const [displayName, setDisplayName] = useState("");
 
     function hostGame() {
-        alert(`Host Game!\nInputted Name: ${displayName}`);
-        navigateTo("/HostGamePage");
+        socket.emit("createLobby", displayName);
     }
 
     return (
@@ -117,13 +116,12 @@ function HostGameModalButton({ navigateTo }) {
     );
 }
 
-function JoinGameModalButton({ navigateTo }) {
+function JoinGameModalButton() {
     const [displayName, setDisplayName] = useState("");
     const [gameCode, setGameCode] = useState("");
 
     function joinGame() {
-        alert(`Join Game!\nInputted Name: ${displayName}\nGame Code: ${gameCode}`);
-        navigateTo("/LobbyPage");
+        socket.emit("joinLobby", {name: displayName, id: gameCode});
     }
 
     return (
@@ -211,3 +209,5 @@ function JoinGameModalButton({ navigateTo }) {
         </>
     );
 }
+
+
