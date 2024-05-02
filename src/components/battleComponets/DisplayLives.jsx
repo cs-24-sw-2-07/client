@@ -8,9 +8,11 @@ function DisplayLives(props) {
     useEffect(()=>{
 
         function lifeUpdateFunc(data){
+            console.log("lives:", data)
             setMyLife(data)
         }
         function lifeUpdateOppFunc(data){
+            console.log("lives:", data)
             setOppLife(data)
         }
 
