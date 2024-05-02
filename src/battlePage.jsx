@@ -8,24 +8,28 @@ import { socket } from "./socket.js"
 // Make websocket listerne for when a OutOfCardnotification comes
 
 function BattlePage(props) {
-    let myDeck = JSON.parse(localStorage.getItem("userDeck"))[0];//props.chosenDeck;
-    // TODO FUNCTION TO GET OPPENTED DECK
-    //let oppDeck = props.oppDeck
+    let myDeck = useRef({});
 
     let [hand, setHand] = useState([]);
     let [handDeck, setHandDeck] = useState([]);
     let [disableCards, setdisableCards] = useState(false);
-    let [myTurn, setMyTurn] = useState(true); //TODO: ændre så det faktisk kun er true for den der starter
+    let [myTurn, setMyTurn] = useState(false);
     let [displayCard, setDisplayCard] = useState("");
     let [hideElement, setHideElement] = useState(true);
     let [showWonPopUp, setShowWonPopUp] = useState(false);
     let [gameResult, setGameResult] = useState("");
     let [showAnswer, setShowAnswer] = useState(false);
-
+    
     useEffect(()=>{
         function playerInfoFunc(data){
-
+            if(data.host){
+                setMyTurn(true)
+            }
+            setHand(data.hand)
+            makeHandDeck()
+            myDeck = data.deck
         }
+
         function cardPickedFunc(data){
             setShowAnswer(false)
             setDisplayCard(data)
@@ -49,12 +53,7 @@ function BattlePage(props) {
                 setShowAnswer(false)
                 setdisableCards(true)
                 setHand(data)
-
-                let newHandDeck = [];
-                hand.forEach((i) => {
-                    newHandDeck.push(props.myDeck.cards[i]);
-                });
-                setHandDeck(newHandDeck);
+                makeHandDeck()
             }
         }
 
@@ -77,6 +76,14 @@ function BattlePage(props) {
         };
     },[])
 
+    function makeHandDeck(){
+        let newHandDeck = [];
+        hand.forEach((i) => {
+            newHandDeck.push(props.myDeck.cards[i]);
+        });
+        setHandDeck(newHandDeck);
+    }
+
     return (
         <>
             <WinPopUp
@@ -97,6 +104,8 @@ function BattlePage(props) {
 
             {hideElement && <DisplayButtons 
                 myTurn={myTurn}   
+                setShowAnswer={setShowAnswer}
+                setHideElement={setHideElement}
             />
             }
 
