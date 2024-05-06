@@ -15,7 +15,7 @@ function DisplayButtons(props){
     else {
         return(
             <div className="row p-2">
-                <button type="button" className="btn btn-success"id="readyBtn" onClick={()=>{socket.emit("doneAnswering"); props.setShowAnswer(true); props.setHideElement(true)}}>Done answering? click here</button>
+                <button type="button" className="btn btn-success" id="readyBtn" onClick={()=>{socket.emit("doneAnswering"); props.setShowAnswer(true); props.setHideElement(true)}}>Done answering? click here</button>
             </div>
         )
     }
