@@ -29,6 +29,7 @@ function LobbyPage({ lobbyState }) {
         });
         socket.on("deckNotAccepted", () => {
             alert("Deck Does not fit the Lobby criteria");
+            setDeckLabel("Choose Deck");
         });
         return () => {
             socket.off("playerHandler");

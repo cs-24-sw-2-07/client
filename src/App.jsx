@@ -23,11 +23,11 @@ function App() {
     useEffect(() => {
         socket.on("lobby", data => {
             const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
-            if(hasDecks !== null) {
+            if(hasDecks === null) {
+                alert("Please make a deck before proceeding");
+            } else {
                 setLobbyState(data);
                 navigateTo("/LobbyPage");
-            } else {
-                alert("Please make a deck before proceeding");
             }
         });
         socket.on("roomNotExist", () => {

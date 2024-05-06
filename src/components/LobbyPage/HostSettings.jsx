@@ -1,5 +1,5 @@
 import { socket } from "../../socket";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export function HostSettings({ lobbyState }) {
     //Setting states:
@@ -8,22 +8,6 @@ export function HostSettings({ lobbyState }) {
         handSize: lobbyState.handSize,
         life: lobbyState.life,
         lobbySize: lobbyState.lobbySize,
-    });
-    //Event handler
-    useEffect(() => {
-        socket.on("cantChangeSettings", (data) => {
-            const setting = data.key; 
-            setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
-        });
-        socket.on("changeSetting", (data) => {
-            const setting = data.key; 
-            setSettingsState(ReturnSettingObject(data[setting], setting, settingsState));
-        });
-
-        return () => {
-            socket.off("cantChangeSettings"); 
-            socket.off("changeSetting");
-        };
     });
 
     return (
@@ -44,7 +28,7 @@ export function HostSettings({ lobbyState }) {
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
                         min="3"
-                        max="15"
+                        max={settingsState.deckSize}
                     />
                     <CreateSetting
                         label="Life:"
