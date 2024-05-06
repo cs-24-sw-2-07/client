@@ -51,7 +51,7 @@ function HostGameModalButton() {
                 data-bs-toggle="modal"
                 data-bs-target="#hostGameModal"
             >
-        Host Game
+				Host Game
             </button>
             <div
                 className="modal fade"
@@ -64,7 +64,7 @@ function HostGameModalButton() {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="hostGameModalLabel">
-                Host Game
+															Host Game
                             </h1>
                             <button
                                 type="button"
@@ -79,8 +79,7 @@ function HostGameModalButton() {
                                     <label
                                         htmlFor="display-name"
                                         className="col-form-label text-start"
-                                    >
-                    Enter a name:
+                                    > Enter a name:
                                     </label>
                                     <input
                                         type="text"
@@ -97,16 +96,14 @@ function HostGameModalButton() {
                                 type="button"
                                 className="btn btn-secondary"
                                 data-bs-dismiss="modal"
-                            >
-                Close
+                            > Close
                             </button>
                             <button
                                 type="button"
                                 className="btn btn-primary"
                                 data-bs-dismiss="modal"
                                 onClick={hostGame}
-                            >
-                Create Lobby
+                            > Create Lobby
                             </button>
                         </div>
                     </div>
@@ -121,7 +118,7 @@ function JoinGameModalButton() {
     const [gameCode, setGameCode] = useState("");
 
     function joinGame() {
-        socket.emit("joinLobby", {name: displayName, id: gameCode});
+        socket.emit("joinLobby", { name: displayName, id: gameCode });
     }
 
     return (
@@ -131,8 +128,7 @@ function JoinGameModalButton() {
                 className="btn btn-primary btn-lg"
                 data-bs-toggle="modal"
                 data-bs-target="#joinGameModal"
-            >
-        Join Game
+            > Join Game
             </button>
             <div
                 className="modal fade"
@@ -144,8 +140,7 @@ function JoinGameModalButton() {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="joinGameModalLabel">
-                Join Game
+                            <h1 className="modal-title fs-5" id="joinGameModalLabel"> Join Game
                             </h1>
                             <button
                                 type="button"
@@ -160,8 +155,7 @@ function JoinGameModalButton() {
                                     <label
                                         htmlFor="game-code"
                                         className="col-form-label text-start"
-                                    >
-                    Enter Game Code:
+                                    > Enter Game Code:
                                     </label>
                                     <input
                                         type="text"
@@ -173,8 +167,7 @@ function JoinGameModalButton() {
                                     <label
                                         htmlFor="display-name"
                                         className="col-form-label text-start"
-                                    >
-                    Enter a name:
+                                    > Enter a name:
                                     </label>
                                     <input
                                         type="text"
@@ -191,16 +184,14 @@ function JoinGameModalButton() {
                                 type="button"
                                 className="btn btn-secondary"
                                 data-bs-dismiss="modal"
-                            >
-                Close
+                            > Close
                             </button>
                             <button
                                 type="button"
                                 className="btn btn-primary"
                                 data-bs-dismiss="modal"
                                 onClick={joinGame}
-                            >
-                Join Lobby
+                            > Join Lobby
                             </button>
                         </div>
                     </div>
