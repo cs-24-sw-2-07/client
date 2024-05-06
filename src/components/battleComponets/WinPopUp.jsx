@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 
 function WinPopUp(props){
@@ -11,12 +10,10 @@ function WinPopUp(props){
                         <div className='modal-header'>
                             <h1>You {props.gameResult}</h1>
                         </div>
-                        {/*<div className='modal-body'>
-                            <h3 className="text-primary h3">YOU WON OR LOST; WHO KNOWS?</h3>
-                        </div>*/}
+                        {/* ! Add a body for feedback here */}
                         <div className='modal-footer'>
                             <button type="button" className="btn btn-primary" data-bs-dismiss="modal" 
-                                onClick={() => {navigate("/");console.log("gå til start side eller feedback")}}>Go to front page</button>
+                                onClick={() => {navigate("/");}}>Go to front page</button>
                         </div>
                     </div>
                 </div>
