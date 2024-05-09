@@ -23,7 +23,7 @@ function DisplayChosenCard({displayCard, turn, showAnswer, playerLives}) {
                             type="text"
                             disabled
                             rows="8"
-                            value={(turn === socket.id || showAnswer) ? displayCard.answer : ""}
+                            value={(turn.current === socket.id || showAnswer) ? displayCard.answer : ""}
                         ></textarea>
                     </div>
                 </div>

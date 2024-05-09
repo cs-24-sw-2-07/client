@@ -20,7 +20,7 @@ function BattlePage(props) {
 
     useEffect(()=>{
         console.log("GOT DECK")
-        if(turn !== socket.id) setdisableCards(true);
+        if(turn.current !== socket.id) setdisableCards(true);
 
         setHand(props.data.hand)
         myDeck.current = props.data.deck
@@ -58,27 +58,31 @@ function BattlePage(props) {
         }
 
         function switchRoles(data){
-            console.log("turn: ", data.turn);
+            // console.log("turn: ", data.turn);
+            // setTurn(data.turn);
+            // setHideElement(true)
+            // if(data.turn.current !== socket.id){
+            //     setShowAnswer(false)
+            //     setdisableCards(true)
+            //     setHand(data.hand) // PROBLEM HERE
+            // } else {
+            //     setdisableCards(false)
+            // }
             setTurn(data.turn);
-            setHideElement(true)
-            if(data.turn !== socket.id){
-                setShowAnswer(false)
-                setdisableCards(true)
-                setHand(data.hand) // PROBLEM HERE
-            } else {
-                setdisableCards(false)
-            }
+            setHideElement(true);
+            data.turn.current === socket.id ? setdisableCards(false) : setdisableCards(true);
+            if(data.hand) setHand(data.hand);
         }
 
-        socket.on("cardPicked",cardPickedFunc)
+        socket.on("cardPicked", cardPickedFunc)
         socket.on("doneAnswering", doneAnsweringFunc)
-        socket.on("foundWinner",foundWinnerFunc)
+        socket.on("foundWinner", foundWinnerFunc)
         socket.on("switchRoles", switchRoles)
 
         return () => {
-            socket.off("cardPicked",cardPickedFunc)
+            socket.off("cardPicked", cardPickedFunc)
             socket.off("doneAnswering", doneAnsweringFunc)
-            socket.off("foundWinner",foundWinnerFunc)
+            socket.off("foundWinner", foundWinnerFunc)
             socket.off("switchRoles", switchRoles)
         };
     },[])
@@ -100,7 +104,7 @@ function BattlePage(props) {
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
-            {!hideElement && <DisplayButtons
+            {(!hideElement && (props.turn.current === socket.id || props.turn.next === socket.id)) && <DisplayButtons
                 turn={turn}
                 setShowAnswer={setShowAnswer}
                 setHideElement={setHideElement}

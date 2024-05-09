@@ -1,7 +1,7 @@
 import { socket } from "../../socket.js"
 
 function DisplayButtons(props){
-    if (props.myTurn == true){
+    if (props.turn.current === socket.id){
         return(
             <div className="row p-2 justify-content-md-center">
                 <div className="col-6 col-md-auto d-grid">
