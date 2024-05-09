@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { DisplayLives } from "./components/battleComponets/DisplayLives.jsx";
 import { DisplayHand } from "./components/battleComponets/DisplayHand.jsx";
 import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCard.jsx";
 import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
@@ -33,7 +32,7 @@ function BattlePage(props) {
         console.log(myDeck)
         console.log("cardHand ", handDeck)
     },[props.data])
-    
+
     // Takes the index of cards in the hand, and makes it into an array of cards
     useEffect(()=>{
         console.log("inside makehand: ",myDeck)
@@ -43,7 +42,7 @@ function BattlePage(props) {
         });
         setHandDeck(newHandDeck);
     },[hand])
-    
+
     // Handle socket events from server
     useEffect(()=>{
         function cardPickedFunc(data){
@@ -60,7 +59,7 @@ function BattlePage(props) {
             setShowWonPopUp(true)
             setGameResult(data)
         }
-        
+
         function switchRoles(data){
             console.log("turn: ",myTurn);
             setHideElement(true)
@@ -78,13 +77,13 @@ function BattlePage(props) {
         socket.on("cardPicked",cardPickedFunc)
         socket.on("doneAnswering", doneAnsweringFunc)
         socket.on("foundWinner",foundWinnerFunc)
-        socket.on("switchRoles", switchRoles)    
+        socket.on("switchRoles", switchRoles)
 
-        return () => {   
+        return () => {
             socket.off("cardPicked",cardPickedFunc)
             socket.off("doneAnswering", doneAnsweringFunc)
             socket.off("foundWinner",foundWinnerFunc)
-            socket.off("switchRoles", switchRoles)         
+            socket.off("switchRoles", switchRoles)
         };
     },[])
 
@@ -96,22 +95,17 @@ function BattlePage(props) {
                 gameResult={gameResult}
             />
 
-            {/* Displays the life amounts of the players in the top */}
-            <DisplayLives
-                maxLives={props.maxLives}
-                myTurn={myTurn}
-            />
-      
             {/* Displays the card that are played */}
             <DisplayChosenCard
                 displayCard={displayCard}
                 myTurn={myTurn}
                 showAnswer={showAnswer}
+                maxLives={props.maxLives}
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
-            {!hideElement && <DisplayButtons 
-                myTurn={myTurn}   
+            {!hideElement && <DisplayButtons
+                myTurn={myTurn}
                 setShowAnswer={setShowAnswer}
                 setHideElement={setHideElement}
             />

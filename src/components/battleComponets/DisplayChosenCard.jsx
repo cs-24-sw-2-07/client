@@ -1,7 +1,9 @@
-function DisplayChosenCard({displayCard, myTurn, showAnswer}) {
+import { DisplayLives } from "./DisplayLives.jsx";
+
+function DisplayChosenCard({displayCard, myTurn, showAnswer, maxLives}) {
     console.log("displaycard: ", displayCard)
     return (
-        <div className="container-fluid">
+        <div className="container-fluid pt-3">
             <div className="row  px-3">
                 <div className="col-6">
                     <div className="row">
@@ -25,7 +27,13 @@ function DisplayChosenCard({displayCard, myTurn, showAnswer}) {
                     </div>
                 </div>
                 <div className="col-6">
-                    <p>Make whiteboard</p>
+
+
+                    {/* Displays the life amounts of the players in the top */}
+                    <DisplayLives
+                        maxLives={maxLives}
+                        myTurn={myTurn}
+                    />
                 </div>
             </div>
         </div>
