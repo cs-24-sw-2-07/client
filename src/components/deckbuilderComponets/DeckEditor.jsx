@@ -1,5 +1,4 @@
 import { CardsList } from "./CardsList.jsx";
-import { useState } from "react";
 
 function DeckEditor({
     hiddenDeck,
@@ -14,7 +13,6 @@ function DeckEditor({
     addNewCard,
     deleteCard,
 }){
-    console.log("Hello world", card.rating);
     return (
         <div className="container" hidden={!hiddenDeck}>
             <div className="row">
@@ -101,7 +99,7 @@ function DeckEditor({
                     </div>
                     <div className="row">
                         <label htmlFor="rating">Card Rating:</label>
-                        <div className="btn-group mr-2" role="group" aria-label="Basic example" >
+                        <div className="btn-group mr-2" role="group">
                             <RatingButton rating={1} card={card} updateCard={updateCard}/> 
                             <RatingButton rating={2} card={card} updateCard={updateCard}/> 
                             <RatingButton rating={3} card={card} updateCard={updateCard}/> 
@@ -138,12 +136,15 @@ function DeckEditor({
 
 function RatingButton ({ rating, card, updateCard }) {
     return( 
-        <button type="button" className={card.rating >= rating ? "btn btn-primary" : "btn btn-secondary"} 
+        <button 
+            type="button" 
+            className={card.rating >= rating ? "btn btn-primary" : "btn btn-secondary"} 
             onClick={() => updateCard({
                 ...card, 
                 rating: rating
-            })}>{rating}</button>
-    )
+            })
+            }>{card.rating >= rating ? "🌝" : "🌚"}</button>
+    );
 } 
 
 export { DeckEditor };
