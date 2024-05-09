@@ -43,14 +43,15 @@ function BattlePage(props) {
     // Handle socket events from server
     useEffect(()=>{
         function cardPickedFunc(data){
-            setShowAnswer(false)
-            console.log(data)
-            setDisplayCard(data)
-            setHideElement(false)
+            setShowAnswer(false);
+            console.log(data);
+            setDisplayCard(data);
+            console.log("yep", turn);
+            if(turn.next === socket.id) setHideElement(false);
         }
         function doneAnsweringFunc(){
-            setHideElement(false)
-            setShowAnswer(true)
+            turn.current === socket.id ? setHideElement(false) : setHideElement(true);
+            setShowAnswer(true);
         }
         function foundWinnerFunc(data){
             setShowWonPopUp(true)
@@ -104,7 +105,7 @@ function BattlePage(props) {
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
-            {(!hideElement && (props.turn.current === socket.id || props.turn.next === socket.id)) && <DisplayButtons
+            {!hideElement && <DisplayButtons
                 turn={turn}
                 setShowAnswer={setShowAnswer}
                 setHideElement={setHideElement}
