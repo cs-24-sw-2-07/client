@@ -1,6 +1,6 @@
 import { DisplayLives } from "./DisplayLives.jsx";
 
-function DisplayChosenCard({displayCard, myTurn, showAnswer, maxLives}) {
+function DisplayChosenCard({displayCard, myTurn, showAnswer, playerLives}) {
     console.log("displaycard: ", displayCard)
     return (
         <div className="container-fluid pt-3">
@@ -31,7 +31,7 @@ function DisplayChosenCard({displayCard, myTurn, showAnswer, maxLives}) {
 
                     {/* Displays the life amounts of the players in the top */}
                     <DisplayLives
-                        maxLives={maxLives}
+                        playerLives={playerLives}
                         myTurn={myTurn}
                     />
                 </div>

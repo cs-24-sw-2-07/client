@@ -11,7 +11,7 @@ import { BattlePage } from "./battlePage.jsx";
 
 function App() {
     const [lobbyState, setLobbyState] = useState({});
-    const [lives, setLives] = useState(0);
+    const [playerlives, setPlayerLives] = useState([]);
     const [handSize, setHandSize] = useState(0);
     const [deckData, setDeckData] = useState({});
 
@@ -40,7 +40,8 @@ function App() {
         });
         socket.on("startedGame", (data) => {
             setHandSize(data.handSize)
-            setLives(data.lives)
+            setPlayerLives(data.playerLives)
+            navigateTo("/battlePage");
         });
         socket.on("RoomFull", () => {
             alert("The room you tried to join is full");
@@ -48,11 +49,10 @@ function App() {
         socket.on("invalidUsername", () => {
             alert("Username is invalid");
         });
-        socket.on("playerInfo",(data)=>{
+        socket.on("playerInfo", (data) => {
             console.log(data)
             setDeckData(data)
             console.log(deckData)
-            navigateTo("/battlePage");
         });
         return () => {
             socket.off("Lobby");
@@ -71,7 +71,7 @@ function App() {
             <Route path="/" element={<FrontPage />}></Route>
             <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
             <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
-            <Route path="battlePage" element={<BattlePage maxLives={lives} handSize={handSize} data={deckData}/>}></Route>
+            <Route path="battlePage" element={<BattlePage playerLives={playerlives} handSize={handSize} data={deckData}/>}></Route>
         </Routes>
     );
 }

@@ -100,7 +100,7 @@ function BattlePage(props) {
                 displayCard={displayCard}
                 myTurn={myTurn}
                 showAnswer={showAnswer}
-                maxLives={props.maxLives}
+                playerLives={props.playerLives}
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
