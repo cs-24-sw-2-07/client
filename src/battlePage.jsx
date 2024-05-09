@@ -11,7 +11,7 @@ function BattlePage(props) {
     let [hand, setHand] = useState([]);
     let [handDeck, setHandDeck] = useState([]);
     let [disableCards, setdisableCards] = useState(false);
-    let [myTurn, setMyTurn] = useState(false);
+    let [turn, setTurn] = useState(props.turn);
     let [displayCard, setDisplayCard] = useState("");
     let [hideElement, setHideElement] = useState(true);
     let [showWonPopUp, setShowWonPopUp] = useState(false);
@@ -20,11 +20,8 @@ function BattlePage(props) {
 
     useEffect(()=>{
         console.log("GOT DECK")
-        if(props.data.host){
-            setMyTurn(true)
-        }else{
-            setdisableCards(true)
-        }
+        if(turn !== socket.id) setdisableCards(true);
+
         setHand(props.data.hand)
         myDeck.current = props.data.deck
         //makeHandDeck(/*props.data.hand*/)
@@ -61,15 +58,14 @@ function BattlePage(props) {
         }
 
         function switchRoles(data){
-            console.log("turn: ",myTurn);
+            console.log("turn: ", data.turn);
+            setTurn(data.turn);
             setHideElement(true)
-            if(data){
-                setMyTurn(false)
+            if(data.turn !== socket.id){
                 setShowAnswer(false)
                 setdisableCards(true)
-                setHand(data) // PROBLEM HERE
-            }else{
-                setMyTurn(true)
+                setHand(data.hand) // PROBLEM HERE
+            } else {
                 setdisableCards(false)
             }
         }
@@ -98,14 +94,14 @@ function BattlePage(props) {
             {/* Displays the card that are played */}
             <DisplayChosenCard
                 displayCard={displayCard}
-                myTurn={myTurn}
+                turn={turn}
                 showAnswer={showAnswer}
                 playerLives={props.playerLives}
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
             {!hideElement && <DisplayButtons
-                myTurn={myTurn}
+                turn={turn}
                 setShowAnswer={setShowAnswer}
                 setHideElement={setHideElement}
             />

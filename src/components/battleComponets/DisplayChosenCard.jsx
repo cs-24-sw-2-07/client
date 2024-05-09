@@ -1,6 +1,7 @@
+import { socket } from "../../socket.js";
 import { DisplayLives } from "./DisplayLives.jsx";
 
-function DisplayChosenCard({displayCard, myTurn, showAnswer, playerLives}) {
+function DisplayChosenCard({displayCard, turn, showAnswer, playerLives}) {
     console.log("displaycard: ", displayCard)
     return (
         <div className="container-fluid pt-3">
@@ -22,7 +23,7 @@ function DisplayChosenCard({displayCard, myTurn, showAnswer, playerLives}) {
                             type="text"
                             disabled
                             rows="8"
-                            value={(myTurn || showAnswer) ? displayCard.answer : ""}
+                            value={(turn === socket.id || showAnswer) ? displayCard.answer : ""}
                         ></textarea>
                     </div>
                 </div>
@@ -32,7 +33,7 @@ function DisplayChosenCard({displayCard, myTurn, showAnswer, playerLives}) {
                     {/* Displays the life amounts of the players in the top */}
                     <DisplayLives
                         playerLives={playerLives}
-                        myTurn={myTurn}
+                        turn={turn}
                     />
                 </div>
             </div>

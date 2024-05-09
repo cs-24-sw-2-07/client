@@ -13,6 +13,7 @@ function App() {
     const [lobbyState, setLobbyState] = useState({});
     const [playerlives, setPlayerLives] = useState([]);
     const [handSize, setHandSize] = useState(0);
+    const [turn, setTurn] = useState("");
     const [deckData, setDeckData] = useState({});
 
     const navigate = useNavigate();
@@ -39,8 +40,9 @@ function App() {
             navigateTo("/");
         });
         socket.on("startedGame", (data) => {
-            setHandSize(data.handSize)
-            setPlayerLives(data.playerLives)
+            setHandSize(data.handSize);
+            setPlayerLives(data.playerLives);
+            setTurn(data.turn);
             navigateTo("/battlePage");
         });
         socket.on("RoomFull", () => {
@@ -71,7 +73,7 @@ function App() {
             <Route path="/" element={<FrontPage />}></Route>
             <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
             <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
-            <Route path="battlePage" element={<BattlePage playerLives={playerlives} handSize={handSize} data={deckData}/>}></Route>
+            <Route path="battlePage" element={<BattlePage playerLives={playerlives} handSize={handSize} data={deckData} turn={turn}/>}></Route>
         </Routes>
     );
 }
