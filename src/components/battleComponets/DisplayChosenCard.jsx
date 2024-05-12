@@ -1,7 +1,7 @@
 import { socket } from "../../socket.js";
 import { DisplayLives } from "./DisplayLives.jsx";
 
-function DisplayChosenCard({displayCard, turn, showAnswer, playerLives}) {
+function DisplayChosenCard({displayCard, turn, showAnswer, playerLives, maxLives}) {
     console.log("displaycard: ", displayCard)
     return (
         <div className="container-fluid pt-3">
@@ -33,6 +33,7 @@ function DisplayChosenCard({displayCard, turn, showAnswer, playerLives}) {
                     {/* Displays the life amounts of the players in the top */}
                     <DisplayLives
                         playerLives={playerLives}
+                        maxLives={maxLives}
                         turn={turn}
                     />
                 </div>

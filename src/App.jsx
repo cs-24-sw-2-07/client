@@ -12,6 +12,7 @@ import { BattlePage } from "./battlePage.jsx";
 function App() {
     const [lobbyState, setLobbyState] = useState({});
     const [playerlives, setPlayerLives] = useState([]);
+    const [maxLives, setMaxLives] = useState(0);
     const [handSize, setHandSize] = useState(0);
     const [turn, setTurn] = useState("");
     const [deckData, setDeckData] = useState({});
@@ -42,6 +43,7 @@ function App() {
         socket.on("startedGame", (data) => {
             setHandSize(data.handSize);
             setPlayerLives(data.playerLives);
+            setMaxLives(data.maxLives);
             setTurn(data.turn);
             navigateTo("/battlePage");
         });
@@ -73,7 +75,7 @@ function App() {
             <Route path="/" element={<FrontPage />}></Route>
             <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
             <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
-            <Route path="battlePage" element={<BattlePage playerLives={playerlives} handSize={handSize} data={deckData} turn={turn}/>}></Route>
+            <Route path="battlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={deckData} turn={turn}/>}></Route>
         </Routes>
     );
 }

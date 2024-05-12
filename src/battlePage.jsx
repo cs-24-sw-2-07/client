@@ -6,53 +6,50 @@ import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx"
 import { socket } from "./socket.js"
 
 function BattlePage(props) {
-    let myDeck = useRef(props.data);
-
-    let [hand, setHand] = useState([]);
-    let [handDeck, setHandDeck] = useState([]);
-    let [disableCards, setdisableCards] = useState(false);
+    const myDeck = useRef(props.data);
+    const [hand, setHand] = useState([]);
+    const [handDeck, setHandDeck] = useState([]);
+    const [disableCards, setdisableCards] = useState(false);
     const turnRef = useRef(props.turn);
-    let [displayCard, setDisplayCard] = useState("");
-    let [hideElement, setHideElement] = useState(true);
-    let [showWonPopUp, setShowWonPopUp] = useState(false);
-    let [gameResult, setGameResult] = useState("");
-    let [showAnswer, setShowAnswer] = useState(false);
+    const [displayCard, setDisplayCard] = useState("");
+    const [hideElement, setHideElement] = useState(true);
+    const [showWonPopUp, setShowWonPopUp] = useState(false);
+    const [gameResult, setGameResult] = useState("");
+    const [showAnswer, setShowAnswer] = useState(false);
 
-    useEffect(()=>{
-        console.log("GOT DECK")
-        if(turnRef.current.current !== socket.id) setdisableCards(true);
+    useEffect(() => {
+        if (turnRef.current.current !== socket.id) setdisableCards(true);
 
-        setHand(props.data.hand)
-        myDeck.current = props.data.deck
-        //makeHandDeck(/*props.data.hand*/)
-        console.log("Hand",props.data.hand,hand)
-        console.log(myDeck)
-        console.log("cardHand ", handDeck)
-    },[props.data])
+        setHand(props.data.hand);
+        myDeck.current = props.data.deck;
+        //console.log("Hand", props.data.hand, hand);
+        //console.log(myDeck)
+        //console.log("cardHand ", handDeck)
+    }, [props.data])
 
     // Takes the index of cards in the hand, and makes it into an array of cards
-    useEffect(()=>{
-        console.log("inside makehand: ",myDeck)
+    useEffect(() => {
+        //console.log("inside makehand: ", myDeck)
         let newHandDeck = [];
         hand.forEach((i) => {
             newHandDeck.push(myDeck.current.cards[i]);
         });
         setHandDeck(newHandDeck);
-    },[hand])
+    }, [hand])
 
     // Handle socket events from server
-    useEffect(()=>{
-        
-        function doneAnsweringFunc(){
+    useEffect(() => {
+
+        function doneAnsweringFunc() {
             turnRef.current.current === socket.id ? setHideElement(false) : setHideElement(true);
             setShowAnswer(true);
         }
-        function foundWinnerFunc(data){
+        function foundWinnerFunc(data) {
             setShowWonPopUp(true)
             setGameResult(data)
         }
 
-        function switchRoles(data){
+        function switchRoles(data) {
             // console.log("turn: ", data.turn);
             // setTurn(data.turn);
             // setHideElement(true)
@@ -65,18 +62,20 @@ function BattlePage(props) {
             // }
             //setTurn(data.turn);
             turnRef.current = data.turn;
+            //TODO: This won't trigger a re-render of turn above player lives for all clients (3 or above),
+            //TODO: since there might not be a change in state below. Therefor atleast one client won't get updated, and at most 2 players will have the turn info updated.
             //console.log("Switchroles: ", data.turn);
             setHideElement(true);
             turnRef.current.current === socket.id ? setdisableCards(false) : setdisableCards(true);
-            if(data.hand) setHand(data.hand);
+            if (data.hand) setHand(data.hand);
         }
 
-        function cardPickedFunc(data){
+        function cardPickedFunc(data) {
             setShowAnswer(false);
-            console.log(data);
+            //console.log(data);
             setDisplayCard(data);
-            console.log("yep ref updated to:", turnRef.current);
-            if(turnRef.current.next === socket.id) setHideElement(false);
+            //console.log("yep ref updated to:", turnRef.current);
+            if (turnRef.current.next === socket.id) setHideElement(false);
         }
 
         socket.on("cardPicked", cardPickedFunc);
@@ -90,7 +89,7 @@ function BattlePage(props) {
             socket.off("foundWinner", foundWinnerFunc)
             socket.off("switchRoles", switchRoles)
         };
-    },[])
+    }, [])
 
 
     return (
@@ -107,6 +106,7 @@ function BattlePage(props) {
                 turn={turnRef.current}
                 showAnswer={showAnswer}
                 playerLives={props.playerLives}
+                maxLives={props.maxLives}
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
@@ -125,7 +125,7 @@ function BattlePage(props) {
                 disableCards={disableCards}
                 setdisableCards={setdisableCards}
                 setDisplayCard={setDisplayCard}
-                //setHideElement={setHideElement}
+            //setHideElement={setHideElement}
             />
         </>
     );

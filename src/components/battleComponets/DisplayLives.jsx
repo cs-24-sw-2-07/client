@@ -12,11 +12,11 @@ function DisplayLives(props) {
         return () => {
             socket.off("lifeUpdate", setLives);
         };
-    },[])
+    },[]);
 
     return (
         <>
-            <h1 className="text-center">{props.turn.current === socket.id ? "Your Turn" : `${lives.find((player) => player.id === props.turn.current)?.name}'s turn`}</h1>
+            <h1 className="text-center">{props.turn.current === socket.id ? "Your Turn" : `${lives.find(player => player.id === props.turn.current)?.name}'s turn`}</h1>
             <div className="container-fluid bg-light py-3 border rounded-1 border-secondary-subtle">
                 {lives.map(playerlife => (
                     <div className="row" key={playerlife.id}>
