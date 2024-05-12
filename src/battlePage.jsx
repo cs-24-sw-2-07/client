@@ -11,7 +11,7 @@ function BattlePage(props) {
     let [hand, setHand] = useState([]);
     let [handDeck, setHandDeck] = useState([]);
     let [disableCards, setdisableCards] = useState(false);
-    let [turn, setTurn] = useState(props.turn);
+    const turnRef = useRef(props.turn);
     let [displayCard, setDisplayCard] = useState("");
     let [hideElement, setHideElement] = useState(true);
     let [showWonPopUp, setShowWonPopUp] = useState(false);
@@ -20,7 +20,7 @@ function BattlePage(props) {
 
     useEffect(()=>{
         console.log("GOT DECK")
-        if(turn.current !== socket.id) setdisableCards(true);
+        if(turnRef.current.current !== socket.id) setdisableCards(true);
 
         setHand(props.data.hand)
         myDeck.current = props.data.deck
@@ -42,15 +42,9 @@ function BattlePage(props) {
 
     // Handle socket events from server
     useEffect(()=>{
-        function cardPickedFunc(data){
-            setShowAnswer(false);
-            console.log(data);
-            setDisplayCard(data);
-            console.log("yep", turn);
-            if(turn.next === socket.id) setHideElement(false);
-        }
+        
         function doneAnsweringFunc(){
-            turn.current === socket.id ? setHideElement(false) : setHideElement(true);
+            turnRef.current.current === socket.id ? setHideElement(false) : setHideElement(true);
             setShowAnswer(true);
         }
         function foundWinnerFunc(data){
@@ -69,24 +63,35 @@ function BattlePage(props) {
             // } else {
             //     setdisableCards(false)
             // }
-            setTurn(data.turn);
+            //setTurn(data.turn);
+            turnRef.current = data.turn;
+            //console.log("Switchroles: ", data.turn);
             setHideElement(true);
-            data.turn.current === socket.id ? setdisableCards(false) : setdisableCards(true);
+            turnRef.current.current === socket.id ? setdisableCards(false) : setdisableCards(true);
             if(data.hand) setHand(data.hand);
         }
 
-        socket.on("cardPicked", cardPickedFunc)
+        function cardPickedFunc(data){
+            setShowAnswer(false);
+            console.log(data);
+            setDisplayCard(data);
+            console.log("yep ref updated to:", turnRef.current);
+            if(turnRef.current.next === socket.id) setHideElement(false);
+        }
+
+        socket.on("cardPicked", cardPickedFunc);
         socket.on("doneAnswering", doneAnsweringFunc)
         socket.on("foundWinner", foundWinnerFunc)
         socket.on("switchRoles", switchRoles)
 
         return () => {
-            socket.off("cardPicked", cardPickedFunc)
+            socket.off("cardPicked", cardPickedFunc);
             socket.off("doneAnswering", doneAnsweringFunc)
             socket.off("foundWinner", foundWinnerFunc)
             socket.off("switchRoles", switchRoles)
         };
     },[])
+
 
     return (
         <>
@@ -99,14 +104,14 @@ function BattlePage(props) {
             {/* Displays the card that are played */}
             <DisplayChosenCard
                 displayCard={displayCard}
-                turn={turn}
+                turn={turnRef.current}
                 showAnswer={showAnswer}
                 playerLives={props.playerLives}
             />
 
             {/* Button for then you are done answering and reviewing the answer */}
             {!hideElement && <DisplayButtons
-                turn={turn}
+                turn={turnRef.current}
                 setShowAnswer={setShowAnswer}
                 setHideElement={setHideElement}
             />
