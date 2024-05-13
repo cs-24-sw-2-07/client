@@ -53,7 +53,7 @@ export { WinPopUp };
 
 function ListFeedback(props) {
     function addCardToFeedback(index) {
-        console.log(index)
+        //console.log(index)
         let tempSaveCards = props.saveCards;
         tempSaveCards.push(props.feedbackDeck.cards[index]);
 

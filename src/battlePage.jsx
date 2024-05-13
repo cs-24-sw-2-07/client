@@ -4,8 +4,7 @@ import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCar
 import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
 import { socket } from "./socket.js"
-
-//import { Deck } from "./classes/deck.js"
+import { Deck } from "./classes/deck.js"
 
 function BattlePage(props) {
     const myDeck = useRef(props.data);
@@ -18,9 +17,9 @@ function BattlePage(props) {
     const [showWonPopUp, setShowWonPopUp] = useState(false);
     const [gameResult, setGameResult] = useState("");
     const [showAnswer, setShowAnswer] = useState(false);
-    const [feedbackDeck, setFeedbackDeck] = useState({"name":"test","cards":[{"answer":"test1","question":"test1","name":"test1"},{"answer":"test2","question":"test2","name":"test2"},{"answer":"test3","question":"test3","name":"test3"},{"answer":"test4","question":"test4","name":"test4"},{"answer":"test5","question":"test5","name":"test5"},{"answer":"test6","question":"test6","name":"test6"},{"answer":"test7","question":"test7","name":"test7"},{"answer":"test8","question":"test8","name":"test8"},{"answer":"test9","question":"test9","name":"test9"},{"answer":"test10","question":"test10","name":"test10"}]});
+    const [feedbackDeck, setFeedbackDeck] = useState(new Deck({ name: myDeck.current.name, cards: [] }));
 
-    
+
 
     useEffect(() => {
         if (turnRef.current.current !== socket.id) setdisableCards(true);
@@ -64,10 +63,24 @@ function BattlePage(props) {
         function cardPickedFunc(data) {
             setShowAnswer(false);
             setDisplayCard(data);
+            console.log("disCard",displayCard)
+            console.log(displayCard.name)
+            console.log(data.name)
             if (turnRef.current.next === socket.id) setHideElement(false);
         }
 
+        function wrongAnsweredFunc() {
+            let tempDeck = { ...feedbackDeck };
+            console.log("dis card", displayCard)
+            tempDeck.cards.push(displayCard)
+            console.log("temp", tempDeck)
+
+            setFeedbackDeck(tempDeck)
+            console.log("feedback",feedbackDeck)
+        }
+
         socket.on("cardPicked", cardPickedFunc);
+        socket.on("wrongAnswered", wrongAnsweredFunc);
         socket.on("doneAnswering", doneAnsweringFunc)
         socket.on("foundWinner", foundWinnerFunc)
         socket.on("switchRoles", switchRoles)
@@ -77,6 +90,7 @@ function BattlePage(props) {
             socket.off("doneAnswering", doneAnsweringFunc)
             socket.off("foundWinner", foundWinnerFunc)
             socket.off("switchRoles", switchRoles)
+            socket.off("wrongAnswered", wrongAnsweredFunc)
         };
     }, [])
 
