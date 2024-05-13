@@ -2,21 +2,27 @@ import { useState, useEffect } from "react";
 import { socket } from "../../socket.js"
 
 function DisplayLives(props) {
-    // [{id: "1234", name:"test user", lives:3},{id: "2345", name:"test2 user", lives:2}, {id:"3456", name:"christian lugter", lives:1}]
-    let [lives, setLives] = useState(props.playerLives);
-    console.log(lives);
+    const [lives, setLives] = useState(props.playerLives);
+    const [turn, setTurn] = useState(props.turn.current);
 
     useEffect(()=>{
+
+        function switchRolesFunc(data) {
+            setTurn(data.turn.current);
+        }
+
         socket.on("lifeUpdate", setLives);
+        socket.on("switchRoles", switchRolesFunc);
 
         return () => {
             socket.off("lifeUpdate", setLives);
+            socket.off("switchRoles", switchRolesFunc);
         };
     },[]);
 
     return (
         <>
-            <h1 className="text-center">{props.turn.current === socket.id ? "Your Turn" : `${lives.find(player => player.id === props.turn.current)?.name}'s turn`}</h1>
+            <h1 className="text-center">{turn === socket.id ? "Your Turn" : `${lives.find(player => player.id === turn)?.name}'s turn`}</h1>
             <div className="container-fluid bg-light py-3 border rounded-1 border-secondary-subtle">
                 {lives.map(playerlife => (
                     <div className="row" key={playerlife.id}>

@@ -55,21 +55,7 @@ function BattlePage(props) {
         }
 
         function switchRoles(data) {
-            // console.log("turn: ", data.turn);
-            // setTurn(data.turn);
-            // setHideElement(true)
-            // if(data.turn.current !== socket.id){
-            //     setShowAnswer(false)
-            //     setdisableCards(true)
-            //     setHand(data.hand) // PROBLEM HERE
-            // } else {
-            //     setdisableCards(false)
-            // }
-            //setTurn(data.turn);
             turnRef.current = data.turn;
-            //TODO: This won't trigger a re-render of turn above player lives for all clients (3 or above),
-            //TODO: since there might not be a change in state below. Therefor atleast one client won't get updated, and at most 2 players will have the turn info updated.
-            //console.log("Switchroles: ", data.turn);
             setHideElement(true);
             turnRef.current.current === socket.id ? setdisableCards(false) : setdisableCards(true);
             if (data.hand) setHand(data.hand);
@@ -77,9 +63,7 @@ function BattlePage(props) {
 
         function cardPickedFunc(data) {
             setShowAnswer(false);
-            //console.log(data);
             setDisplayCard(data);
-            //console.log("yep ref updated to:", turnRef.current);
             if (turnRef.current.next === socket.id) setHideElement(false);
         }
 
