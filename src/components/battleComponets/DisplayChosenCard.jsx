@@ -1,7 +1,10 @@
-function DisplayChosenCard({displayCard, myTurn, showAnswer}) {
+import { socket } from "../../socket.js";
+import { DisplayLives } from "./DisplayLives.jsx";
+
+function DisplayChosenCard({displayCard, turn, showAnswer, playerLives, maxLives}) {
     console.log("displaycard: ", displayCard)
     return (
-        <div className="container-fluid">
+        <div className="container-fluid pt-3">
             <div className="row  px-3">
                 <div className="col-6">
                     <div className="row">
@@ -20,12 +23,19 @@ function DisplayChosenCard({displayCard, myTurn, showAnswer}) {
                             type="text"
                             disabled
                             rows="8"
-                            value={(myTurn || showAnswer) ? displayCard.answer : ""}
+                            value={(turn.current === socket.id || showAnswer) ? displayCard.answer : ""}
                         ></textarea>
                     </div>
                 </div>
                 <div className="col-6">
-                    <p>Make whiteboard</p>
+
+
+                    {/* Displays the life amounts of the players in the top */}
+                    <DisplayLives
+                        playerLives={playerLives}
+                        maxLives={maxLives}
+                        turn={turn}
+                    />
                 </div>
             </div>
         </div>

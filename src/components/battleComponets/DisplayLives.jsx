@@ -2,49 +2,41 @@ import { useState, useEffect } from "react";
 import { socket } from "../../socket.js"
 
 function DisplayLives(props) {
-    let [myLife, setMyLife] = useState(props.maxLives);
-    let [oppLife, setOppLife] = useState(props.maxLives);
+    const [lives, setLives] = useState(props.playerLives);
+    const [turn, setTurn] = useState(props.turn.current);
 
     useEffect(()=>{
 
-        function lifeUpdateFunc(data){
-            console.log("lives:", data)
-            setMyLife(data)
-        }
-        function lifeUpdateOppFunc(data){
-            console.log("lives:", data)
-            setOppLife(data)
+        function switchRolesFunc(data) {
+            setTurn(data.turn.current);
         }
 
-        socket.on("lifeUpdate", lifeUpdateFunc)
-        socket.on("lifeUpdateOpp", lifeUpdateOppFunc)
- 
+        socket.on("lifeUpdate", setLives);
+        socket.on("switchRoles", switchRolesFunc);
+
         return () => {
-            socket.off("lifeUpdate", lifeUpdateFunc)
-            socket.off("lifeUpdateOpp", lifeUpdateOppFunc)
+            socket.off("lifeUpdate", setLives);
+            socket.off("switchRoles", switchRolesFunc);
         };
-    },[])
+    },[]);
 
     return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-5">
-                    <h1>
-            MyLives: {"❤".repeat(myLife)}
-                        {"🖤".repeat(props.maxLives - myLife)}
-                    </h1>
-                </div>
-                <div className="col-2 text-center">
-                    <h1>{[props.myTurn ? "Your Turn" : "Opponent Turn"]}</h1>
-                </div>
-                <div className="col-5 text-end">
-                    <h1>
-                    OpponentLives: {"❤".repeat(oppLife)}
-                        {"🖤".repeat(props.maxLives - oppLife)}
-                    </h1>
-                </div>
+        <>
+            <h1 className="text-center">{turn === socket.id ? "Your Turn" : `${lives.find(player => player.id === turn)?.name}'s turn`}</h1>
+            <div className="container-fluid bg-light py-3 border rounded-1 border-secondary-subtle">
+                {lives.map(playerlife => (
+                    <div className="row" key={playerlife.id}>
+                        <h3 className="col-7">{(socket.id === playerlife.id) ? playerlife.name + " (You)" : playerlife.name}</h3>
+                        <div className="col-5 text-end">
+                            <h3>
+                                {"❤".repeat(playerlife.lives)}
+                                {"🖤".repeat(props.maxLives - playerlife.lives)}
+                            </h3>
+                        </div>
+                    </div>
+                ))}
             </div>
-        </div>
+        </>
     );
 }
 

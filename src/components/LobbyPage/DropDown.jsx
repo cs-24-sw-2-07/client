@@ -17,18 +17,7 @@ export function DeckDropDown({ dropDownLabel }) {
     );
 }
 function GetDecksDropDown() {
-    const decks = JSON.parse(localStorage.getItem("userDeck")); //Check spelling
-    /*if (decks === null) {
-    return (
-      <ul className="dropdown-menu">
-        <li>
-          <button type="button" className="dropdown-item">
-            No decks to choose from :/
-          </button>
-        </li>
-      </ul>
-    );
-  }*/ //! Check har været der
+    const decks = JSON.parse(localStorage.getItem("userDeck"));
 
     //Creates an option for every deck saved in localStorage
     return (

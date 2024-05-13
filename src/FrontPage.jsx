@@ -74,7 +74,7 @@ function HostGameModalButton() {
                             ></button>
                         </div>
                         <div className="modal-body">
-                            <form action="javascript:void(0);">
+                            <form onSubmit={(e) => e.preventDefault()}>
                                 <div className="mb-3">
                                     <label
                                         htmlFor="display-name"
@@ -150,7 +150,7 @@ function JoinGameModalButton() {
                             ></button>
                         </div>
                         <div className="modal-body">
-                            <form action="javascript:void(0);">
+                            <form onSubmit={(e) => e.preventDefault()}>
                                 <div className="mb-3">
                                     <label
                                         htmlFor="game-code"
