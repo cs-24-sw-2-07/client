@@ -4,28 +4,32 @@ import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCar
 import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
 import { socket } from "./socket.js"
+import { Deck } from "./classes/deck.js"
 
 function BattlePage(props) {
-    const myDeck = useRef(props.data);
-    const [hand, setHand] = useState([]);
+    const myDeck = useRef(props.data.deck);
+    const [hand, setHand] = useState(props.data.hand);
     const [handDeck, setHandDeck] = useState([]);
-    const [disableCards, setdisableCards] = useState(false);
     const turnRef = useRef(props.turn);
-    const [displayCard, setDisplayCard] = useState("");
+    const [disableCards, setdisableCards] = useState(turnRef.current.current !== socket.id);
+    const displayCard = useRef("");
     const [hideElement, setHideElement] = useState(true);
     const [showWonPopUp, setShowWonPopUp] = useState(false);
     const [gameResult, setGameResult] = useState("");
     const [showAnswer, setShowAnswer] = useState(false);
+    const [feedbackDeck, setFeedbackDeck] = useState(new Deck({ name: myDeck.current.name, cards: [] }));
 
-    useEffect(() => {
+
+
+    /*useEffect(() => {
         if (turnRef.current.current !== socket.id) setdisableCards(true);
-
+        console.log("jere")
         setHand(props.data.hand);
         myDeck.current = props.data.deck;
         //console.log("Hand", props.data.hand, hand);
         //console.log(myDeck)
         //console.log("cardHand ", handDeck)
-    }, [props.data])
+    }, [props.data])*/
 
     // Takes the index of cards in the hand, and makes it into an array of cards
     useEffect(() => {
@@ -57,12 +61,26 @@ function BattlePage(props) {
         }
 
         function cardPickedFunc(data) {
+            displayCard.current = data;
             setShowAnswer(false);
-            setDisplayCard(data);
+            console.log("disCard",displayCard.current)
+            console.log(displayCard.current.name)
+            console.log(data.name)
             if (turnRef.current.next === socket.id) setHideElement(false);
         }
 
+        function wrongAnsweredFunc() {
+            let tempDeck = { ...feedbackDeck };
+            console.log("dis card", displayCard.current)
+            tempDeck.cards.push(displayCard.current)
+            console.log("temp", tempDeck)
+
+            setFeedbackDeck(tempDeck)
+            console.log("feedback",feedbackDeck)
+        }
+
         socket.on("cardPicked", cardPickedFunc);
+        socket.on("wrongAnswered", wrongAnsweredFunc);
         socket.on("doneAnswering", doneAnsweringFunc)
         socket.on("foundWinner", foundWinnerFunc)
         socket.on("switchRoles", switchRoles)
@@ -72,6 +90,7 @@ function BattlePage(props) {
             socket.off("doneAnswering", doneAnsweringFunc)
             socket.off("foundWinner", foundWinnerFunc)
             socket.off("switchRoles", switchRoles)
+            socket.off("wrongAnswered", wrongAnsweredFunc)
         };
     }, [])
 
@@ -82,11 +101,13 @@ function BattlePage(props) {
             <WinPopUp
                 foundWinner={showWonPopUp}
                 gameResult={gameResult}
+                feedbackDeck={feedbackDeck}
+                setFeedbackDeck={setFeedbackDeck}
             />
 
             {/* Displays the card that are played */}
             <DisplayChosenCard
-                displayCard={displayCard}
+                displayCard={displayCard.current}
                 turn={turnRef.current}
                 showAnswer={showAnswer}
                 playerLives={props.playerLives}
@@ -108,7 +129,7 @@ function BattlePage(props) {
                 handDeck={handDeck}
                 disableCards={disableCards}
                 setdisableCards={setdisableCards}
-                setDisplayCard={setDisplayCard}
+                displayCard={displayCard}
             //setHideElement={setHideElement}
             />
         </>
