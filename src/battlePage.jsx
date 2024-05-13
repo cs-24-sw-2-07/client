@@ -7,11 +7,11 @@ import { socket } from "./socket.js"
 import { Deck } from "./classes/deck.js"
 
 function BattlePage(props) {
-    const myDeck = useRef(props.data);
-    const [hand, setHand] = useState([]);
+    const myDeck = useRef(props.data.deck);
+    const [hand, setHand] = useState(props.data.hand);
     const [handDeck, setHandDeck] = useState([]);
-    const [disableCards, setdisableCards] = useState(false);
     const turnRef = useRef(props.turn);
+    const [disableCards, setdisableCards] = useState(turnRef.current.current !== socket.id);
     const displayCard = useRef("");
     const [hideElement, setHideElement] = useState(true);
     const [showWonPopUp, setShowWonPopUp] = useState(false);
@@ -21,7 +21,7 @@ function BattlePage(props) {
 
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (turnRef.current.current !== socket.id) setdisableCards(true);
         console.log("jere")
         setHand(props.data.hand);
@@ -29,7 +29,7 @@ function BattlePage(props) {
         //console.log("Hand", props.data.hand, hand);
         //console.log(myDeck)
         //console.log("cardHand ", handDeck)
-    }, [props.data])
+    }, [props.data])*/
 
     // Takes the index of cards in the hand, and makes it into an array of cards
     useEffect(() => {
