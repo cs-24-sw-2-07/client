@@ -12,7 +12,7 @@ function BattlePage(props) {
     const [handDeck, setHandDeck] = useState([]);
     const [disableCards, setdisableCards] = useState(false);
     const turnRef = useRef(props.turn);
-    const [displayCard, setDisplayCard] = useState("");
+    const displayCard = useRef("");
     const [hideElement, setHideElement] = useState(true);
     const [showWonPopUp, setShowWonPopUp] = useState(false);
     const [gameResult, setGameResult] = useState("");
@@ -23,7 +23,7 @@ function BattlePage(props) {
 
     useEffect(() => {
         if (turnRef.current.current !== socket.id) setdisableCards(true);
-
+        console.log("jere")
         setHand(props.data.hand);
         myDeck.current = props.data.deck;
         //console.log("Hand", props.data.hand, hand);
@@ -61,18 +61,18 @@ function BattlePage(props) {
         }
 
         function cardPickedFunc(data) {
+            displayCard.current = data;
             setShowAnswer(false);
-            setDisplayCard(data);
-            console.log("disCard",displayCard)
-            console.log(displayCard.name)
+            console.log("disCard",displayCard.current)
+            console.log(displayCard.current.name)
             console.log(data.name)
             if (turnRef.current.next === socket.id) setHideElement(false);
         }
 
         function wrongAnsweredFunc() {
             let tempDeck = { ...feedbackDeck };
-            console.log("dis card", displayCard)
-            tempDeck.cards.push(displayCard)
+            console.log("dis card", displayCard.current)
+            tempDeck.cards.push(displayCard.current)
             console.log("temp", tempDeck)
 
             setFeedbackDeck(tempDeck)
@@ -107,7 +107,7 @@ function BattlePage(props) {
 
             {/* Displays the card that are played */}
             <DisplayChosenCard
-                displayCard={displayCard}
+                displayCard={displayCard.current}
                 turn={turnRef.current}
                 showAnswer={showAnswer}
                 playerLives={props.playerLives}
@@ -129,7 +129,7 @@ function BattlePage(props) {
                 handDeck={handDeck}
                 disableCards={disableCards}
                 setdisableCards={setdisableCards}
-                setDisplayCard={setDisplayCard}
+                displayCard={displayCard}
             //setHideElement={setHideElement}
             />
         </>
