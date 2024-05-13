@@ -104,6 +104,7 @@ function BattlePage(props) {
                 foundWinner={showWonPopUp}
                 gameResult={gameResult}
                 feedbackDeck={feedbackDeck}
+                setFeedbackDeck={setFeedbackDeck}
             />
 
             {/* Displays the card that are played */}

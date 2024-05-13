@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Deck } from "./../../classes/deck.js"
+import { Card } from "./../../classes/card.js"
 
 function WinPopUp(props) {
     const navigate = useNavigate();
+    const [saveCards, setSaveCards] = useState([]);
+
     return (
         <>
             <div className={`modal fade ${(props.foundWinner == true) ? "show" : ""}`} id={"nameModal"} aria-hidden="true" data-bs-backdrop="static" aria-labelledby="staticBackdropLabel" style={{ display: (props.foundWinner == true) ? "block" : "none" }}>
@@ -12,12 +17,13 @@ function WinPopUp(props) {
                         </div>
                         <div className='modal-body'>
                             {/* Feedback code */}
-                            <p> Choose cards to add to feedback deck</p>
+                            <h6 className="text-primary"> Choose cards to add to feedback deck</h6>
                             <ListFeedback
+                                saveCards={saveCards}
+                                setSaveCards={setSaveCards}
                                 feedbackDeck={props.feedbackDeck}
+                                setFeedbackDeck={props.setFeedbackDeck}
                             />
-                            
-                            
                         </div>
                         <div className='modal-footer'>
                             <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
@@ -36,7 +42,18 @@ export { WinPopUp };
 
 
 function ListFeedback(props) {
+    function addCardToFeedback(index){
+        console.log(index)
+        let tempSaveCards = props.saveCards;
+        tempSaveCards.push(props.feedbackDeck.cards[index]);
 
+        props.setSaveCards(tempSaveCards)
+        let tempFeedbackDeck = {...props.feedbackDeck};
+        tempFeedbackDeck.cards.splice(index, 1)
+        console.log(tempFeedbackDeck)
+        props.setFeedbackDeck(tempFeedbackDeck)
+    }
+    
     
     return <div className="list-group" id="list-tab" key="list">
         {props.feedbackDeck.cards.map((card, index) =>
@@ -47,7 +64,7 @@ function ListFeedback(props) {
                     </button>
                 </div>
                 <div className="col-3">
-                    <button type="button" className="list-group-item list-group-item-action text-center" onClick={() => {  }}>
+                    <button type="button" className="list-group-item list-group-item-action text-center" onClick={()=>{addCardToFeedback(index)}}>
                         Save
                     </button>
                 </div>
