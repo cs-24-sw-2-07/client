@@ -23,6 +23,11 @@ function App() {
     }
 
     useEffect(() => {
+        socket.on("disconnect", () => {
+            // When lost connection, redirect to front page, if not on editor page.
+            if(window.location.href.includes("/CreateDeckPage")) return;
+            navigateTo("/");
+        });
         socket.on("lobby", data => {
             const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
             if(hasDecks === null) {
@@ -59,11 +64,12 @@ function App() {
             console.log(deckData)
         });
         return () => {
+            socket.off("disconnect");
             socket.off("Lobby");
             socket.off("RoomNotExist");
             socket.off("startedGame");
             socket.off("LeaveLobby");
-            socket.off("RoomFull"); 
+            socket.off("RoomFull");
             socket.off("invalidUsername");
             socket.off("playerInfo");
         };
