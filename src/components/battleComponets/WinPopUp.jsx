@@ -19,7 +19,7 @@ function WinPopUp(props) {
     return (
         <>
             <div className={`modal fade ${(props.foundWinner == true) ? "show" : ""}`} id={"nameModal"} aria-hidden="true" data-bs-backdrop="static" aria-labelledby="staticBackdropLabel" style={{ display: (props.foundWinner == true) ? "block" : "none" }}>
-                <div className='modal-dialog'>
+                <div className='modal-dialog modal-dialog-scrollable modal-dialog-centered'>
                     <div className='modal-content'>
                         <div className='modal-header'>
                             <h1>You {props.gameResult}</h1>
