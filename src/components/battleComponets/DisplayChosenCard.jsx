@@ -2,7 +2,6 @@ import { socket } from "../../socket.js";
 import { DisplayLives } from "./DisplayLives.jsx";
 
 function DisplayChosenCard({displayCard, turn, showAnswer, playerLives, maxLives}) {
-    console.log("displaycard: ", displayCard)
     return (
         <div className="container-fluid pt-3">
             <div className="row  px-3">

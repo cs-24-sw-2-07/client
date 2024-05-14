@@ -12,7 +12,7 @@ function DisplayHand(props) {
                             disabled={props.disableCards}
                             onClick={() => {
                                 props.setdisableCards(true);
-                                props.setDisplayCard(props.myDeck.cards[props.hand[index]]);
+                                props.displayCard.current = props.myDeck.cards[props.hand[index]];
                                 //props.setHideElement(true);
                                 socket.emit("cardPicked", {cardID: index})
                             }}
