@@ -99,7 +99,7 @@ function DeckEditor({
                     </div>
                     <div className="row">
                         <label htmlFor="rating">Card Rating:</label>
-                        <div className="btn-group mr-2" role="group">
+                        <div className="btn-group" role="group">
                             <RatingButton rating={1} card={card} updateCard={updateCard}/> 
                             <RatingButton rating={2} card={card} updateCard={updateCard}/> 
                             <RatingButton rating={3} card={card} updateCard={updateCard}/> 
