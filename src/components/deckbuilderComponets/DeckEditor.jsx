@@ -12,7 +12,7 @@ function DeckEditor({
     updateCard,
     addNewCard,
     deleteCard,
-}) {
+}){
     return (
         <div className="container" hidden={!hiddenDeck}>
             <div className="row">
@@ -22,14 +22,14 @@ function DeckEditor({
                 <div className="col-4"></div>
                 <div className="col-3 d-grid gap-2 p-3">
                     <button type="button" className="btn btn-primary" onClick={showDecks}>
-            Back To Decks
+                    Back To Decks
                     </button>
                 </div>
             </div>
             <div className="row">
                 <div className="col-12">
                     <label htmlFor="deckName" className="p-3 form-control-lg">
-            Deck Name:{" "}
+                    Deck Name:
                     </label>
                     <input
                         type="text"
@@ -71,7 +71,7 @@ function DeckEditor({
                             type="text"
                             placeholder="Place Your Question Here"
                             id="question"
-                            rows="9"
+                            rows="8"
                             value={card.question}
                             onChange={(e) =>
                                 updateCard({
@@ -87,7 +87,7 @@ function DeckEditor({
                             type="text"
                             placeholder="Place Your Answer Here"
                             id="answer"
-                            rows="9"
+                            rows="8"
                             value={card.answer}
                             onChange={(e) =>
                                 updateCard({
@@ -97,31 +97,54 @@ function DeckEditor({
                             }
                         ></textarea>
                     </div>
+                    <div className="row">
+                        <label htmlFor="rating">Card Rating:</label>
+                        <div className="btn-group" role="group">
+                            <RatingButton rating={1} card={card} updateCard={updateCard}/> 
+                            <RatingButton rating={2} card={card} updateCard={updateCard}/> 
+                            <RatingButton rating={3} card={card} updateCard={updateCard}/> 
+                            <RatingButton rating={4} card={card} updateCard={updateCard}/> 
+                            <RatingButton rating={5} card={card} updateCard={updateCard}/>  
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className="row p-3"></div>
-            <div className="row">
-                <div className="col-2 d-grid ">
-                    <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={addNewCard}
-                    >
-            Add New Card
-                    </button>
-                </div>
-                <div className="col-2 d-grid ">
-                    <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={deleteCard}
-                    >
-            Delete Card
-                    </button>
+                <div className="row p-3"></div>
+                <div className="row">
+                    <div className="col-2 d-grid ">
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={addNewCard}
+                        >
+                        Add New Card
+                        </button>
+                    </div>
+                    <div className="col-2 d-grid ">
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={deleteCard}
+                        >
+                        Delete Card
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
+
+function RatingButton ({ rating, card, updateCard }) {
+    return( 
+        <button 
+            type="button" 
+            className={card.rating >= rating ? "btn btn-primary" : "btn btn-secondary"} 
+            onClick={() => updateCard({
+                ...card, 
+                rating: rating
+            })
+            }>{card.rating >= rating ? "🌝" : "🌚"}</button>
+    );
+} 
 
 export { DeckEditor };
