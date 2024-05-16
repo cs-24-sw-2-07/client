@@ -6,11 +6,11 @@ import { Deck } from "./../../classes/deck.js"
 function WinPopUp(props) {
     const navigate = useNavigate();
     const [saveCards, setSaveCards] = useState([]);
-    
+
     function saveAndReturn() {
         const oldDecks = JSON.parse(localStorage.getItem("userDeck"));
-        const FeedbackDeck = new Deck({name : props.feedbackDeck.name+" feedback", cards: saveCards });
-        const allDecks = [...oldDecks,FeedbackDeck]
+        const FeedbackDeck = new Deck({ name: props.feedbackDeck.name + " feedback", cards: saveCards });
+        const allDecks = [...oldDecks, FeedbackDeck]
         localStorage.setItem("userDeck", JSON.stringify(allDecks));
 
         navigate("/");
@@ -26,8 +26,7 @@ function WinPopUp(props) {
                         </div>
                         <div className='modal-body'>
                             {/* Feedback code */}
-                            <h6 className="text-primary"> Pick incorrectly answerd cards to add to feedback deck with name: <span className="text-danger"> {props.feedbackDeck.name+" feedback"}</span></h6>
-                            
+
                             <ListFeedback
                                 saveCards={saveCards}
                                 setSaveCards={setSaveCards}
@@ -63,21 +62,27 @@ function ListFeedback(props) {
         props.setFeedbackDeck(tempFeedbackDeck)
     }
 
+    if (props.feedbackDeck.cards == 0) {
+        return
+    }
+    return <>
+        <h6 className="text-primary"> Pick incorrectly answerd cards to add to feedback deck with name: <span className="text-danger"> {props.feedbackDeck.name + " feedback"}</span></h6>
 
-    return <div className="list-group" id="list-tab" key="list">
-        {props.feedbackDeck.cards.map((card, index) =>
-            <div className="row" key={index}>
-                <div className="col-9">
-                    <p className="list-group-item">
-                        {card.name}
-                    </p>
-                </div>
-                <div className="col-3">
-                    <button type="button" className="list-group-item list-group-item-action text-center" onClick={() => { addCardToFeedback(index) }}>
-                        Save
-                    </button>
-                </div>
-            </div>)
-        }
-    </div>
+        <div className="list-group" id="list-tab" key="list">
+            {props.feedbackDeck.cards.map((card, index) =>
+                <div className="row" key={index}>
+                    <div className="col-9">
+                        <p className="list-group-item">
+                            {card.name}
+                        </p>
+                    </div>
+                    <div className="col-3">
+                        <button type="button" className="list-group-item list-group-item-action text-center" onClick={() => { addCardToFeedback(index) }}>
+                            Save
+                        </button>
+                    </div>
+                </div>)
+            }
+        </div>
+    </>
 }
