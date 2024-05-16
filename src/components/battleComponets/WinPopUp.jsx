@@ -62,7 +62,9 @@ function ListFeedback(props) {
         props.setFeedbackDeck(tempFeedbackDeck)
     }
 
-
+    if (props.feedbackDeck.cards == 0) {
+        return
+    }
     return <>
         <h6 className="text-primary"> Pick incorrectly answerd cards to add to feedback deck with name: <span className="text-danger"> {props.feedbackDeck.name + " feedback"}</span></h6>
 
