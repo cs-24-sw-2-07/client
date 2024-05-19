@@ -15,7 +15,7 @@ function App() {
     const [maxLives, setMaxLives] = useState(0);
     const [handSize, setHandSize] = useState(0);
     const [turn, setTurn] = useState("");
-    const [deckData, setDeckData] = useState({});
+    const [playerData, setPlayerData] = useState({});
 
     const navigate = useNavigate();
     function navigateTo(path) {
@@ -29,13 +29,8 @@ function App() {
             navigateTo("/");
         });
         socket.on("lobby", data => {
-            const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
-            if(hasDecks === null) {
-                alert("Please make a deck before proceeding");
-            } else {
-                setLobbyState(data);
-                navigateTo("/LobbyPage");
-            }
+            setLobbyState(data);
+            navigateTo("/LobbyPage");
         });
         socket.on("roomNotExist", () => {
             alert("The room does not exist");
@@ -60,8 +55,8 @@ function App() {
         });
         socket.on("playerInfo", (data) => {
             console.log(data)
-            setDeckData(data)
-            console.log(deckData)
+            setPlayerData(data)
+            console.log(playerData)
         });
         return () => {
             socket.off("disconnect");
@@ -81,7 +76,7 @@ function App() {
             <Route path="/" element={<FrontPage />}></Route>
             <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
             <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
-            <Route path="battlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={deckData} turn={turn}/>}></Route>
+            <Route path="battlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={playerData} turn={turn}/>}></Route>
         </Routes>
     );
 }

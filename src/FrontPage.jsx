@@ -40,7 +40,13 @@ function HostGameModalButton() {
     const [displayName, setDisplayName] = useState("");
 
     function hostGame() {
-        socket.emit("createLobby", displayName);
+        const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
+        if(hasDecks === null) {
+            alert("Please make a deck before proceeding");
+        } else {
+            socket.emit("createLobby", displayName); 
+        }
+
     }
 
     return (
@@ -118,7 +124,12 @@ function JoinGameModalButton() {
     const [gameCode, setGameCode] = useState("");
 
     function joinGame() {
-        socket.emit("joinLobby", { name: displayName, id: gameCode });
+        const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
+        if(hasDecks === null) {
+            alert("Please make a deck before proceeding");
+        } else {
+            socket.emit("joinLobby", { name: displayName, id: gameCode }); 
+        }
     }
 
     return (
