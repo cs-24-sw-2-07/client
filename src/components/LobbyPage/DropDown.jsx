@@ -1,4 +1,5 @@
 import { socket } from "../../socket";
+import { Deck } from "../../classes/deck"
 
 export function DeckDropDown({ dropDownLabel }) {
     return (
@@ -17,7 +18,9 @@ export function DeckDropDown({ dropDownLabel }) {
     );
 }
 function GetDecksDropDown() {
-    const decks = JSON.parse(localStorage.getItem("userDeck"));
+    
+    const parsedDeck = JSON.parse(localStorage.getItem("userDeck"));
+    const decks = parsedDeck.map(deck => new Deck(deck));
 
     //Creates an option for every deck saved in localStorage
     return (

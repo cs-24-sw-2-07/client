@@ -1,5 +1,5 @@
 import { socket } from "../../socket";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function HostSettings({ lobbyState }) {
     //Setting states:
@@ -8,6 +8,19 @@ export function HostSettings({ lobbyState }) {
         handSize: lobbyState.handSize,
         life: lobbyState.life,
         lobbySize: lobbyState.lobbySize,
+    });
+    const [settingNotify, setSettingNotify] = useState({
+        deckSize: "",
+        handSize: "",
+        life: "",
+        lobbySize: ""
+    });
+
+    useEffect(() => {
+        socket.on("changeSetting", (data) => {
+            setSettingNotify(ReturnSettingObject(data.value, data.key, settingNotify));
+        });
+        return () => socket.off("changeSetting");
     });
 
     return (
@@ -20,31 +33,28 @@ export function HostSettings({ lobbyState }) {
                         id="deckSize"
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
-                        min="5"
+                        settingNotify={settingNotify.deckSize}
                     />
                     <CreateSetting 
                         label="Hand Size:"
                         id="handSize"
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
-                        min="3"
-                        max={settingsState.deckSize}
+                        settingNotify={settingNotify.handSize}
                     />
                     <CreateSetting
                         label="Life:"
                         id="life"
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
-                        min="1"
-                        max="10"
+                        settingNotify={settingNotify.life}
                     />
                     <CreateSetting
                         label="Lobby Size:"
                         id="lobbySize"
                         settingsState={settingsState}
                         setSettingsState={setSettingsState}
-                        min="2"
-                        max="30"
+                        settingNotify={settingNotify.lobbySize}
                     />
                 </div>
             </form>
@@ -52,17 +62,14 @@ export function HostSettings({ lobbyState }) {
     );
 }
 
-function CreateSetting({ label, id, settingsState, setSettingsState, min, max }) {
-    let value = settingsState[id]; 
+function CreateSetting({ label, id, settingsState, setSettingsState, settingNotify }) {
     return (
         <div>
-            <label htmlFor={id}> {label} <span className="text-danger">{checkValue(value, min, max)}</span></label>
+            <label htmlFor={id}> {label} <span className="text-danger">{settingNotify}</span></label>
             <input
                 type="number"
                 className="form-control"
                 id={id}
-                min={min}
-                max={max}
                 value={settingsState[id]}
                 onChange={(e) => { 
                     setSettingsState(ReturnSettingObject(e.target.value, id, settingsState));
@@ -78,7 +85,6 @@ function setSendObj(value, key) {
         "key": key,
         [key]: value,
     }
-    console.log(obj); 
     return obj; 
 }
 
@@ -89,7 +95,7 @@ function ReturnSettingObject(value, setting, settingsState) {
     }; 
 }
 
-function checkValue(value, min, max) {
+/*function checkValue(value, min, max) {
     if (value > Number(max)) {
         return "Setting is set too large";
     } else if (value < Number(min)) {
@@ -97,4 +103,4 @@ function checkValue(value, min, max) {
     } else {
         return ""; 
     }
-}
+}*/
