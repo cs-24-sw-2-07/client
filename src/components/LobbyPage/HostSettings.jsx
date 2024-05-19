@@ -61,8 +61,6 @@ function CreateSetting({ label, id, settingsState, setSettingsState, min, max })
                 type="number"
                 className="form-control"
                 id={id}
-                min={min}
-                max={max}
                 value={settingsState[id]}
                 onChange={(e) => { 
                     setSettingsState(ReturnSettingObject(e.target.value, id, settingsState));
@@ -78,7 +76,6 @@ function setSendObj(value, key) {
         "key": key,
         [key]: value,
     }
-    console.log(obj); 
     return obj; 
 }
 
