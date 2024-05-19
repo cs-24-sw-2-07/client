@@ -7,11 +7,13 @@ import { DeckPicker } from "./components/deckbuilderComponets/DeckPicker.jsx";
 import { DeckEditor } from "./components/deckbuilderComponets/DeckEditor.jsx";
 
 function CreateDeckPage() {
-    var startDeck = [];
+    let startDeck = [];
 
     //check for decks in localstorge and retrive if yes
     if (localStorage.getItem("userDeck") !== null) {
-        startDeck = JSON.parse(localStorage.getItem("userDeck"));
+        const parsedDeck = JSON.parse(localStorage.getItem("userDeck"));
+        startDeck = parsedDeck.map(deck => new Deck(deck));
+        console.log(startDeck)
     } else {
         startDeck = [new Deck({ name: "New Deck" })];
     }

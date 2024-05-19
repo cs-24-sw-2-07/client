@@ -4,6 +4,10 @@ export class Deck {
     constructor(values) {
         const {name, cards} = values ?? {};
         this.name = name ?? "";
-        this.cards = cards ?? [new Card()]
+        if(cards) {
+            this.cards = cards.map(card => new Card(card));
+        } else {
+            this.cards = [new Card()]
+        }
     }
 }
