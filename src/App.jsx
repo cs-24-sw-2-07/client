@@ -1,7 +1,7 @@
 import "./App.css";
 import FrontPage from "./FrontPage.jsx";
 import CreateDeckPage from "./CreateDeckPage.jsx";
-import LobbyPage from "./LobbyPage.jsx"
+import LobbyPage from "./LobbyPage.jsx";
 import { Route, Routes } from "react-router-dom";
 import { socket } from "./socket";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ function App() {
     useEffect(() => {
         socket.on("disconnect", () => {
             // When lost connection, redirect to front page, if not on editor page.
-            if(window.location.href.includes("/CreateDeckPage")) return;
+            if (window.location.href.includes("/CreateDeckPage")) return;
             navigateTo("/");
         });
         socket.on("lobby", data => {
@@ -35,7 +35,7 @@ function App() {
         socket.on("roomNotExist", () => {
             alert("The room does not exist");
         });
-        socket.on("LeaveLobby", data => {
+        socket.on("leaveLobby", data => {
             console.log(data);
             //setLobbyState(data);
             navigateTo("/");
@@ -45,26 +45,26 @@ function App() {
             setPlayerLives(data.playerLives);
             setMaxLives(data.maxLives);
             setTurn(data.turn);
-            navigateTo("/battlePage");
+            navigateTo("/BattlePage");
         });
-        socket.on("RoomFull", () => {
+        socket.on("roomFull", () => {
             alert("The room you tried to join is full");
         });
         socket.on("invalidUsername", () => {
             alert("Username is invalid");
         });
         socket.on("playerInfo", (data) => {
-            console.log(data)
-            setPlayerData(data)
-            console.log(playerData)
+            console.log(data);
+            setPlayerData(data);
+            console.log(playerData);
         });
         return () => {
             socket.off("disconnect");
-            socket.off("Lobby");
-            socket.off("RoomNotExist");
+            socket.off("lobby");
+            socket.off("roomNotExist");
             socket.off("startedGame");
-            socket.off("LeaveLobby");
-            socket.off("RoomFull");
+            socket.off("leaveLobby");
+            socket.off("roomFull");
             socket.off("invalidUsername");
             socket.off("playerInfo");
         };
@@ -76,7 +76,7 @@ function App() {
             <Route path="/" element={<FrontPage />}></Route>
             <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
             <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
-            <Route path="battlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={playerData} turn={turn}/>}></Route>
+            <Route path="BattlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={playerData} turn={turn} />}></Route>
         </Routes>
     );
 }

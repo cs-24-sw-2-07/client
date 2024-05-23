@@ -1,5 +1,5 @@
 import { socket } from "../../socket";
-import { Deck } from "../../classes/deck"
+import { Deck } from "../../classes/deck";
 
 export function DeckDropDown({ dropDownLabel }) {
     return (

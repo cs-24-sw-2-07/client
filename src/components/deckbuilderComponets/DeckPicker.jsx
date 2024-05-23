@@ -1,7 +1,7 @@
 //Renders list of decks on page
-import DeckList from "./DeckList.jsx"
+import DeckList from "./DeckList.jsx";
 import { useNavigate } from "react-router-dom";
-import { Deck } from "./../../classes/deck.js"
+import { Deck } from "./../../classes/deck.js";
 
 function DeckPicker(props){
     const navigate = useNavigate();
@@ -50,14 +50,14 @@ function DeckPicker(props){
             </div>
             <div className="row p-4"></div>
             <div className="row">
-                <button type="button" className="btn btn-primary" onClick={()=>{addDeck()}}>Create New Deck</button>
+                <button type="button" className="btn btn-primary" onClick={()=>{addDeck();}}>Create New Deck</button>
             </div>
             <div className="row p-3">
                 <div className="col-6 d-grid">
-                    <button type="button" className="btn btn-secondary" onClick={()=>{sortDeck("A-Z")}}>Sort A-Z</button>
+                    <button type="button" className="btn btn-secondary" onClick={()=>{sortDeck("A-Z");}}>Sort A-Z</button>
                 </div>
                 <div className="col-6 d-grid">
-                    <button type="button" className="btn btn-secondary" onClick={()=>{sortDeck("Z-A")}}>Sort Z-A</button>
+                    <button type="button" className="btn btn-secondary" onClick={()=>{sortDeck("Z-A");}}>Sort Z-A</button>
                 </div>
             </div>
             <div className="row p-3"></div>
@@ -69,7 +69,7 @@ function DeckPicker(props){
                     deckIndex={props.deckIndex}/>
             </div>
         </div>
-    </>
+    </>;
 }
 
 export {DeckPicker};

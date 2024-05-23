@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { socket } from "../../socket.js"
+import { socket } from "../../socket.js";
 
 function DisplayLives(props) {
     const [lives, setLives] = useState(props.playerLives);

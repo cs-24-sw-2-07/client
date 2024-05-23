@@ -6,7 +6,7 @@ export function LeaveButton() {
         if (confirmed) {
             socket.emit("lobbyLeave");
         }
-    }
+    };
 
     return (
         <button
