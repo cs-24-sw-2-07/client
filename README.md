@@ -1,8 +1,20 @@
-# React + Vite
+# Flashcard Versus Game - Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A live production example is available at:
 
-Currently, two official plugins are available:
+http://w4kw4c8.49.13.84.100.sslip.io/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> The above is deployed using the docker files included in both client and server repositories.
+
+## Run the client development server
+
+```sh
+npm install
+```
+```sh
+npm run dev
+```
+
+The above will start a Vite development server, host and port information will be available in the console.
+
+Additionally the server code should also be run for the client to function.
