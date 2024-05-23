@@ -8,8 +8,8 @@ function WinPopUp(props) {
     const [saveCards, setSaveCards] = useState([]);
 
     function saveAndReturn() {
-        const oldDecks = JSON.parse(localStorage.getItem("userDeck"));
         if (saveCards.length > 0) {
+            const oldDecks = JSON.parse(localStorage.getItem("userDeck"));
             const FeedbackDeck = new Deck({ name: props.feedbackDeck.name + " feedback", cards: saveCards });
             const allDecks = [...oldDecks, FeedbackDeck];
             localStorage.setItem("userDeck", JSON.stringify(allDecks));
