@@ -35,7 +35,7 @@ function App() {
         socket.on("roomNotExist", () => {
             alert("The room does not exist");
         });
-        socket.on("LeaveLobby", data => {
+        socket.on("leaveLobby", data => {
             console.log(data);
             //setLobbyState(data);
             navigateTo("/");
@@ -45,9 +45,9 @@ function App() {
             setPlayerLives(data.playerLives);
             setMaxLives(data.maxLives);
             setTurn(data.turn);
-            navigateTo("/battlePage");
+            navigateTo("/BattlePage");
         });
-        socket.on("RoomFull", () => {
+        socket.on("roomFull", () => {
             alert("The room you tried to join is full");
         });
         socket.on("invalidUsername", () => {
@@ -60,11 +60,11 @@ function App() {
         });
         return () => {
             socket.off("disconnect");
-            socket.off("Lobby");
-            socket.off("RoomNotExist");
+            socket.off("lobby");
+            socket.off("roomNotExist");
             socket.off("startedGame");
-            socket.off("LeaveLobby");
-            socket.off("RoomFull");
+            socket.off("leaveLobby");
+            socket.off("roomFull");
             socket.off("invalidUsername");
             socket.off("playerInfo");
         };
@@ -76,7 +76,7 @@ function App() {
             <Route path="/" element={<FrontPage />}></Route>
             <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
             <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
-            <Route path="battlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={playerData} turn={turn}/>}></Route>
+            <Route path="BattlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={playerData} turn={turn}/>}></Route>
         </Routes>
     );
 }
