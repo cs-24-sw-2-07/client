@@ -25,7 +25,7 @@ function App() {
     useEffect(() => {
         socket.on("disconnect", () => {
             // When lost connection, redirect to front page, if not on editor page.
-            if(window.location.href.includes("/CreateDeckPage")) return;
+            if (window.location.href.includes("/CreateDeckPage")) return;
             navigateTo("/");
         });
         socket.on("lobby", data => {
@@ -76,7 +76,7 @@ function App() {
             <Route path="/" element={<FrontPage />}></Route>
             <Route path="CreateDeckPage" element={<CreateDeckPage />}></Route>
             <Route path="LobbyPage" element={<LobbyPage lobbyState={lobbyState} />}></Route>
-            <Route path="BattlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={playerData} turn={turn}/>}></Route>
+            <Route path="BattlePage" element={<BattlePage playerLives={playerlives} maxLives={maxLives} handSize={handSize} data={playerData} turn={turn} />}></Route>
         </Routes>
     );
 }

@@ -41,10 +41,10 @@ function HostGameModalButton() {
 
     function hostGame() {
         const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
-        if(hasDecks === null) {
+        if (hasDecks === null) {
             alert("Please make a deck before proceeding");
         } else {
-            socket.emit("createLobby", displayName); 
+            socket.emit("createLobby", displayName);
         }
 
     }
@@ -57,7 +57,7 @@ function HostGameModalButton() {
                 data-bs-toggle="modal"
                 data-bs-target="#hostGameModal"
             >
-				Host Game
+                Host Game
             </button>
             <div
                 className="modal fade"
@@ -70,7 +70,7 @@ function HostGameModalButton() {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="hostGameModalLabel">
-															Host Game
+                                Host Game
                             </h1>
                             <button
                                 type="button"
@@ -125,10 +125,10 @@ function JoinGameModalButton() {
 
     function joinGame() {
         const hasDecks = JSON.parse(localStorage.getItem("userDeck"));
-        if(hasDecks === null) {
+        if (hasDecks === null) {
             alert("Please make a deck before proceeding");
         } else {
-            socket.emit("joinLobby", { name: displayName, id: gameCode }); 
+            socket.emit("joinLobby", { name: displayName, id: gameCode });
         }
     }
 

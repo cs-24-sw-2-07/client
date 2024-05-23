@@ -19,21 +19,8 @@ function BattlePage(props) {
     const [showAnswer, setShowAnswer] = useState(false);
     const [feedbackDeck, setFeedbackDeck] = useState(new Deck({ name: myDeck.current.name, cards: [] }));
 
-
-
-    /*useEffect(() => {
-        if (turnRef.current.current !== socket.id) setdisableCards(true);
-        console.log("jere")
-        setHand(props.data.hand);
-        myDeck.current = props.data.deck;
-        //console.log("Hand", props.data.hand, hand);
-        //console.log(myDeck)
-        //console.log("cardHand ", handDeck)
-    }, [props.data])*/
-
     // Takes the index of cards in the hand, and makes it into an array of cards
     useEffect(() => {
-        //console.log("inside makehand: ", myDeck)
         let newHandDeck = [];
         hand.forEach((i) => {
             newHandDeck.push(myDeck.current.cards[i]);
