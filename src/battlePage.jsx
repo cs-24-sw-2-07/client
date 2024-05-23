@@ -3,8 +3,8 @@ import { DisplayHand } from "./components/battleComponets/DisplayHand.jsx";
 import { DisplayChosenCard } from "./components/battleComponets/DisplayChosenCard.jsx";
 import { WinPopUp } from "./components/battleComponets/WinPopUp.jsx";
 import { DisplayButtons } from "./components/battleComponets/DisplayButtons.jsx";
-import { socket } from "./socket.js"
-import { Deck } from "./classes/deck.js"
+import { socket } from "./socket.js";
+import { Deck } from "./classes/deck.js";
 
 function BattlePage(props) {
     const myDeck = useRef(props.data.deck);
@@ -26,7 +26,7 @@ function BattlePage(props) {
             newHandDeck.push(myDeck.current.cards[i]);
         });
         setHandDeck(newHandDeck);
-    }, [hand])
+    }, [hand]);
 
     // Handle socket events from server
     useEffect(() => {
@@ -36,8 +36,8 @@ function BattlePage(props) {
             setShowAnswer(true);
         }
         function foundWinnerFunc(data) {
-            setShowWonPopUp(true)
-            setGameResult(data)
+            setShowWonPopUp(true);
+            setGameResult(data);
         }
 
         function switchRoles(data) {
@@ -50,36 +50,36 @@ function BattlePage(props) {
         function cardPickedFunc(data) {
             displayCard.current = data;
             setShowAnswer(false);
-            console.log("disCard",displayCard.current)
-            console.log(displayCard.current.name)
-            console.log(data.name)
+            console.log("disCard",displayCard.current);
+            console.log(displayCard.current.name);
+            console.log(data.name);
             if (turnRef.current.next === socket.id) setHideElement(false);
         }
 
         function wrongAnsweredFunc() {
             let tempDeck = { ...feedbackDeck };
-            console.log("dis card", displayCard.current)
-            tempDeck.cards.push(displayCard.current)
-            console.log("temp", tempDeck)
+            console.log("dis card", displayCard.current);
+            tempDeck.cards.push(displayCard.current);
+            console.log("temp", tempDeck);
 
-            setFeedbackDeck(tempDeck)
-            console.log("feedback",feedbackDeck)
+            setFeedbackDeck(tempDeck);
+            console.log("feedback",feedbackDeck);
         }
 
         socket.on("cardPicked", cardPickedFunc);
         socket.on("wrongAnswered", wrongAnsweredFunc);
-        socket.on("doneAnswering", doneAnsweringFunc)
-        socket.on("foundWinner", foundWinnerFunc)
-        socket.on("switchRoles", switchRoles)
+        socket.on("doneAnswering", doneAnsweringFunc);
+        socket.on("foundWinner", foundWinnerFunc);
+        socket.on("switchRoles", switchRoles);
 
         return () => {
             socket.off("cardPicked", cardPickedFunc);
-            socket.off("doneAnswering", doneAnsweringFunc)
-            socket.off("foundWinner", foundWinnerFunc)
-            socket.off("switchRoles", switchRoles)
-            socket.off("wrongAnswered", wrongAnsweredFunc)
+            socket.off("doneAnswering", doneAnsweringFunc);
+            socket.off("foundWinner", foundWinnerFunc);
+            socket.off("switchRoles", switchRoles);
+            socket.off("wrongAnswered", wrongAnsweredFunc);
         };
-    }, [])
+    }, []);
 
 
     return (

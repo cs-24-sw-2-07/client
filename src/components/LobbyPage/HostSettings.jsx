@@ -84,7 +84,7 @@ function setSendObj(value, key) {
     const obj = {
         "key": key,
         [key]: value,
-    }
+    };
     return obj; 
 }
 

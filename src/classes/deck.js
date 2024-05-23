@@ -7,7 +7,7 @@ export class Deck {
         if(cards) {
             this.cards = cards.map(card => new Card(card));
         } else {
-            this.cards = [new Card()]
+            this.cards = [new Card()];
         }
     }
 }

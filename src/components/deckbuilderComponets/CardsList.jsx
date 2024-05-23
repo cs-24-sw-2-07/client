@@ -8,7 +8,7 @@ function CardsList({cards, cardIndex, showCard}){
                     <option selected={index==cardIndex} key={index} onClick={() => {showCard(index);}}>{"Card "+[index+1]+": " + cards[index].name}</option>)
             }
         </select>
-    </>
+    </>;
 }
 
 export {CardsList};

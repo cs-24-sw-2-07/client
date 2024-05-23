@@ -1,7 +1,7 @@
 import "./App.css";
 import FrontPage from "./FrontPage.jsx";
 import CreateDeckPage from "./CreateDeckPage.jsx";
-import LobbyPage from "./LobbyPage.jsx"
+import LobbyPage from "./LobbyPage.jsx";
 import { Route, Routes } from "react-router-dom";
 import { socket } from "./socket";
 import { useEffect, useState } from "react";
@@ -54,9 +54,9 @@ function App() {
             alert("Username is invalid");
         });
         socket.on("playerInfo", (data) => {
-            console.log(data)
-            setPlayerData(data)
-            console.log(playerData)
+            console.log(data);
+            setPlayerData(data);
+            console.log(playerData);
         });
         return () => {
             socket.off("disconnect");

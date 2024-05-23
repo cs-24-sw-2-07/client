@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { socket } from "./socket"
+import { socket } from "./socket";
 
 export default function FrontPage() {
     const navigate = useNavigate();

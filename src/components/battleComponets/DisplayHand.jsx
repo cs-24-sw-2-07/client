@@ -1,4 +1,4 @@
-import { socket } from "../../socket.js"
+import { socket } from "../../socket.js";
 
 function DisplayHand(props) {
     return (
@@ -14,7 +14,7 @@ function DisplayHand(props) {
                                 props.setdisableCards(true);
                                 props.displayCard.current = props.myDeck.cards[props.hand[index]];
                                 //props.setHideElement(true);
-                                socket.emit("cardPicked", {cardID: index})
+                                socket.emit("cardPicked", {cardID: index});
                             }}
                         >
                             Card Name: {card.name}

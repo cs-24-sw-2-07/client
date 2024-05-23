@@ -13,7 +13,7 @@ function CreateDeckPage() {
     if (localStorage.getItem("userDeck") !== null) {
         const parsedDeck = JSON.parse(localStorage.getItem("userDeck"));
         startDeck = parsedDeck.map(deck => new Deck(deck));
-        console.log(startDeck)
+        console.log(startDeck);
     } else {
         startDeck = [new Deck({ name: "New Deck" })];
     }

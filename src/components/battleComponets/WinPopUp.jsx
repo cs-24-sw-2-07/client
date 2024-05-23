@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Deck } from "./../../classes/deck.js"
+import { Deck } from "./../../classes/deck.js";
 //import { Card } from "./../../classes/card.js"
 
 function WinPopUp(props) {
@@ -11,7 +11,7 @@ function WinPopUp(props) {
         const oldDecks = JSON.parse(localStorage.getItem("userDeck"));
         if (saveCards.length > 0) {
             const FeedbackDeck = new Deck({ name: props.feedbackDeck.name + " feedback", cards: saveCards });
-            const allDecks = [...oldDecks, FeedbackDeck]
+            const allDecks = [...oldDecks, FeedbackDeck];
             localStorage.setItem("userDeck", JSON.stringify(allDecks));
         }
 
@@ -47,7 +47,7 @@ function WinPopUp(props) {
                 <div className="modal-backdrop fade show" />
             )}
         </>
-    )
+    );
 }
 export { WinPopUp };
 
@@ -58,14 +58,14 @@ function ListFeedback(props) {
         let tempSaveCards = props.saveCards;
         tempSaveCards.push(props.feedbackDeck.cards[index]);
 
-        props.setSaveCards(tempSaveCards)
+        props.setSaveCards(tempSaveCards);
         let tempFeedbackDeck = { ...props.feedbackDeck };
-        tempFeedbackDeck.cards.splice(index, 1)
-        props.setFeedbackDeck(tempFeedbackDeck)
+        tempFeedbackDeck.cards.splice(index, 1);
+        props.setFeedbackDeck(tempFeedbackDeck);
     }
 
     if (props.feedbackDeck.cards == 0) {
-        return
+        return;
     }
     return <>
         <h6 className="text-primary"> Pick incorrectly answerd cards to add to feedback deck with name: <span className="text-danger"> {props.feedbackDeck.name + " feedback"}</span></h6>
@@ -79,12 +79,12 @@ function ListFeedback(props) {
                         </p>
                     </div>
                     <div className="col-3">
-                        <button type="button" className="list-group-item list-group-item-action text-center" onClick={() => { addCardToFeedback(index) }}>
+                        <button type="button" className="list-group-item list-group-item-action text-center" onClick={() => { addCardToFeedback(index); }}>
                             Save
                         </button>
                     </div>
                 </div>)
             }
         </div>
-    </>
+    </>;
 }
