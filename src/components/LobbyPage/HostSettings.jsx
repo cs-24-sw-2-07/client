@@ -18,7 +18,7 @@ export function HostSettings({ lobbyState }) {
 
     useEffect(() => {
         socket.on("changeSetting", (data) => {
-            setSettingNotify(ReturnSettingObject(data.value, data.key, settingNotify));
+            setSettingNotify({...settingNotify, [data.key]: data.value});
         });
         return () => socket.off("changeSetting");
     });
@@ -72,8 +72,8 @@ function CreateSetting({ label, id, settingsState, setSettingsState, settingNoti
                 id={id}
                 value={settingsState[id]}
                 onChange={(e) => { 
-                    setSettingsState(ReturnSettingObject(e.target.value, id, settingsState));
-                    socket.emit("changeSettings", setSendObj(e.target.value, id));
+                    setSettingsState({...settingsState, [id]: e.target.value});
+                    socket.emit("changeSettings", {"key": id, [key]: e.target.value});
                 }}
             ></input>
         </div>
@@ -86,13 +86,6 @@ function setSendObj(value, key) {
         [key]: value,
     };
     return obj; 
-}
-
-function ReturnSettingObject(value, setting, settingsState) {
-    return {
-        ...settingsState, 
-        [setting]: value
-    }; 
 }
 
 /*function checkValue(value, min, max) {
