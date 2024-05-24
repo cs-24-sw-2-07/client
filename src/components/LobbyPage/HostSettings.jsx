@@ -79,21 +79,3 @@ function CreateSetting({ label, id, settingsState, setSettingsState, settingNoti
         </div>
     );
 }
-
-function setSendObj(value, key) {
-    const obj = {
-        "key": key,
-        [key]: value,
-    };
-    return obj; 
-}
-
-/*function checkValue(value, min, max) {
-    if (value > Number(max)) {
-        return "Setting is set too large";
-    } else if (value < Number(min)) {
-        return "Setting is set too small";
-    } else {
-        return ""; 
-    }
-}*/
