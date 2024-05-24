@@ -2,7 +2,6 @@ import { socket } from "../../socket";
 import { useState, useEffect } from "react";
 
 export function HostSettings({ lobbyState }) {
-    //Setting states:
     const [settingsState, setSettingsState] = useState({
         deckSize: lobbyState.deckSize,
         handSize: lobbyState.handSize,
@@ -18,7 +17,7 @@ export function HostSettings({ lobbyState }) {
 
     useEffect(() => {
         socket.on("changeSetting", (data) => {
-            setSettingNotify(ReturnSettingObject(data.value, data.key, settingNotify));
+            setSettingNotify({...settingNotify, [data.key]: data.value});
         });
         return () => socket.off("changeSetting");
     });
@@ -72,35 +71,10 @@ function CreateSetting({ label, id, settingsState, setSettingsState, settingNoti
                 id={id}
                 value={settingsState[id]}
                 onChange={(e) => { 
-                    setSettingsState(ReturnSettingObject(e.target.value, id, settingsState));
-                    socket.emit("changeSettings", setSendObj(e.target.value, id));
+                    setSettingsState({...settingsState, [id]: e.target.value});
+                    socket.emit("changeSettings", {"key": id, [id]: e.target.value});
                 }}
             ></input>
         </div>
     );
 }
-
-function setSendObj(value, key) {
-    const obj = {
-        "key": key,
-        [key]: value,
-    };
-    return obj; 
-}
-
-function ReturnSettingObject(value, setting, settingsState) {
-    return {
-        ...settingsState, 
-        [setting]: value
-    }; 
-}
-
-/*function checkValue(value, min, max) {
-    if (value > Number(max)) {
-        return "Setting is set too large";
-    } else if (value < Number(min)) {
-        return "Setting is set too small";
-    } else {
-        return ""; 
-    }
-}*/
