@@ -2,7 +2,6 @@ import { socket } from "../../socket";
 import { useState, useEffect } from "react";
 
 export function HostSettings({ lobbyState }) {
-    //Setting states:
     const [settingsState, setSettingsState] = useState({
         deckSize: lobbyState.deckSize,
         handSize: lobbyState.handSize,
@@ -73,7 +72,7 @@ function CreateSetting({ label, id, settingsState, setSettingsState, settingNoti
                 value={settingsState[id]}
                 onChange={(e) => { 
                     setSettingsState({...settingsState, [id]: e.target.value});
-                    socket.emit("changeSettings", {"key": id, [key]: e.target.value});
+                    socket.emit("changeSettings", {"key": id, [id]: e.target.value});
                 }}
             ></input>
         </div>
